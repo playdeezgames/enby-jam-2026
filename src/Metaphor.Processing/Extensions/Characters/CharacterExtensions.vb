@@ -9,11 +9,13 @@ Friend Module CharacterExtensions
     <Extension>
     Friend Sub Look(character As ICharacter)
         Dim location = character.Location
-        character.World.AddMessage(location.Flavor)
+        Dim world = location.World
+        world.AddMessage(location.Flavor)
+        world.AddMessage($"Distance Remaining: {character.GetDistanceRemaining()}.")
         ShowOtherCharacters(character)
         ShowFeatures(character)
         If location.Inventory.HasItems Then
-            character.World.AddMessage("There are items on the ground.")
+            world.AddMessage("There are items on the ground.")
         End If
     End Sub
 
