@@ -67,6 +67,10 @@ Friend Module CharacterExtensions
         Return character.GetCounter(Counters.JOOLS)
     End Function
     <Extension>
+    Friend Function GetDistanceRemaining(character As ICharacter) As Integer
+        Return character.GetCounter(Counters.DISTANCE_REMAINING)
+    End Function
+    <Extension>
     Friend Function GetMaximumHealth(character As ICharacter) As Integer
         Return character.GetCounterMaximum(Counters.HEALTH)
     End Function
@@ -83,6 +87,7 @@ Friend Module CharacterExtensions
         Dim world = character.World
         world.AddMessage($"{character.Name}'s Status:")
         world.AddMessage(character.Flavor)
+        world.AddMessage($"- Distance Remaining: {character.GetDistanceRemaining()}")
         world.AddMessage($"- Health: {character.GetHealth()}/{character.GetMaximumHealth()}")
         world.AddMessage($"- Satiety: {character.GetSatiety()}/{character.GetMaximumSatiety()}")
         If Not character.IsStomachEmpty() Then
