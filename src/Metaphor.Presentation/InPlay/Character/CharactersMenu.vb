@@ -19,7 +19,7 @@ Friend Class CharactersMenu
         Get
             Return Enumerable.Empty(Of LaunchDelegate).
                 Append(AddressOf ChooseNeverMind).
-                Concat(Model.Characters.All.Select(AddressOf ChooseCharacter))
+                Concat(Model.Location.Characters.All.Select(AddressOf ChooseCharacter))
         End Get
     End Property
 
@@ -29,7 +29,7 @@ Friend Class CharactersMenu
 
     Friend Shared Function Launch(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As DialogSource
         Return Function()
-                   model.Characters.ShowList()
+                   model.Location.Characters.ShowList()
                    Return New CharactersMenu(context, model, previous)
                End Function
     End Function

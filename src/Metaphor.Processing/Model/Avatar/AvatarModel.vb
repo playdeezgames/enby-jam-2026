@@ -1,0 +1,26 @@
+﻿Imports Metaphor.Persistence
+
+Friend Class AvatarModel
+    Implements IAvatarModel
+
+    Private ReadOnly avatar As ICharacter
+
+    Private Sub New(avatar As ICharacter)
+        Me.avatar = avatar
+    End Sub
+
+    Public ReadOnly Property Inventory As IInventoryModel Implements IAvatarModel.Inventory
+        Get
+            Return InventoryModel.Create(avatar.World)
+        End Get
+    End Property
+
+    Public Sub ShowStatus() Implements IAvatarModel.ShowStatus
+        avatar.World.ClearMessages()
+        avatar.ShowStatus()
+    End Sub
+
+    Friend Shared Function Create(avatar As ICharacter) As IAvatarModel
+        Return New AvatarModel(avatar)
+    End Function
+End Class

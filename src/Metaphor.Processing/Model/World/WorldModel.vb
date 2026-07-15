@@ -19,33 +19,15 @@ Public Class WorldModel
         End Get
     End Property
 
-    Public ReadOnly Property Ground As IGroundModel Implements IWorldModel.Ground
-        Get
-            Return GroundModel.Create(Entity)
-        End Get
-    End Property
-
-    Public ReadOnly Property Inventory As IInventoryModel Implements IWorldModel.Inventory
-        Get
-            Return InventoryModel.Create(Entity)
-        End Get
-    End Property
-
-    Public ReadOnly Property Features As IFeaturesModel Implements IWorldModel.Features
-        Get
-            Return FeaturesModel.Create(Entity)
-        End Get
-    End Property
-
-    Public ReadOnly Property Characters As ICharactersModel Implements IWorldModel.Characters
-        Get
-            Return CharactersModel.Create(Entity)
-        End Get
-    End Property
-
     Public ReadOnly Property Location As ILocationModel Implements IWorldModel.Location
         Get
             Return LocationModel.Create(Entity.Avatar.Location)
+        End Get
+    End Property
+
+    Public ReadOnly Property Avatar As IAvatarModel Implements IWorldModel.Avatar
+        Get
+            Return AvatarModel.Create(Entity.Avatar)
         End Get
     End Property
 
@@ -56,16 +38,6 @@ Public Class WorldModel
 
     Public Sub Abandon() Implements IWorldModel.Abandon
         Entity.Clear()
-    End Sub
-
-    Public Sub Look() Implements IWorldModel.Look
-        Entity.ClearMessages()
-        Entity.Avatar.Look()
-    End Sub
-
-    Public Sub ShowStatus() Implements IWorldModel.ShowStatus
-        Entity.ClearMessages()
-        Entity.Avatar.ShowStatus()
     End Sub
 
     Public Shared Async Function Create(quittable As Boolean, persister As IPersister) As Task(Of IWorldModel)

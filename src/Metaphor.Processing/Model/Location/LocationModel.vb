@@ -25,4 +25,27 @@ Friend Class LocationModel
     Friend Shared Function Create(location As ILocation) As ILocationModel
         Return New LocationModel(location)
     End Function
+
+    Public Sub Look() Implements ILocationModel.Look
+        location.World.ClearMessages()
+        location.World.Avatar.Look()
+    End Sub
+
+    Public ReadOnly Property Ground As IGroundModel Implements ILocationModel.Ground
+        Get
+            Return GroundModel.Create(location.World)
+        End Get
+    End Property
+
+    Public ReadOnly Property Features As IFeaturesModel Implements ILocationModel.Features
+        Get
+            Return FeaturesModel.Create(location.World)
+        End Get
+    End Property
+
+    Public ReadOnly Property Characters As ICharactersModel Implements ILocationModel.Characters
+        Get
+            Return CharactersModel.Create(location.World)
+        End Get
+    End Property
 End Class

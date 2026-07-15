@@ -19,7 +19,7 @@ Friend Class FeaturesMenu
         Get
             Return Enumerable.Empty(Of LaunchDelegate).
                 Append(AddressOf ChooseNeverMind).
-                Concat(Model.Features.All.Select(AddressOf ChooseFeature))
+                Concat(Model.Location.Features.All.Select(AddressOf ChooseFeature))
         End Get
     End Property
 
@@ -35,8 +35,8 @@ Friend Class FeaturesMenu
 
     Friend Shared Function Launch(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As DialogSource
         Return Function()
-                   If model.Features.HasAny Then
-                       model.Features.ShowList()
+                   If model.Location.Features.HasAny Then
+                       model.Location.Features.ShowList()
                        Return New FeaturesMenu(context, model, previous)
                    End If
                    Return InPlay.Launch(context, model, previous).Invoke()

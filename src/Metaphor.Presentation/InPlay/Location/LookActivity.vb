@@ -13,7 +13,7 @@ Friend Class LookActivity
     End Function
 
     Public Overrides Function Run() As IDialogPrompt
-        Model.Look()
+        Model.Location.Look()
         Return InPlay.Launch(Context, Model, Previous).Invoke().Run()
     End Function
 End Class

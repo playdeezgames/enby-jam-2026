@@ -19,7 +19,7 @@ Friend Class InventoryMenu
         Get
             Return Enumerable.Empty(Of LaunchDelegate).
                 Append(AddressOf ChooseNeverMind).
-                Concat(Model.Inventory.Items.Select(AddressOf ChooseItem))
+                Concat(Model.Avatar.Inventory.Items.Select(AddressOf ChooseItem))
         End Get
     End Property
 
@@ -31,7 +31,7 @@ Friend Class InventoryMenu
 
     Friend Shared Function Launch(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As DialogSource
         Return Function()
-                   If model.Inventory.HasItems Then
+                   If model.Avatar.Inventory.HasItems Then
                        Return New InventoryMenu(context, model, previous)
                    End If
                    Return InPlay.Launch(context, model, previous).Invoke()
