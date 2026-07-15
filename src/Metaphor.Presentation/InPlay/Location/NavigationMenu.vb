@@ -17,7 +17,6 @@ Friend Class NavigationMenu
     Protected Overrides ReadOnly Property Launchers As IEnumerable(Of LaunchDelegate)
         Get
             Return Enumerable.Empty(Of LaunchDelegate).
-                Append(AddressOf ChooseMove).
                 Append(AddressOf ChooseStatus).
                 Append(AddressOf ChooseGround).
                 Append(AddressOf ChooseInventory).
@@ -58,10 +57,6 @@ Friend Class NavigationMenu
 
     Private Function ChooseGround(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice
         Return DialogChoice.Create(model.Ground.HasItems, "Ground...", GroundMenu.Launch(context, model, previous))
-    End Function
-
-    Private Function ChooseMove(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice
-        Return DialogChoice.Create(model.Exits.HasAny, "Move...", MoveMenu.Launch(context, model, previous))
     End Function
 
     Private Function ChooseGameMenu(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice

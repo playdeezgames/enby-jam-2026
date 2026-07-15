@@ -11,7 +11,7 @@ Friend Class ItemModel
 
     Public ReadOnly Property Name As String Implements IItemModel.Name
         Get
-            Return item.GetName()
+            Return item.Name
         End Get
     End Property
 
@@ -25,8 +25,8 @@ Friend Class ItemModel
         Dim world = item.World
         Dim character = world.Avatar
         world.ClearMessages()
-        character.World.AddMessage($"{character.GetName} takes {item.GetName}.")
-        character.World.AddMessage(item.GetFlavor)
+        character.World.AddMessage($"{character.Name} takes {item.Name}.")
+        character.World.AddMessage(item.Flavor)
         item.Inventory = character.Inventory
     End Sub
 
@@ -34,14 +34,14 @@ Friend Class ItemModel
         Dim world = item.World
         Dim character = world.Avatar
         world.ClearMessages()
-        character.World.AddMessage($"{character.GetName} drops {item.GetName}.")
+        character.World.AddMessage($"{character.Name} drops {item.Name}.")
         item.Inventory = character.Location.Inventory
     End Sub
 
     Public Sub Describe() Implements IItemModel.Describe
         Dim world = item.World
         world.ClearMessages()
-        world.AddMessage(item.GetFlavor())
+        world.AddMessage(item.Flavor)
     End Sub
 
     Friend Shared Function Create(item As IItem) As IItemModel

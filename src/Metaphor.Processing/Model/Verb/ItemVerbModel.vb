@@ -19,7 +19,7 @@ Friend Class ItemVerbModel
 
     Public ReadOnly Property Name As String Implements IVerbModel.Name
         Get
-            Return verb.GetName()
+            Return verb.Name
         End Get
     End Property
 

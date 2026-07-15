@@ -25,7 +25,7 @@ Friend Module FeatureVerbExtensions
     <Extension>
     Sub Perform(verb As IVerb, feature As IFeature)
         Dim handler As PerformHandler = Nothing
-        verb.World.AddMessage(verb.GetFlavor())
+        verb.World.AddMessage(verb.Flavor)
         If performTable.TryGetValue(verb.VerbType, handler) Then
             handler.Invoke(verb, feature)
             Return

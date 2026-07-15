@@ -17,12 +17,6 @@ Friend Class Location
         End Get
     End Property
 
-    Public ReadOnly Property Routes As IEnumerable(Of IRoute) Implements ILocation.Routes
-        Get
-            Return Data.RouteIds.Select(Function(x) Route.Create(World, _data, x.Key, x.Value))
-        End Get
-    End Property
-
     Public ReadOnly Property Features As IEnumerable(Of IFeature) Implements ILocation.Features
         Get
             Return Data.FeatureIds.Select(Function(x) Feature.Create(World, _data, x))
@@ -55,12 +49,14 @@ Friend Class Location
         Return If(locationId.HasValue, New Location(world, data, locationId.Value), Nothing)
     End Function
 
-    Public Function CreateCharacter(characterType As String, Optional initialize As CharacterInitializer = Nothing) As ICharacter Implements ILocation.CreateCharacter
+    Public Function CreateCharacter(characterType As String, name As String, flavor As String, Optional initialize As CharacterInitializer = Nothing) As ICharacter Implements ILocation.CreateCharacter
         Dim characterId = Guid.NewGuid
         _data.Characters(characterId) = New CharacterData With
             {
                 .CharacterType = characterType,
-                .LocationId = LocationId
+                .LocationId = LocationId,
+                .Name = name,
+                .Flavor = flavor
             }
         Data.CharacterIds.Add(characterId)
         Dim result = Character.Create(World, _data, characterId)
@@ -68,24 +64,13 @@ Friend Class Location
         Return result
     End Function
 
-    Public Function CreateRoute(routeType As String, direction As String, destination As ILocation, Optional initialize As RouteInitializer = Nothing) As IRoute Implements ILocation.CreateRoute
-        Dim routeId = Guid.NewGuid
-        _data.Routes(routeId) = New RouteData With
-            {
-                .DestinationLocationId = destination.LocationId,
-                .RouteType = routeType
-            }
-        Data.RouteIds(direction) = routeId
-        Dim result As IRoute = Route.Create(World, _data, direction, routeId)
-        initialize?.Invoke(result)
-        Return result
-    End Function
-
-    Public Function CreateFeature(Optional initializer As FeatureInitializer = Nothing) As IFeature Implements ILocation.CreateFeature
+    Public Function CreateFeature(name As String, flavor As String, Optional initializer As FeatureInitializer = Nothing) As IFeature Implements ILocation.CreateFeature
         Dim featureId = Guid.NewGuid
         _data.Features(featureId) = New FeatureData With
             {
-                .LocationId = LocationId
+                .LocationId = LocationId,
+                .Name = name,
+                .Flavor = flavor
             }
         Data.FeatureIds.Add(featureId)
         Dim result As IFeature = Feature.Create(World, _data, featureId)

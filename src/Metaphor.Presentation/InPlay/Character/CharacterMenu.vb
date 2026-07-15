@@ -34,9 +34,6 @@ Friend Class CharacterMenu
 
     Friend Shared Function Launch(c As IDisplayContext, m As IWorldModel, p As DialogSource, characterModel As ICharacterModel) As DialogSource
         Return Function()
-                   If m.IsInCombat Then
-                       Return InPlay.Launch(c, m, p).Invoke()
-                   End If
                    characterModel.Examine()
                    Return New CharacterMenu(c, m, p, characterModel)
                End Function

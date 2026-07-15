@@ -19,12 +19,6 @@ Public Class WorldModel
         End Get
     End Property
 
-    Public ReadOnly Property Exits As IExitsModel Implements IWorldModel.Exits
-        Get
-            Return ExitsModel.Create(Entity)
-        End Get
-    End Property
-
     Public ReadOnly Property Ground As IGroundModel Implements IWorldModel.Ground
         Get
             Return GroundModel.Create(Entity)
@@ -55,12 +49,6 @@ Public Class WorldModel
         End Get
     End Property
 
-    Public ReadOnly Property IsInCombat As Boolean Implements IWorldModel.IsInCombat
-        Get
-            Return Entity.IsInCombat()
-        End Get
-    End Property
-
     Public Sub Embark(chosenName As String) Implements IWorldModel.Embark
         Abandon()
         Entity.Initialize(InitializationContext.Create(chosenName))
@@ -73,11 +61,6 @@ Public Class WorldModel
     Public Sub Look() Implements IWorldModel.Look
         Entity.ClearMessages()
         Entity.Avatar.Look()
-    End Sub
-
-    Public Sub AttemptRun() Implements IWorldModel.AttemptRun
-        Entity.ClearMessages()
-        Entity.Avatar.AttemptRun()
     End Sub
 
     Public Sub ShowStatus() Implements IWorldModel.ShowStatus

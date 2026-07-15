@@ -11,7 +11,7 @@ Friend Class FeatureModel
 
     Public ReadOnly Property Name As String Implements IFeatureModel.Name
         Get
-            Return feature.GetName()
+            Return feature.Name
         End Get
     End Property
 
@@ -25,8 +25,8 @@ Friend Class FeatureModel
         Dim world = feature.World
         world.ClearMessages()
         Dim character = world.Avatar
-        character.World.AddMessage($"{character.GetName} interacts with {feature.GetName}.")
-        character.World.AddMessage(feature.GetFlavor())
+        character.World.AddMessage($"{character.Name} interacts with {feature.Name}.")
+        character.World.AddMessage(feature.Flavor)
     End Sub
 
     Friend Shared Function Create(feature As IFeature) As IFeatureModel

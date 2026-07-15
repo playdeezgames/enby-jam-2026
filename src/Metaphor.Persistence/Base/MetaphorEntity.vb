@@ -12,5 +12,18 @@ Friend MustInherit Class MetaphorEntity(Of TData As MetaphorEntityData)
 
     Public MustOverride Sub Remove() Implements IMetaphorEntity.Remove
     Public ReadOnly Property World As IWorld Implements IMetaphorEntity.World
+
+    Public ReadOnly Property Name As String Implements IMetaphorEntity.Name
+        Get
+            Return Data.Name
+        End Get
+    End Property
+
+    Public ReadOnly Property Flavor As String Implements IMetaphorEntity.Flavor
+        Get
+            Return Data.Flavor
+        End Get
+    End Property
+
     Protected ReadOnly _data As WorldData
 End Class

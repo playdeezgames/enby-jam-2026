@@ -18,7 +18,6 @@ Public Class World
         Data.AvatarId = Nothing
         Data.Characters.Clear()
         Data.Locations.Clear()
-        Data.Routes.Clear()
         Data.Inventories.Clear()
         Data.Items.Clear()
         Data.Features.Clear()
@@ -75,9 +74,13 @@ Public Class World
         Data.Messages.Add(messageData)
     End Sub
 
-    Public Function CreateLocation(Optional initializer As LocationInitializer = Nothing) As ILocation Implements IWorld.CreateLocation
+    Public Function CreateLocation(name As String, flavor As String, Optional initializer As LocationInitializer = Nothing) As ILocation Implements IWorld.CreateLocation
         Dim locationId = Guid.NewGuid
-        Data.Locations(locationId) = New LocationData
+        Data.Locations(locationId) = New LocationData With
+            {
+                .Name = name,
+                .Flavor = flavor
+            }
         Dim result = Location.Create(Me, Data, locationId)
         initializer?.Invoke(result)
         Return result
