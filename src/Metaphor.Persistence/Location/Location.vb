@@ -5,17 +5,8 @@ Friend Class Location
     Implements ILocation
 
     Private Sub New(world As IWorld, data As WorldData, locationId As Guid)
-        MyBase.New(world, data)
-        Me.LocationId = locationId
+        MyBase.New(world, data, locationId)
     End Sub
-
-    Public ReadOnly Property LocationId As Guid Implements ILocation.LocationId
-
-    Public ReadOnly Property HasRoutes As Boolean Implements ILocation.HasRoutes
-        Get
-            Return Data.RouteIds.Count <> 0
-        End Get
-    End Property
 
     Public ReadOnly Property Features As IEnumerable(Of IFeature) Implements ILocation.Features
         Get
@@ -37,7 +28,7 @@ Friend Class Location
 
     Protected Overrides ReadOnly Property Data As LocationData
         Get
-            Return _data.Locations(LocationId)
+            Return _data.Locations(EntityId)
         End Get
     End Property
 
@@ -53,8 +44,8 @@ Friend Class Location
         Dim characterId = Guid.NewGuid
         _data.Characters(characterId) = New CharacterData With
             {
-                .CharacterType = characterType,
-                .LocationId = LocationId,
+                .EntityType = characterType,
+                .LocationId = EntityId,
                 .Name = name,
                 .Flavor = flavor
             }
@@ -64,13 +55,14 @@ Friend Class Location
         Return result
     End Function
 
-    Public Function CreateFeature(name As String, flavor As String, Optional initializer As FeatureInitializer = Nothing) As IFeature Implements ILocation.CreateFeature
+    Public Function CreateFeature(featureType As String, name As String, flavor As String, Optional initializer As FeatureInitializer = Nothing) As IFeature Implements ILocation.CreateFeature
         Dim featureId = Guid.NewGuid
         _data.Features(featureId) = New FeatureData With
             {
-                .LocationId = LocationId,
+                .LocationId = EntityId,
                 .Name = name,
-                .Flavor = flavor
+                .Flavor = flavor,
+                .EntityType = featureType
             }
         Data.FeatureIds.Add(featureId)
         Dim result As IFeature = Feature.Create(World, _data, featureId)
@@ -80,11 +72,11 @@ Friend Class Location
 
     Public Function GetOtherCharacters(character As ICharacter) As IEnumerable(Of ICharacter) Implements ILocation.GetOtherCharacters
         Return Data.CharacterIds.
-            Where(Function(id) id <> character.CharacterId).
+            Where(Function(id) id <> character.EntityId).
             Select(Function(x) Persistence.Character.Create(World, _data, x))
     End Function
 
     Public Function HasOtherCharacters(character As ICharacter) As Boolean Implements ILocation.HasOtherCharacters
-        Return Data.CharacterIds.Any(Function(x) x <> character.CharacterId)
+        Return Data.CharacterIds.Any(Function(x) x <> character.EntityId)
     End Function
 End Class

@@ -5,21 +5,12 @@ Friend Class Verb
     Implements IVerb
 
     Private Sub New(world As IWorld, data As WorldData, verbId As Guid)
-        MyBase.New(world, data)
-        Me.VerbId = verbId
+        MyBase.New(world, data, verbId)
     End Sub
-
-    Public ReadOnly Property VerbId As Guid Implements IVerb.VerbId
-
-    Public ReadOnly Property VerbType As String Implements IVerb.VerbType
-        Get
-            Return Data.VerbType
-        End Get
-    End Property
 
     Protected Overrides ReadOnly Property Data As VerbData
         Get
-            Return _data.Verbs(VerbId)
+            Return _data.Verbs(EntityId)
         End Get
     End Property
 

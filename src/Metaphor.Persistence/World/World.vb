@@ -39,7 +39,7 @@ Public Class World
             Return Character.Create(Me, Data, Data.AvatarId)
         End Get
         Set(value As ICharacter)
-            Data.AvatarId = value?.CharacterId
+            Data.AvatarId = value?.EntityId
         End Set
     End Property
 

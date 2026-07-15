@@ -4,8 +4,8 @@ Friend MustInherit Class VerbableEntity(Of TData As VerbableEntityData)
     Inherits MetaphorEntity(Of TData)
     Implements IVerbableEntity
 
-    Protected Sub New(world As IWorld, data As WorldData)
-        MyBase.New(world, data)
+    Protected Sub New(world As IWorld, data As WorldData, entityId As Guid)
+        MyBase.New(world, data, entityId)
     End Sub
 
     Public ReadOnly Property Verbs As IEnumerable(Of IVerb) Implements IVerbableEntity.Verbs
@@ -19,7 +19,7 @@ Friend MustInherit Class VerbableEntity(Of TData As VerbableEntityData)
         Dim verbId = Guid.NewGuid
         _data.Verbs(verbId) = New VerbData With
             {
-                .VerbType = verbType
+                .EntityType = verbType
             }
         Data.VerbIds.Add(verbId)
         Dim result As IVerb = Verb.Create(World, _data, verbId)

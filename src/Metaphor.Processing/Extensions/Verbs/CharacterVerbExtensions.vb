@@ -12,7 +12,7 @@ Friend Module CharacterVerbExtensions
     <Extension>
     Friend Function CanPerform(verb As IVerb, character As ICharacter) As Boolean
         Dim handler As CanPerformHandler = Nothing
-        If canPerformTable.TryGetValue(verb.VerbType, handler) Then
+        If canPerformTable.TryGetValue(verb.EntityType, handler) Then
             Return handler.Invoke(verb, character)
         End If
         Return True
@@ -26,7 +26,7 @@ Friend Module CharacterVerbExtensions
     Sub Perform(verb As IVerb, character As ICharacter)
         Dim handler As PerformHandler = Nothing
         verb.World.AddMessage(verb.Flavor)
-        If performTable.TryGetValue(verb.VerbType, handler) Then
+        If performTable.TryGetValue(verb.EntityType, handler) Then
             handler.Invoke(verb, character)
             Return
         End If

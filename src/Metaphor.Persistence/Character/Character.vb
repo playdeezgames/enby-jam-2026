@@ -5,41 +5,32 @@ Friend Class Character
     Implements ICharacter
 
     Private Sub New(world As IWorld, data As WorldData, characterId As Guid)
-        MyBase.New(world, data)
-        Me.CharacterId = characterId
+        MyBase.New(world, data, characterId)
     End Sub
-
-    Public ReadOnly Property CharacterId As Guid Implements ICharacter.CharacterId
 
     Public Property Location As ILocation Implements ICharacter.Location
         Get
             Return Persistence.Location.Create(World, _data, Data.LocationId)
         End Get
         Set(value As ILocation)
-            If value.LocationId <> Location.LocationId Then
-                _data.Locations(Location.LocationId).CharacterIds.Remove(CharacterId)
-                Data.LocationId = value.LocationId
-                _data.Locations(Location.LocationId).CharacterIds.Add(CharacterId)
+            If value.EntityId <> Location.EntityId Then
+                _data.Locations(Location.EntityId).CharacterIds.Remove(EntityId)
+                Data.LocationId = value.EntityId
+                _data.Locations(Location.EntityId).CharacterIds.Add(EntityId)
             End If
         End Set
     End Property
 
-    Public ReadOnly Property CharacterType As String Implements ICharacter.CharacterType
-        Get
-            Return Data.CharacterType
-        End Get
-    End Property
-
     Protected Overrides ReadOnly Property Data As CharacterData
         Get
-            Return _data.Characters(CharacterId)
+            Return _data.Characters(EntityId)
         End Get
     End Property
 
     Public Overrides Sub Remove()
         Inventory.Remove()
-        _data.Locations(Data.LocationId).CharacterIds.Remove(CharacterId)
-        _data.Characters.Remove(CharacterId)
+        _data.Locations(Data.LocationId).CharacterIds.Remove(EntityId)
+        _data.Characters.Remove(EntityId)
     End Sub
 
     Friend Shared Function Create(world As IWorld, data As WorldData, characterId As Guid?) As ICharacter

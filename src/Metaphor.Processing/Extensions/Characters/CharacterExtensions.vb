@@ -4,7 +4,7 @@ Imports Metaphor.Persistence
 Friend Module CharacterExtensions
     <Extension>
     Private Function IsAvatar(character As ICharacter) As Boolean
-        Return If(character.World.Avatar?.CharacterId = character.CharacterId, False)
+        Return If(character.World.Avatar?.EntityId = character.EntityId, False)
     End Function
     <Extension>
     Friend Sub Look(character As ICharacter)
@@ -82,6 +82,7 @@ Friend Module CharacterExtensions
     Friend Sub ShowStatus(character As ICharacter)
         Dim world = character.World
         world.AddMessage($"{character.Name}'s Status:")
+        world.AddMessage(character.Flavor)
         world.AddMessage($"- Health: {character.GetHealth()}/{character.GetMaximumHealth()}")
         world.AddMessage($"- Satiety: {character.GetSatiety()}/{character.GetMaximumSatiety()}")
         If Not character.IsStomachEmpty() Then

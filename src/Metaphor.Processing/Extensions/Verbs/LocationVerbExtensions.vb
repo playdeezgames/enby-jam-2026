@@ -12,7 +12,7 @@ Friend Module LocationVerbExtensions
     <Extension>
     Friend Function CanPerform(verb As IVerb, location As ILocation) As Boolean
         Dim handler As CanPerformHandler = Nothing
-        If canPerformTable.TryGetValue(verb.VerbType, handler) Then
+        If canPerformTable.TryGetValue(verb.EntityType, handler) Then
             Return handler.Invoke(verb, location)
         End If
         Return True
@@ -26,7 +26,7 @@ Friend Module LocationVerbExtensions
     Sub Perform(verb As IVerb, location As ILocation)
         Dim handler As PerformHandler = Nothing
         verb.World.AddMessage(verb.Flavor)
-        If performTable.TryGetValue(verb.VerbType, handler) Then
+        If performTable.TryGetValue(verb.EntityType, handler) Then
             handler.Invoke(verb, location)
             Return
         End If

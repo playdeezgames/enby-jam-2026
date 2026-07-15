@@ -4,8 +4,8 @@ Friend MustInherit Class InventoriedEntity(Of TData As InventoriedEntityData)
     Inherits VerbableEntity(Of TData)
     Implements IInventoriedEntity
 
-    Protected Sub New(world As IWorld, data As WorldData)
-        MyBase.New(world, data)
+    Protected Sub New(world As IWorld, data As WorldData, entityId As Guid)
+        MyBase.New(world, data, entityId)
     End Sub
 
     Public ReadOnly Property Inventory As IInventory Implements IInventoriedEntity.Inventory

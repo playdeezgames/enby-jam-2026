@@ -40,7 +40,7 @@ Friend Class Inventory
         Dim itemId = Guid.NewGuid
         _data.Items(itemId) = New ItemData With
             {
-                .ItemType = itemType,
+                .EntityType = itemType,
                 .InventoryId = InventoryId
             }
         Data.ItemIds.Add(itemId)

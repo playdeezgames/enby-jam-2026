@@ -6,4 +6,6 @@ Public Interface IMetaphorEntity
     Sub Remove()
     ReadOnly Property Name As String
     ReadOnly Property Flavor As String
+    ReadOnly Property EntityId As Guid
+    ReadOnly Property EntityType As String
 End Interface

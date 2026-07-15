@@ -5,11 +5,8 @@ Friend Class Feature
     Implements IFeature
 
     Private Sub New(world As IWorld, data As WorldData, featureId As Guid)
-        MyBase.New(world, data)
-        Me.FeatureId = featureId
+        MyBase.New(world, data, featureId)
     End Sub
-
-    Public ReadOnly Property FeatureId As Guid Implements IFeature.FeatureId
 
     Public ReadOnly Property Location As ILocation Implements IFeature.Location
         Get
@@ -20,7 +17,7 @@ Friend Class Feature
 
     Protected Overrides ReadOnly Property Data As FeatureData
         Get
-            Return _data.Features(FeatureId)
+            Return _data.Features(EntityId)
         End Get
     End Property
 

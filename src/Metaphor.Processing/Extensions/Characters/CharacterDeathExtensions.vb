@@ -10,7 +10,7 @@ Friend Module CharacterDeathExtensions
     <Extension>
     Friend Sub Die(character As ICharacter)
         Dim handler As DeathHandler = Nothing
-        If deathHandlers.TryGetValue(character.CharacterType, handler) Then
+        If deathHandlers.TryGetValue(character.EntityType, handler) Then
             handler.Invoke(character)
         End If
         character.Remove()
