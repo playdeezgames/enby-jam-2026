@@ -2,7 +2,7 @@
 Imports TGGD.Presentation
 
 Friend Class FeatureVerbActivity
-    Inherits KJPickerMenu
+    Inherits MetaphorPickerMenu
 
     Private ReadOnly featureModel As IFeatureModel
     Private ReadOnly verbModel As IVerbModel

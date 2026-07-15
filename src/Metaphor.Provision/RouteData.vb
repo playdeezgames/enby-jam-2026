@@ -1,5 +1,5 @@
 ﻿Public Class RouteData
-    Inherits KJEntityData
+    Inherits MetaphorEntityData
     Public Property DestinationLocationId As Guid
     Public Property RouteType As String
 End Class

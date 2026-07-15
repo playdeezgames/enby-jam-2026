@@ -1,6 +1,6 @@
 Imports TGGD.Persistence
 
-Public Interface IKJEntity
+Public Interface IMetaphorEntity
     Inherits IEntity
     ReadOnly Property World As IWorld
     Sub Remove()

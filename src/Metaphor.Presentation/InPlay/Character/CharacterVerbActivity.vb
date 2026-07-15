@@ -3,7 +3,7 @@ Imports Metaphor.Processing
 Imports TGGD.Presentation
 
 Friend Class CharacterVerbActivity
-    Inherits KJPickerMenu
+    Inherits MetaphorPickerMenu
 
     Private ReadOnly characterModel As ICharacterModel
     Private ReadOnly verbModel As IVerbModel

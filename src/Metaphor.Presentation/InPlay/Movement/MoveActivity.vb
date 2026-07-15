@@ -2,7 +2,7 @@
 Imports TGGD.Presentation
 
 Friend Class MoveActivity
-    Inherits KJDialog
+    Inherits MetaphorDialog
 
     Private ReadOnly exitModel As IExitModel
 

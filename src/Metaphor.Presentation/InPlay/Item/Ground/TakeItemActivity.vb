@@ -2,7 +2,7 @@
 Imports TGGD.Presentation
 
 Friend Class TakeItemActivity
-    Inherits KJDialog
+    Inherits MetaphorDialog
 
     Private ReadOnly itemModel As IItemModel
 

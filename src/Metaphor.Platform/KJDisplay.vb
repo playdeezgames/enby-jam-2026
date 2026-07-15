@@ -3,7 +3,7 @@ Imports Metaphor.Processing
 Imports TGGD.Persistence
 Imports TGGD.Platform
 
-Public Class KJDisplay
+Public Class MetaphorDisplay
     Inherits Display
 
     Private ReadOnly quittable As Boolean
@@ -19,7 +19,7 @@ Public Class KJDisplay
     End Function
 
     Public Shared Async Function Create(quittable As Boolean, persister As IPersister) As Task(Of IDisplay)
-        Dim result = New KJDisplay(quittable, persister)
+        Dim result = New MetaphorDisplay(quittable, persister)
         Await result.Start()
         Return result
     End Function

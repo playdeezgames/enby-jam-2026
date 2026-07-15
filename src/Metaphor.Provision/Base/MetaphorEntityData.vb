@@ -1,5 +1,5 @@
 Imports TGGD.Provision
 
-Public Class KJEntityData
+Public Class MetaphorEntityData
     Inherits EntityData
 End Class

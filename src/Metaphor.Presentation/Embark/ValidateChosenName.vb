@@ -2,8 +2,8 @@
 Imports TGGD.Presentation
 
 Friend Class ValidateChosenName
-    Inherits KJDialog
-    Const VALID_NAME = "Olen Kyrpa"
+    Inherits MetaphorDialog
+    Const VALID_NAME = "Gwen"
     Private ReadOnly chosenName As String
 
     Private Sub New(context As IDisplayContext, model As IWorldModel, previous As DialogSource, chosenName As String)
@@ -19,7 +19,7 @@ Friend Class ValidateChosenName
         If chosenName.Equals(VALID_NAME, StringComparison.InvariantCultureIgnoreCase) Then
             Context.Render("Correct!")
         Else
-            Context.Render($"Incorrect! Yer name is `{VALID_NAME}`! (Have you not played a SPLORR!! game before?)")
+            Context.Render($"Incorrect! Yer name is `{VALID_NAME}`! (Did you not read the title of the metaphor?)")
         End If
         Return DialogPrompt.CreateChoicePrompt("", DialogChoice.CreateEnabled("Next", AddressOf ChooseNext))
     End Function

@@ -3,7 +3,7 @@ Imports Metaphor.Processing
 Imports TGGD.Presentation
 
 Friend Class GroundMenu
-    Inherits KJPickerMenu
+    Inherits MetaphorPickerMenu
 
     Private Sub New(context As IDisplayContext, model As IWorldModel, previous As DialogSource)
         MyBase.New(context, model, previous)

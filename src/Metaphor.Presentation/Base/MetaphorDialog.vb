@@ -1,7 +1,7 @@
 ﻿Imports Metaphor.Processing
 Imports TGGD.Presentation
 
-Public MustInherit Class KJDialog
+Public MustInherit Class MetaphorDialog
     Inherits StackedModelDialog(Of IDisplayContext, IWorldModel)
 
     Protected Sub New(context As IDisplayContext, model As IWorldModel, previous As DialogSource)

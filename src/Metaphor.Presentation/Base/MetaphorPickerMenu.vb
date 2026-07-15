@@ -1,7 +1,7 @@
 ﻿Imports Metaphor.Processing
 Imports TGGD.Presentation
 
-Friend MustInherit Class KJPickerMenu
+Friend MustInherit Class MetaphorPickerMenu
     Inherits BasePickerMenu(Of IDisplayContext, IWorldModel)
 
     Protected Sub New(context As IDisplayContext, model As IWorldModel, previous As DialogSource)

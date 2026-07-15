@@ -1,7 +1,7 @@
 ﻿Imports Metaphor.Provision
 
 Friend Class Route
-    Inherits KJEntity(Of RouteData)
+    Inherits MetaphorEntity(Of RouteData)
     Implements IRoute
 
     Private Sub New(world As IWorld, data As WorldData, direction As String, routeId As Guid)

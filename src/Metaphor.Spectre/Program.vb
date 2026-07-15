@@ -9,8 +9,8 @@ Friend Delegate Function ElementRenderer(element As IDisplayElement) As Boolean
 
 Module Program
     Sub Main(args As String())
-        Console.Title = "Authentic Experience of SPLORR!!"
-        Dim display As IDisplay = KJDisplay.Create(True, New Persister).Result
+        Console.Title = "Gwen's Peregrination II"
+        Dim display As IDisplay = MetaphorDisplay.Create(True, New Persister).Result
         While display.Running
             AnsiConsole.Clear()
             For Each element In display.Elements

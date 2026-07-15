@@ -3,7 +3,7 @@ Imports Metaphor.Processing
 Imports TGGD.Presentation
 
 Friend Class GroundItemMenu
-    Inherits KJPickerMenu
+    Inherits MetaphorPickerMenu
 
     Private ReadOnly itemModel As IItemModel
 

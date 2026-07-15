@@ -3,7 +3,7 @@ Imports Metaphor.Processing
 Imports TGGD.Presentation
 
 Friend Class FeatureMenu
-    Inherits KJPickerMenu
+    Inherits MetaphorPickerMenu
 
     Private ReadOnly featureModel As IFeatureModel
 

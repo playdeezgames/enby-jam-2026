@@ -1,7 +1,7 @@
 ﻿@page "/"
 @inject IJSRuntime JSRuntime
 
-<PageTitle>Authentic Experience of SPLORR!!</PageTitle>
+<PageTitle>Gwen's Peregrination II</PageTitle>
 
 @foreach(var element in display?.Elements ?? Array.Empty<IDisplayElement>())
 {
@@ -69,7 +69,7 @@
 	IDisplay? display = null;
 	async Task<IDisplay> GetDisplayAsync()
 	{
-		display =  display ?? (await KJDisplay.Create(false, new Persister(JSRuntime)));
+		display =  display ?? (await MetaphorDisplay.Create(false, new Persister(JSRuntime)));
 		return display;
 	}
 	protected override async Task OnInitializedAsync()

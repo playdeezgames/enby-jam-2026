@@ -2,7 +2,7 @@ Imports Metaphor.Processing
 Imports TGGD.Presentation
 
 Public Class Title
-    Inherits KJDialog
+    Inherits MetaphorDialog
     Implements IDialog
 
     Private Sub New(context As IDisplayContext, model As IWorldModel, previous As DialogSource)
@@ -10,7 +10,7 @@ Public Class Title
     End Sub
 
     Public Overrides Function Run() As IDialogPrompt
-        Context.Render("Authentic Experience of SPLORR!!", New Dictionary(Of String, String) From {{HintNames.ELEMENT_TYPE, ElementTypes.TITLE}})
+        Context.Render("Gwen's Peregrination II", New Dictionary(Of String, String) From {{HintNames.ELEMENT_TYPE, ElementTypes.TITLE}})
         Context.Render("A Production of ", newLine:=False)
         Context.Render("TheGrumpyGameDev", New Dictionary(Of String, String) From {{HintNames.ELEMENT_TYPE, ElementTypes.LINK}, {HintNames.URL, "https://thegrumpygamedev.itch.io/"}})
         Context.Render("Sponsored by: UMLAUT.FYI!", New Dictionary(Of String, String) From {{HintNames.ELEMENT_TYPE, ElementTypes.LINK}, {HintNames.URL, "https://umlaut.fyi/"}})

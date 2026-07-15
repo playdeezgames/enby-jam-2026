@@ -2,7 +2,7 @@
 Imports TGGD.Presentation
 
 Friend Class MoveMenu
-    Inherits KJPickerMenu
+    Inherits MetaphorPickerMenu
 
     Private Sub New(context As IDisplayContext, model As IWorldModel, previous As DialogSource)
         MyBase.New(context, model, previous)

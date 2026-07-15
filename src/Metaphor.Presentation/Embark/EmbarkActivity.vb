@@ -2,7 +2,7 @@
 Imports TGGD.Presentation
 
 Friend Class EmbarkActivity
-    Inherits KJDialog
+    Inherits MetaphorDialog
 
     Private ReadOnly chosenName As String
 

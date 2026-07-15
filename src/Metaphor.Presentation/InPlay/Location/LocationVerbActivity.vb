@@ -2,7 +2,7 @@
 Imports TGGD.Presentation
 
 Friend Class LocationVerbActivity
-    Inherits KJPickerMenu
+    Inherits MetaphorPickerMenu
 
     Private ReadOnly verbModel As IVerbModel
 

@@ -1,7 +1,7 @@
 ﻿Imports Metaphor.Provision
 
 Friend MustInherit Class VerbableEntity(Of TData As VerbableEntityData)
-    Inherits KJEntity(Of TData)
+    Inherits MetaphorEntity(Of TData)
     Implements IVerbableEntity
 
     Protected Sub New(world As IWorld, data As WorldData)

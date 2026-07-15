@@ -1,7 +1,7 @@
 ﻿Imports Metaphor.Provision
 
 Friend Class Verb
-    Inherits KJEntity(Of VerbData)
+    Inherits MetaphorEntity(Of VerbData)
     Implements IVerb
 
     Private Sub New(world As IWorld, data As WorldData, verbId As Guid)

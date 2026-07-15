@@ -1,4 +1,4 @@
 ﻿Public Class VerbData
-    Inherits KJEntityData
+    Inherits MetaphorEntityData
     Public Property VerbType As String
 End Class
