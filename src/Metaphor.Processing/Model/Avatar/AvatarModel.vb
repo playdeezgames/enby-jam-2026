@@ -21,9 +21,19 @@ Friend Class AvatarModel
         End Get
     End Property
 
+    Public ReadOnly Property IsChangingPace As Boolean Implements IAvatarModel.IsChangingPace
+        Get
+            Return avatar.HasTag(Tags.IS_CHANGING_PACE)
+        End Get
+    End Property
+
     Public Sub ShowStatus() Implements IAvatarModel.ShowStatus
         avatar.World.ClearMessages()
         avatar.ShowStatus()
+    End Sub
+
+    Public Sub CancelChangePace() Implements IAvatarModel.CancelChangePace
+        avatar.ClearTag(Tags.IS_CHANGING_PACE)
     End Sub
 
     Friend Shared Function Create(avatar As ICharacter) As IAvatarModel

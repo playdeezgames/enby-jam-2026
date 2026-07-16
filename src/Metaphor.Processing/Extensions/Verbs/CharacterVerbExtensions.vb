@@ -20,7 +20,12 @@ Friend Module CharacterVerbExtensions
 
     Private ReadOnly performTable As New Dictionary(Of String, PerformHandler) From
         {
+            {VerbTypes.CHANGE_PACE, AddressOf HandleChangePace}
         }
+
+    Private Sub HandleChangePace(verb As IVerb, character As ICharacter)
+        character.SetTag(Tags.IS_CHANGING_PACE)
+    End Sub
 
     <Extension>
     Sub Perform(verb As IVerb, character As ICharacter)
