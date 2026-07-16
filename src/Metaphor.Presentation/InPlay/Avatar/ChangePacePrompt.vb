@@ -18,9 +18,25 @@ Friend Class ChangePacePrompt
     Protected Overrides ReadOnly Property Launchers As IEnumerable(Of LaunchDelegate)
         Get
             Return Enumerable.Empty(Of LaunchDelegate).
-                Append(AddressOf ChooseNeverMind)
+                Append(AddressOf ChooseNeverMind).
+                Concat(Enumerable.Range(1, 5).Select(AddressOf ChoosePace))
         End Get
     End Property
+
+    Private ReadOnly paceName As New Dictionary(Of Integer, String) From
+        {
+            {1, "Very Slow"},
+            {2, "Slow"},
+            {3, "Moderate"},
+            {4, "Fast"},
+            {5, "Very Fast"}
+        }
+
+    Private Function ChoosePace(pace As Integer) As LaunchDelegate
+        Return Function(c, m, p)
+                   Return DialogChoice.CreateEnabled(paceName(pace), SetPaceActivity.Launch(c, m, p, pace))
+               End Function
+    End Function
 
     Private Function ChooseNeverMind(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice
         Return DialogChoice.CreateEnabled("Never Mind", CancelChangePaceActivity.Launch(context, model, previous))

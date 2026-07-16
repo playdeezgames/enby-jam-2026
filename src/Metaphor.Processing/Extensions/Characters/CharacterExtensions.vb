@@ -111,4 +111,9 @@ Friend Module CharacterExtensions
     Friend Sub SetPronouns(character As ICharacter, pronouns As String)
         character.SetMetadata(Metadatas.PRONOUNS, pronouns)
     End Sub
+    <Extension>
+    Friend Sub SetPace(character As ICharacter, pace As Integer)
+        character.SetCounter(Counters.PACE, pace)
+        character.ClearTag(Tags.IS_CHANGING_PACE)
+    End Sub
 End Module
