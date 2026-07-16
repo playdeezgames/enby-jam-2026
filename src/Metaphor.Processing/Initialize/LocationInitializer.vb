@@ -16,6 +16,7 @@ Friend Module LocationInitializer
                    character.InitializeCounter(Counters.JOOLS, 0, 0, Integer.MaxValue)
                    character.SetCounter(Counters.DISTANCE_REMAINING, 2000)
                    character.InitializeCounter(Counters.PACE, 3, 1, 5)
+                   character.SetPronouns(context.ChosenPronouns)
                    character.World.Avatar = character
                End Sub
     End Function

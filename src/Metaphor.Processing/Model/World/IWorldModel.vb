@@ -4,7 +4,7 @@ Imports TGGD.Processing
 Public Interface IWorldModel
     Inherits IModel
     ReadOnly Property IsQuittable As Boolean
-    Sub Embark(chosenName As String)
+    Sub Embark(chosenName As String, chosenPronouns As String)
     Sub Abandon()
     ReadOnly Property Location As ILocationModel
     ReadOnly Property Avatar As IAvatarModel

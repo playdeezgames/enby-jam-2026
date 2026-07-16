@@ -31,9 +31,9 @@ Public Class WorldModel
         End Get
     End Property
 
-    Public Sub Embark(chosenName As String) Implements IWorldModel.Embark
+    Public Sub Embark(chosenName As String, chosenPronouns As String) Implements IWorldModel.Embark
         Abandon()
-        Entity.Initialize(InitializationContext.Create(chosenName))
+        Entity.Initialize(InitializationContext.Create(chosenName, chosenPronouns))
     End Sub
 
     Public Sub Abandon() Implements IWorldModel.Abandon

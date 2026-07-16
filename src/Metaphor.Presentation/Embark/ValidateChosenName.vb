@@ -25,6 +25,6 @@ Friend Class ValidateChosenName
     End Function
 
     Private Function ChooseNext() As IDialog
-        Return EmbarkActivity.Launch(Context, Model, Previous, VALID_NAME).Invoke()
+        Return ChoosePronounsPrompt.Launch(Context, Model, Previous, VALID_NAME).Invoke()
     End Function
 End Class

@@ -107,4 +107,8 @@ Friend Module CharacterExtensions
         End If
         world.AddMessage($"- Jools: {character.GetJools()}")
     End Sub
+    <Extension>
+    Friend Sub SetPronouns(character As ICharacter, pronouns As String)
+        character.SetMetadata(Metadatas.PRONOUNS, pronouns)
+    End Sub
 End Module
