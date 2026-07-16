@@ -19,7 +19,9 @@ Friend MustInherit Class VerbableEntity(Of TData As VerbableEntityData)
         Dim verbId = Guid.NewGuid
         _data.Verbs(verbId) = New VerbData With
             {
-                .EntityType = verbType
+                .EntityType = verbType,
+                .Name = name,
+                .Flavor = flavor
             }
         Data.VerbIds.Add(verbId)
         Dim result As IVerb = Verb.Create(World, _data, verbId)

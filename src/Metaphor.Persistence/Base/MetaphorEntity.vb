@@ -30,7 +30,7 @@ Friend MustInherit Class MetaphorEntity(Of TData As MetaphorEntityData)
 
     Public ReadOnly Property EntityType As String Implements IMetaphorEntity.EntityType
         Get
-            Throw New NotImplementedException()
+            Return Data.EntityType
         End Get
     End Property
 

@@ -23,7 +23,8 @@ Friend Class NavigationMenu
                 Append(AddressOf ChooseCharacters).
                 Append(AddressOf ChooseFeatures).
                 Append(AddressOf ChooseLook).
-                Concat(Model.Location.Verbs.Select(AddressOf ChooseVerb)).
+                Concat(Model.Avatar.Verbs.Select(AddressOf ChooseAvatarVerb)).
+                Concat(Model.Location.Verbs.Select(AddressOf ChooseLocationVerb)).
                 Append(AddressOf ChooseGameMenu)
         End Get
     End Property
@@ -32,7 +33,11 @@ Friend Class NavigationMenu
         Return DialogChoice.CreateEnabled("Status...", StatusActivity.LaunchStatusActivity(context, model, previous))
     End Function
 
-    Private Function ChooseVerb(verbModel As IVerbModel) As LaunchDelegate
+    Private Shared Function ChooseAvatarVerb(verbModel As IVerbModel) As LaunchDelegate
+        Return Function(c, m, p) DialogChoice.Create(verbModel.IsEnabled, verbModel.Name, AvatarVerbActivity.Launch(c, m, p, verbModel))
+    End Function
+
+    Private Function ChooseLocationVerb(verbModel As IVerbModel) As LaunchDelegate
         Return Function(c, m, p) DialogChoice.Create(verbModel.IsEnabled, verbModel.Name, LocationVerbActivity.Launch(c, m, p, verbModel))
     End Function
 

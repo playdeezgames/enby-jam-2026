@@ -15,6 +15,12 @@ Friend Class AvatarModel
         End Get
     End Property
 
+    Public ReadOnly Property Verbs As IEnumerable(Of IVerbModel) Implements IAvatarModel.Verbs
+        Get
+            Return avatar.Verbs.Select(Function(x) CharacterVerbModel.Create(avatar, x))
+        End Get
+    End Property
+
     Public Sub ShowStatus() Implements IAvatarModel.ShowStatus
         avatar.World.ClearMessages()
         avatar.ShowStatus()

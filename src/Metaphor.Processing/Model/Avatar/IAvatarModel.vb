@@ -1,4 +1,5 @@
 ﻿Public Interface IAvatarModel
-    Sub ShowStatus() 'TODO: goes into avatar model
-    ReadOnly Property Inventory As IInventoryModel 'TODO: goes into avatar model
+    Sub ShowStatus()
+    ReadOnly Property Inventory As IInventoryModel
+    ReadOnly Property Verbs As IEnumerable(Of IVerbModel)
 End Interface

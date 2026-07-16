@@ -17,6 +17,7 @@ Friend Module LocationInitializer
                    character.SetCounter(Counters.DISTANCE_REMAINING, 2000)
                    character.InitializeCounter(Counters.PACE, 3, 1, 5)
                    character.SetPronouns(context.ChosenPronouns)
+                   character.CreateVerb(VerbTypes.CHANGE_PACE, "Change Pace...", "New York City? (Get a rope!)")
                    character.World.Avatar = character
                End Sub
     End Function
