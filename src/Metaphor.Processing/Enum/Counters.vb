@@ -4,4 +4,5 @@
     Friend Const JOOLS As String = NameOf(JOOLS)
     Friend Const STOMACH As String = NameOf(STOMACH)
     Friend Const DISTANCE_REMAINING As String = NameOf(DISTANCE_REMAINING)
+    Friend Const PACE As String = NameOf(PACE)
 End Module

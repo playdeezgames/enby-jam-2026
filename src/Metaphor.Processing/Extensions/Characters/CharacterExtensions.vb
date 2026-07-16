@@ -11,12 +11,18 @@ Friend Module CharacterExtensions
         Dim location = character.Location
         Dim world = location.World
         world.AddMessage(location.Flavor)
-        world.AddMessage($"Distance Remaining: {character.GetDistanceRemaining()}.")
+        ShowJourneyStatistics(character)
         ShowOtherCharacters(character)
         ShowFeatures(character)
         If location.Inventory.HasItems Then
             world.AddMessage("There are items on the ground.")
         End If
+    End Sub
+
+    Private Sub ShowJourneyStatistics(character As ICharacter)
+        Dim world = character.World
+        world.AddMessage($"Distance Remaining: {character.GetDistanceRemaining()}.")
+        world.AddMessage($"Pace: {character.GetPace()}.")
     End Sub
 
     <Extension>
@@ -73,6 +79,10 @@ Friend Module CharacterExtensions
         Return character.GetCounter(Counters.DISTANCE_REMAINING)
     End Function
     <Extension>
+    Friend Function GetPace(character As ICharacter) As Integer
+        Return character.GetCounter(Counters.PACE)
+    End Function
+    <Extension>
     Friend Function GetMaximumHealth(character As ICharacter) As Integer
         Return character.GetCounterMaximum(Counters.HEALTH)
     End Function
@@ -89,7 +99,7 @@ Friend Module CharacterExtensions
         Dim world = character.World
         world.AddMessage($"{character.Name}'s Status:")
         world.AddMessage(character.Flavor)
-        world.AddMessage($"- Distance Remaining: {character.GetDistanceRemaining()}")
+        ShowJourneyStatistics(character)
         world.AddMessage($"- Health: {character.GetHealth()}/{character.GetMaximumHealth()}")
         world.AddMessage($"- Satiety: {character.GetSatiety()}/{character.GetMaximumSatiety()}")
         If Not character.IsStomachEmpty() Then
