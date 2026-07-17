@@ -7,7 +7,13 @@ Friend Module CharacterVerbExtensions
 
     Private ReadOnly canPerformTable As New Dictionary(Of String, CanPerformHandler) From
         {
+            {VerbTypes.CHANGE_PACE, AddressOf IsNotDead},
+            {VerbTypes.CONTINUE_JOURNEY, AddressOf IsNotDead}
         }
+
+    Private Function IsNotDead(verb As IVerb, character As ICharacter) As Boolean
+        Return Not character.IsDead()
+    End Function
 
     <Extension>
     Friend Function CanPerform(verb As IVerb, character As ICharacter) As Boolean
@@ -20,8 +26,36 @@ Friend Module CharacterVerbExtensions
 
     Private ReadOnly performTable As New Dictionary(Of String, PerformHandler) From
         {
-            {VerbTypes.CHANGE_PACE, AddressOf HandleChangePace}
+            {VerbTypes.CHANGE_PACE, AddressOf HandleChangePace},
+            {VerbTypes.CONTINUE_JOURNEY, AddressOf HandleContinueJourney}
         }
+
+    Private Sub HandleContinueJourney(verb As IVerb, character As ICharacter)
+        Dim world = character.World
+        Dim pace = character.GetPace()
+        world.AddMessage($"{character.Name} walks {pace} miles.")
+        character.ChangeCounter(Counters.DISTANCE_REMAINING, -pace)
+        world.AddMessage($"{character.Name} has {character.GetDistanceRemaining()} miles left to go.")
+        Dim stomach = Math.Min(pace, character.GetStomach())
+        pace -= stomach
+        character.ChangeCounter(Counters.STOMACH, -stomach)
+        Dim satiety = Math.Min(pace, character.GetSatiety())
+        If satiety > 0 Then
+            pace -= satiety
+            world.AddMessage($"{character.Name} loses {satiety} satiety.")
+            character.ChangeCounter(Counters.SATIETY, -satiety)
+            world.AddMessage($"{character.Name} now has {character.GetSatiety}/{character.GetMaximumSatiety} satiety.")
+        End If
+        If pace > 0 Then
+            world.AddMessage($"{character.Name} loses {pace} health.")
+            character.ChangeCounter(Counters.HEALTH, -pace)
+            If character.IsDead Then
+                world.AddMessage($"{character.Name} is dead.")
+            Else
+                world.AddMessage($"{character.Name} now has {character.GetHealth}/{character.GetMaximumHealth} health.")
+            End If
+        End If
+    End Sub
 
     Private Sub HandleChangePace(verb As IVerb, character As ICharacter)
         character.World.AddMessage($"{character.Name}'s current pace is {character.GetPace()}.")
