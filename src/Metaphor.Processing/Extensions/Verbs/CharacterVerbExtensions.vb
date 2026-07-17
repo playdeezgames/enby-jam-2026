@@ -9,8 +9,13 @@ Friend Module CharacterVerbExtensions
         {
             {VerbTypes.CHANGE_PACE, AddressOf IsNotDead},
             {VerbTypes.CONTINUE_JOURNEY, AddressOf IsNotDead},
-            {VerbTypes.COMPLETE_JOURNEY, AddressOf IsJourneyComplete}
+            {VerbTypes.COMPLETE_JOURNEY, AddressOf IsJourneyComplete},
+            {VerbTypes.EAT_SNAX, AddressOf CanEatSnax}
         }
+
+    Private Function CanEatSnax(verb As IVerb, character As ICharacter) As Boolean
+        Return Not character.IsDead AndAlso character.HasSnax
+    End Function
 
     Private Function IsJourneyComplete(verb As IVerb, character As ICharacter) As Boolean
         Return Not character.IsDead() AndAlso character.IsCounterMinimum(Counters.DISTANCE_REMAINING)
@@ -33,8 +38,19 @@ Friend Module CharacterVerbExtensions
         {
             {VerbTypes.CHANGE_PACE, AddressOf HandleChangePace},
             {VerbTypes.CONTINUE_JOURNEY, AddressOf HandleContinueJourney},
-            {VerbTypes.COMPLETE_JOURNEY, AddressOf HandleCompleteJourney}
+            {VerbTypes.COMPLETE_JOURNEY, AddressOf HandleCompleteJourney},
+            {VerbTypes.EAT_SNAX, AddressOf HandleEatSnax}
         }
+
+    Private Sub HandleEatSnax(verb As IVerb, character As ICharacter)
+        Const SNAX_BENEFIT = 10
+        Dim world = character.World
+        world.AddMessage($"{character.Name} eats 1 snax.")
+        character.ChangeCounter(Counters.SNAX, -1)
+        world.AddMessage($"{character.Name} has {character.GetSnax()} snax remaining.")
+        character.ChangeCounter(Counters.STOMACH, SNAX_BENEFIT)
+        world.AddMessage($"{character.Name}'s stomach goes up by {SNAX_BENEFIT} to {character.GetStomach()}.")
+    End Sub
 
     Private Sub HandleCompleteJourney(verb As IVerb, character As ICharacter)
         character.SetTag(Tags.JOURNEY_COMPLETE)
