@@ -13,7 +13,7 @@ Friend Class InPlay
     End Function
 
     Public Overrides Function Run() As IDialogPrompt
-        If Model.Avatar.IsChangingPace Then
+        If Model.Avatar.Pace.IsChanging Then
             Return ChangePacePrompt.Launch(Context, Model, Previous).Invoke().Run
         End If
         Return NavigationMenu.Launch(Context, Model, Previous).Invoke().Run()

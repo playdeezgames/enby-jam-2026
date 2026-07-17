@@ -24,6 +24,7 @@ Friend Module CharacterVerbExtensions
         }
 
     Private Sub HandleChangePace(verb As IVerb, character As ICharacter)
+        character.World.AddMessage($"{character.Name}'s current pace is {character.GetPace()}.")
         character.SetTag(Tags.IS_CHANGING_PACE)
     End Sub
 

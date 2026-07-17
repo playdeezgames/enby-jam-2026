@@ -2,7 +2,5 @@
     Sub ShowStatus()
     ReadOnly Property Inventory As IInventoryModel
     ReadOnly Property Verbs As IEnumerable(Of IVerbModel)
-    Sub CancelChangePace() 'TODO: AvatarPaceModel
-    Sub SetPace(pace As Integer) 'TODO: AvatarPaceModel
-    ReadOnly Property IsChangingPace As Boolean 'TODO: AvatarPaceModel
+    ReadOnly Property Pace As ICharacterPaceModel
 End Interface

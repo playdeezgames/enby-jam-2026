@@ -34,7 +34,7 @@ Friend Class ChangePacePrompt
 
     Private Function ChoosePace(pace As Integer) As LaunchDelegate
         Return Function(c, m, p)
-                   Return DialogChoice.CreateEnabled(paceName(pace), SetPaceActivity.Launch(c, m, p, pace))
+                   Return DialogChoice.CreateEnabled($"{paceName(pace)}({pace})", SetPaceActivity.Launch(c, m, p, pace))
                End Function
     End Function
 
