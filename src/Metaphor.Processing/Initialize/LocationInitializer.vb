@@ -4,7 +4,7 @@ Friend Module LocationInitializer
     Friend Function Initialize(context As IInitializationContext) As Persistence.LocationInitializer
         Return Sub(location)
                    context.Location = location
-                   location.CreateCharacter(CharacterTypes.GWEN, context.ChosenName, "Yer pronouns are they/them. Knowing Finnish won't help here.", InitializeAvatar(context))
+                   location.CreateCharacter(CharacterTypes.GWEN, context.ChosenName, $"{context.ChosenName}'s pronouns are they/them. Knowing Finnish won't help here.", InitializeAvatar(context))
                End Sub
     End Function
 
@@ -14,6 +14,7 @@ Friend Module LocationInitializer
                    character.InitializeCounter(Counters.SATIETY, 100, 0, 100)
                    character.InitializeCounter(Counters.STOMACH, 0, 0, 50)
                    character.InitializeCounter(Counters.JOOLS, 0, 0, Integer.MaxValue)
+                   character.InitializeCounter(Counters.SNAX, 10, 0, Integer.MaxValue)
                    character.InitializeCounter(Counters.DISTANCE_REMAINING, 2000, 0, Integer.MaxValue)
                    character.InitializeCounter(Counters.PACE, 3, 1, 5)
                    character.SetPronouns(context.ChosenPronouns)

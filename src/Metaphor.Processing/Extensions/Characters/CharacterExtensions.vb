@@ -63,6 +63,14 @@ Friend Module CharacterExtensions
         Return character.GetCounter(Counters.STOMACH)
     End Function
     <Extension>
+    Friend Function HasSnax(character As ICharacter) As Boolean
+        Return Not character.IsCounterMinimum(Counters.SNAX)
+    End Function
+    <Extension>
+    Friend Function GetSnax(character As ICharacter) As Integer
+        Return character.GetCounter(Counters.SNAX)
+    End Function
+    <Extension>
     Friend Function GetSatiety(character As ICharacter) As Integer
         Return character.GetCounter(Counters.SATIETY)
     End Function
@@ -104,6 +112,9 @@ Friend Module CharacterExtensions
         world.AddMessage($"- Satiety: {character.GetSatiety()}/{character.GetMaximumSatiety()}")
         If Not character.IsStomachEmpty() Then
             world.AddMessage($"- Stomach: {character.GetStomach()}/{character.GetMaximumStomach()}")
+        End If
+        If character.HasSnax() Then
+            world.AddMessage($"- Snax: {character.GetSnax()}")
         End If
         world.AddMessage($"- Jools: {character.GetJools()}")
     End Sub
