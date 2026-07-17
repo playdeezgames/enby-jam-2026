@@ -39,8 +39,24 @@ Friend Module CharacterVerbExtensions
             {VerbTypes.CHANGE_PACE, AddressOf HandleChangePace},
             {VerbTypes.CONTINUE_JOURNEY, AddressOf HandleContinueJourney},
             {VerbTypes.COMPLETE_JOURNEY, AddressOf HandleCompleteJourney},
-            {VerbTypes.EAT_SNAX, AddressOf HandleEatSnax}
+            {VerbTypes.EAT_SNAX, AddressOf HandleEatSnax},
+            {VerbTypes.FORAGE, AddressOf HandleForage}
         }
+
+    Private Sub HandleForage(verb As IVerb, character As ICharacter)
+        Dim world = character.World
+        world.AddMessage($"{character.Name} forages...")
+        Dim location = character.Location
+        Dim forageRoll = character.RollForageSkill()
+        world.AddMessage($"{character.Name} rolls a forage of {forageRoll}.")
+        If forageRoll >= location.GetForagingDifficulty() Then
+            world.AddMessage($"{character.Name} finds 1 snax!")
+            character.ChangeCounter(Counters.SNAX, 1)
+            world.AddMessage($"{character.Name} now has {character.GetSnax()} snax.")
+        End If
+        character.ApplyHunger(1)
+        character.EarnForagingExperience(1)
+    End Sub
 
     Private Sub HandleEatSnax(verb As IVerb, character As ICharacter)
         Const SNAX_BENEFIT = 10
@@ -62,25 +78,8 @@ Friend Module CharacterVerbExtensions
         world.AddMessage($"{character.Name} walks {pace} miles.")
         character.ChangeCounter(Counters.DISTANCE_REMAINING, -pace)
         world.AddMessage($"{character.Name} has {character.GetDistanceRemaining()} miles left to go.")
-        Dim stomach = Math.Min(pace, character.GetStomach())
-        pace -= stomach
-        character.ChangeCounter(Counters.STOMACH, -stomach)
-        Dim satiety = Math.Min(pace, character.GetSatiety())
-        If satiety > 0 Then
-            pace -= satiety
-            world.AddMessage($"{character.Name} loses {satiety} satiety.")
-            character.ChangeCounter(Counters.SATIETY, -satiety)
-            world.AddMessage($"{character.Name} now has {character.GetSatiety}/{character.GetMaximumSatiety} satiety.")
-        End If
-        If pace > 0 Then
-            world.AddMessage($"{character.Name} loses {pace} health.")
-            character.ChangeCounter(Counters.HEALTH, -pace)
-            If character.IsDead Then
-                world.AddMessage($"{character.Name} is dead.")
-            Else
-                world.AddMessage($"{character.Name} now has {character.GetHealth}/{character.GetMaximumHealth} health.")
-            End If
-        End If
+        character.ApplyHunger(pace)
+        character.Location.GenerateForagingDifficulty()
     End Sub
 
     Private Sub HandleChangePace(verb As IVerb, character As ICharacter)

@@ -3,4 +3,5 @@
     Friend Const CONTINUE_JOURNEY As String = NameOf(CONTINUE_JOURNEY)
     Friend Const COMPLETE_JOURNEY As String = NameOf(COMPLETE_JOURNEY)
     Friend Const EAT_SNAX As String = NameOf(EAT_SNAX)
+    Friend Const FORAGE As String = NameOf(FORAGE)
 End Module

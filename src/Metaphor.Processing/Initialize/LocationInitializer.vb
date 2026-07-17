@@ -4,6 +4,7 @@ Friend Module LocationInitializer
     Friend Function Initialize(context As IInitializationContext) As Persistence.LocationInitializer
         Return Sub(location)
                    context.Location = location
+                   location.GenerateForagingDifficulty()
                    location.CreateCharacter(CharacterTypes.GWEN, context.ChosenName, $"{context.ChosenName}'s pronouns are they/them. Knowing Finnish won't help here.", InitializeAvatar(context))
                End Sub
     End Function
@@ -17,11 +18,14 @@ Friend Module LocationInitializer
                    character.InitializeCounter(Counters.SNAX, 10, 0, Integer.MaxValue)
                    character.InitializeCounter(Counters.DISTANCE_REMAINING, 2000, 0, Integer.MaxValue)
                    character.InitializeCounter(Counters.PACE, 3, 1, 5)
+                   character.InitializeCounter(Counters.FORAGE_SKILL, 0, 0, Integer.MaxValue)
+                   character.InitializeCounter(Counters.FORAGE_EXPERIENCE, 0, 0, 10)
                    character.SetPronouns(context.ChosenPronouns)
                    character.CreateVerb(VerbTypes.CONTINUE_JOURNEY, "Continue Journey...", "The road goes ever on and on.")
                    character.CreateVerb(VerbTypes.COMPLETE_JOURNEY, "Complete Journey", "It is a privilege to see something end. You then get to either remember it fondly, or be glad that it's over. Sometimes, it's a bit of both. Life is messy that way.")
                    character.CreateVerb(VerbTypes.CHANGE_PACE, "Change Pace...", "New York City? (Get a rope!)")
                    character.CreateVerb(VerbTypes.EAT_SNAX, "Eat Snax", "Snax are delicious!")
+                   character.CreateVerb(VerbTypes.FORAGE, "Forage", "You scrounge for resources.")
                    character.World.Avatar = character
                End Sub
     End Function
