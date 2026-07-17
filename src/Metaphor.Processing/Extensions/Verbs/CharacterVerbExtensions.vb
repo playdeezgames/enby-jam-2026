@@ -8,8 +8,13 @@ Friend Module CharacterVerbExtensions
     Private ReadOnly canPerformTable As New Dictionary(Of String, CanPerformHandler) From
         {
             {VerbTypes.CHANGE_PACE, AddressOf IsNotDead},
-            {VerbTypes.CONTINUE_JOURNEY, AddressOf IsNotDead}
+            {VerbTypes.CONTINUE_JOURNEY, AddressOf IsNotDead},
+            {VerbTypes.COMPLETE_JOURNEY, AddressOf IsJourneyComplete}
         }
+
+    Private Function IsJourneyComplete(verb As IVerb, character As ICharacter) As Boolean
+        Return Not character.IsDead() AndAlso character.IsCounterMinimum(Counters.DISTANCE_REMAINING)
+    End Function
 
     Private Function IsNotDead(verb As IVerb, character As ICharacter) As Boolean
         Return Not character.IsDead()
@@ -27,8 +32,13 @@ Friend Module CharacterVerbExtensions
     Private ReadOnly performTable As New Dictionary(Of String, PerformHandler) From
         {
             {VerbTypes.CHANGE_PACE, AddressOf HandleChangePace},
-            {VerbTypes.CONTINUE_JOURNEY, AddressOf HandleContinueJourney}
+            {VerbTypes.CONTINUE_JOURNEY, AddressOf HandleContinueJourney},
+            {VerbTypes.COMPLETE_JOURNEY, AddressOf HandleCompleteJourney}
         }
+
+    Private Sub HandleCompleteJourney(verb As IVerb, character As ICharacter)
+        character.SetTag(Tags.JOURNEY_COMPLETE)
+    End Sub
 
     Private Sub HandleContinueJourney(verb As IVerb, character As ICharacter)
         Dim world = character.World

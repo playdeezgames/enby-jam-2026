@@ -116,4 +116,8 @@ Friend Module CharacterExtensions
         character.SetCounter(Counters.PACE, pace)
         character.ClearTag(Tags.IS_CHANGING_PACE)
     End Sub
+    <Extension>
+    Friend Function IsJourneyComplete(character As ICharacter) As Boolean
+        Return character.HasTag(Tags.JOURNEY_COMPLETE)
+    End Function
 End Module

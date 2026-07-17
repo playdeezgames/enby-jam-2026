@@ -27,6 +27,12 @@ Friend Class AvatarModel
         End Get
     End Property
 
+    Public ReadOnly Property IsDone As Boolean Implements IAvatarModel.IsDone
+        Get
+            Return avatar.IsJourneyComplete() OrElse avatar.IsDead()
+        End Get
+    End Property
+
     Public Sub ShowStatus() Implements IAvatarModel.ShowStatus
         avatar.World.ClearMessages()
         avatar.ShowStatus()
