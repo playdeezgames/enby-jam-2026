@@ -14,7 +14,7 @@ Friend Class Feature
         End Get
     End Property
 
-    Public ReadOnly Property Exists As Boolean Implements IFeature.Exists
+    Public Overrides ReadOnly Property Exists As Boolean
         Get
             Return _data.Features.ContainsKey(EntityId)
         End Get

@@ -26,6 +26,12 @@ Friend Class Location
         End Get
     End Property
 
+    Public Overrides ReadOnly Property Exists As Boolean
+        Get
+            Return _data.Locations.ContainsKey(EntityId)
+        End Get
+    End Property
+
     Protected Overrides ReadOnly Property Data As LocationData
         Get
             Return _data.Locations(EntityId)

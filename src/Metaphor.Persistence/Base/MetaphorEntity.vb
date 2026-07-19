@@ -34,5 +34,6 @@ Friend MustInherit Class MetaphorEntity(Of TData As MetaphorEntityData)
         End Get
     End Property
 
+    Public MustOverride ReadOnly Property Exists As Boolean Implements IMetaphorEntity.Exists
     Protected ReadOnly _data As WorldData
 End Class

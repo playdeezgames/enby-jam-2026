@@ -21,6 +21,12 @@ Friend Class Character
         End Set
     End Property
 
+    Public Overrides ReadOnly Property Exists As Boolean
+        Get
+            Return _data.Characters.ContainsKey(EntityId)
+        End Get
+    End Property
+
     Protected Overrides ReadOnly Property Data As CharacterData
         Get
             Return _data.Characters(EntityId)
