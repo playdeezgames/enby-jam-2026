@@ -21,6 +21,12 @@ Friend Class FeatureModel
         End Get
     End Property
 
+    Public ReadOnly Property Exists As Boolean Implements IFeatureModel.Exists
+        Get
+            Return feature.Exists
+        End Get
+    End Property
+
     Public Sub Examine() Implements IFeatureModel.Examine
         Dim world = feature.World
         world.ClearMessages()

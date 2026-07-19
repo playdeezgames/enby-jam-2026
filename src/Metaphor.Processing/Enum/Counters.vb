@@ -9,4 +9,5 @@
     Friend Const FORAGING_DIFFICULTY As String = NameOf(FORAGING_DIFFICULTY)
     Friend Const FORAGE_SKILL As String = NameOf(FORAGE_SKILL)
     Friend Const FORAGE_EXPERIENCE As String = NameOf(FORAGE_EXPERIENCE)
+    Friend Const FLOWERS_REMAINING As String = NameOf(FLOWERS_REMAINING)
 End Module

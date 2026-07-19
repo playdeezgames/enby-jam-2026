@@ -81,6 +81,7 @@ Friend Module CharacterVerbExtensions
         world.AddMessage($"{character.Name} has {character.GetDistanceRemaining()} miles left to go.")
         character.ApplyHunger(pace)
         character.Location.Update()
+        character.Look()
     End Sub
 
     Private Sub HandleChangePace(verb As IVerb, character As ICharacter)

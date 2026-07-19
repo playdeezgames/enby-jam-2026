@@ -14,6 +14,11 @@ Friend Class Feature
         End Get
     End Property
 
+    Public ReadOnly Property Exists As Boolean Implements IFeature.Exists
+        Get
+            Return _data.Features.ContainsKey(EntityId)
+        End Get
+    End Property
 
     Protected Overrides ReadOnly Property Data As FeatureData
         Get
@@ -22,7 +27,12 @@ Friend Class Feature
     End Property
 
     Public Overrides Sub Remove()
-        Throw New NotImplementedException()
+        _data.Locations(Location.EntityId).FeatureIds.Remove(EntityId)
+        For Each verb In Verbs
+            verb.Remove()
+        Next
+        Inventory.Remove()
+        _data.Features.Remove(EntityId)
     End Sub
 
     Friend Shared Function Create(world As IWorld, data As WorldData, featureId As Guid) As IFeature

@@ -15,7 +15,7 @@ Friend Class Verb
     End Property
 
     Public Overrides Sub Remove()
-        Throw New NotImplementedException()
+        _data.Verbs.Remove(EntityId)
     End Sub
 
     Friend Shared Function Create(world As IWorld, data As WorldData, verbId As Guid) As IVerb
