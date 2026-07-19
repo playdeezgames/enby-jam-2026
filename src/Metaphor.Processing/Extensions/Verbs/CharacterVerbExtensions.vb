@@ -53,6 +53,7 @@ Friend Module CharacterVerbExtensions
             world.AddMessage($"{character.Name} finds 1 snax!")
             character.ChangeCounter(Counters.SNAX, 1)
             world.AddMessage($"{character.Name} now has {character.GetSnax()} snax.")
+            location.SetCounter(Counters.FORAGING_DIFFICULTY, forageRoll + 1)
         End If
         character.ApplyHunger(1)
         character.EarnForagingExperience(1)
