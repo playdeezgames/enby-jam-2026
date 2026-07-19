@@ -80,7 +80,7 @@ Friend Module CharacterVerbExtensions
         character.ChangeCounter(Counters.DISTANCE_REMAINING, -pace)
         world.AddMessage($"{character.Name} has {character.GetDistanceRemaining()} miles left to go.")
         character.ApplyHunger(pace)
-        character.Location.GenerateForagingDifficulty()
+        character.Location.Update()
     End Sub
 
     Private Sub HandleChangePace(verb As IVerb, character As ICharacter)

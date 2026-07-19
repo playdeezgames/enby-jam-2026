@@ -5,6 +5,7 @@ Friend Module LocationInitializer
         Return Sub(location)
                    context.Location = location
                    location.GenerateForagingDifficulty()
+                   location.CreateVerb(VerbTypes.TAKE_SHORTCUT, "Take Shortcut...", "No guts, no glory!")
                    location.CreateCharacter(CharacterTypes.GWEN, context.ChosenName, $"{context.ChosenName}'s pronouns are they/them. Knowing Finnish won't help here.", InitializeAvatar(context))
                End Sub
     End Function
