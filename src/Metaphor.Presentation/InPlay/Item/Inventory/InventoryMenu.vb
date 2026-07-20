@@ -19,13 +19,15 @@ Friend Class InventoryMenu
         Get
             Return Enumerable.Empty(Of LaunchDelegate).
                 Append(AddressOf ChooseNeverMind).
-                Concat(Model.Avatar.Inventory.Items.Select(AddressOf ChooseItem))
+                Concat(Model.Avatar.Inventory.ItemStacks.Select(AddressOf ChooseItemStack))
         End Get
     End Property
 
-    Private Function ChooseItem(itemModel As IItemModel) As LaunchDelegate
+    Private Function ChooseItemStack(itemStackModel As IItemStackModel) As LaunchDelegate
         Return Function(c, m, p)
-                   Return DialogChoice.CreateEnabled(itemModel.Name, InventoryItemMenu.Launch(c, m, p, itemModel))
+                   Return DialogChoice.CreateEnabled(
+                        itemStackModel.Name,
+                        InventoryItemStackMenu.Launch(c, m, p, itemStackModel))
                End Function
     End Function
 

@@ -4,4 +4,5 @@
     Sub Remove()
     ReadOnly Property HasItems As Boolean
     ReadOnly Property Items As IEnumerable(Of IItem)
+    ReadOnly Property ItemStacks As IEnumerable(Of IItemStack)
 End Interface

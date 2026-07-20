@@ -32,6 +32,12 @@ Friend Class Inventory
         End Get
     End Property
 
+    Public ReadOnly Property ItemStacks As IEnumerable(Of IItemStack) Implements IInventory.ItemStacks
+        Get
+            Return Items.GroupBy(Function(x) x.EntityType).Select(Function(x) ItemStack.Create(Me, x.Key))
+        End Get
+    End Property
+
     Friend Shared Function Create(world As IWorld, data As WorldData, inventoryId As Guid?) As IInventory
         Return If(inventoryId.HasValue, New Inventory(world, data, inventoryId.Value), Nothing)
     End Function
