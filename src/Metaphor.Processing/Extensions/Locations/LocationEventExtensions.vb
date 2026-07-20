@@ -12,8 +12,21 @@ Friend Module LocationEventExtensions
             {AddressOf ShortcutEvent, 10},
             {AddressOf FlowerPatchEvent, 10},
             {AddressOf SpawnTraehi, 5},
-            {AddressOf SpawnVendingMachine, 5}
+            {AddressOf SpawnVendingMachine, 5},
+            {AddressOf SpawnAbandonedHouse, 25}
         }
+#Region "Abandoned House"
+    Private Sub SpawnAbandonedHouse(location As ILocation)
+        Dim world = location.World
+        Dim avatar = world.Avatar
+        Dim feature = location.CreateFeature(FeatureTypes.ABANDONED_HOUSE, "Abandoned House", "This house is abandoned. The lawn is overgrown. The doors have been ripped off of the hinges, and the windows are made of sheet goods.", AddressOf InitializeAbandonedHouse)
+        world.AddMessage($"{avatar.Name} finds an {feature.Name}.")
+    End Sub
+
+    Private Sub InitializeAbandonedHouse(feature As IFeature)
+        feature.Inventory.CreateItem(ItemTypes.DESTROYED_PRINTER, "Destroyed Printer", "This printer has been smashed to smithereens. It will never work again. It is an ex-printer.")
+    End Sub
+#End Region
 #Region "Vending machine"
     Private Sub SpawnVendingMachine(location As ILocation)
         Dim world = location.World
