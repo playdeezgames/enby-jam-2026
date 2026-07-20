@@ -7,4 +7,5 @@
     Friend Const TAKE_SHORTCUT As String = NameOf(TAKE_SHORTCUT)
     Friend Const PICK_FLOWER As String = NameOf(PICK_FLOWER)
     Friend Const STOP_AND_SMELL As String = NameOf(STOP_AND_SMELL)
+    Friend Const GIVE_FLOWER As String = NameOf(GIVE_FLOWER)
 End Module

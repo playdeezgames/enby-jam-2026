@@ -10,8 +10,21 @@ Friend Module LocationEventExtensions
         {
             {AddressOf NothingEvent, 100},
             {AddressOf ShortcutEvent, 10},
-            {AddressOf FlowerPatchEvent, 10}
+            {AddressOf FlowerPatchEvent, 10},
+            {AddressOf SpawnTraehi, 5}
         }
+#Region "Traehi"
+    Private Sub SpawnTraehi(location As ILocation)
+        Dim world = location.World
+        Dim avatar = world.Avatar
+        Dim character = location.CreateCharacter(CharacterTypes.TRAEHI, "Traehi", "This person obviously likes flowers. Their clothing has a floral pattern. They have flowers in their hair. They a holding a basket of fresh cut flowers.", AddressOf InitializeTraehi)
+        world.AddMessage($"{avatar.Name} encounters {character.Name}, the well-known lover of all things floral!")
+    End Sub
+
+    Private Sub InitializeTraehi(character As ICharacter)
+        character.CreateVerb(VerbTypes.GIVE_FLOWER, "Give Flower", "You give them a flower. Isn't that nice?")
+    End Sub
+#End Region
 
 #Region "Pick Flower"
     Private Sub FlowerPatchEvent(location As ILocation)

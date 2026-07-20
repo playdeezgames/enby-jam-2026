@@ -10,8 +10,14 @@ Friend Module CharacterVerbExtensions
             {VerbTypes.CHANGE_PACE, AddressOf IsNotDead},
             {VerbTypes.CONTINUE_JOURNEY, AddressOf IsNotDead},
             {VerbTypes.COMPLETE_JOURNEY, AddressOf IsJourneyComplete},
-            {VerbTypes.EAT_SNAX, AddressOf CanEatSnax}
+            {VerbTypes.EAT_SNAX, AddressOf CanEatSnax},
+            {VerbTypes.GIVE_FLOWER, AddressOf CanGiveFlower}
         }
+
+    Private Function CanGiveFlower(verb As IVerb, character As ICharacter) As Boolean
+        Dim avatar = verb.World.Avatar
+        Return character.EntityType = CharacterTypes.TRAEHI AndAlso avatar.Inventory.Items.Any(Function(x) x.EntityType = ItemTypes.FLOWER)
+    End Function
 
     Private Function CanEatSnax(verb As IVerb, character As ICharacter) As Boolean
         Return Not character.IsDead AndAlso character.HasSnax
@@ -40,8 +46,20 @@ Friend Module CharacterVerbExtensions
             {VerbTypes.CONTINUE_JOURNEY, AddressOf HandleContinueJourney},
             {VerbTypes.COMPLETE_JOURNEY, AddressOf HandleCompleteJourney},
             {VerbTypes.EAT_SNAX, AddressOf HandleEatSnax},
-            {VerbTypes.FORAGE, AddressOf HandleForage}
+            {VerbTypes.FORAGE, AddressOf HandleForage},
+            {VerbTypes.GIVE_FLOWER, AddressOf HandleGiveFlower}
         }
+
+    Private Sub HandleGiveFlower(verb As IVerb, character As ICharacter)
+        Dim world = verb.World
+        Dim avatar = world.Avatar
+        Dim item = avatar.Inventory.Items.First(Function(x) x.EntityType = ItemTypes.FLOWER)
+        item.Remove()
+        world.AddMessage($"{avatar.Name} gives {character.Name} a flower.")
+        world.AddMessage($"{character.Name} says `Thank you!`, and gives {avatar.Name} 1 jools.")
+        avatar.ChangeCounter(Counters.JOOLS, 1)
+        world.AddMessage($"{avatar.Name} now has {avatar.GetJools} jools.")
+    End Sub
 
     Private Sub HandleForage(verb As IVerb, character As ICharacter)
         Dim world = character.World
