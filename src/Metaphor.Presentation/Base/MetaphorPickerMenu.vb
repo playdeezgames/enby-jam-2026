@@ -9,8 +9,7 @@ Friend MustInherit Class MetaphorPickerMenu
     End Sub
     Protected Overrides Sub Render()
         For Each message In Model.Messages
-            'TODO: hints need to matter
-            Context.Render(message.Text)
+            Context.Render(message.Text, message.HintNames.ToDictionary(Function(x) x, Function(x) message.GetHint(x)))
         Next
     End Sub
 End Class

@@ -31,13 +31,20 @@ Friend Module FeatureVerbExtensions
     Private Sub HandlePickFlower(verb As IVerb, feature As IFeature)
         Dim world = verb.World
         Dim character = world.Avatar
-        Dim item = character.Inventory.CreateItem(ItemTypes.FLOWER, "Flower", "This is a flower. You picked it from a flower patch. Murderer.")
+        Dim item = character.Inventory.CreateItem(ItemTypes.FLOWER, "Flower", "This is a flower. You picked it from a flower patch. Murderer.", AddressOf InitializeFlower)
         world.AddMessage($"{character.Name} picks {item.Name}.")
         feature.ChangeCounter(Counters.FLOWERS_REMAINING, -1)
         If feature.IsCounterMinimum(Counters.FLOWERS_REMAINING) Then
             world.AddMessage($"{character.Name} has completely eliminated the flower patch. Way to be a genocidal maniac!")
             feature.Remove()
         End If
+    End Sub
+
+    Private Sub InitializeFlower(item As IItem)
+        item.CreateVerb(
+            VerbTypes.STOP_AND_SMELL,
+            "Stop and Smell",
+            "Sometimes it is a good idea to take a break for moment, and enjoy the simpler things in life, like flowers that you horribly massacred and sniffing their floral corpses. Sicko.")
     End Sub
 
     <Extension>

@@ -20,7 +20,21 @@ Friend Module ItemVerbExtensions
 
     Private ReadOnly performTable As New Dictionary(Of String, PerformHandler) From
         {
+            {VerbTypes.STOP_AND_SMELL, AddressOf StopAndSmell}
         }
+
+    Private Sub StopAndSmell(verb As IVerb, item As IItem)
+        Dim world = verb.World
+        world.AddMessage("Hey! Speaking of Stopping and Smelling Flowers...")
+        world.AddMessage("There's a new game out! You should play it!")
+        world.AddMessage(
+            "Stop and Smell the Flowers, now on Steam",
+            New Dictionary(Of String, String) From
+            {
+                {"ELEMENT_TYPE", "LINK"},
+                {"URL", "https://store.steampowered.com/app/2578290/Stop_and_Smell_the_Flowers/"}
+            })
+    End Sub
 
     <Extension>
     Sub Perform(verb As IVerb, item As IItem)

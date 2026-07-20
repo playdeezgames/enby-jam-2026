@@ -6,4 +6,5 @@
     Friend Const FORAGE As String = NameOf(FORAGE)
     Friend Const TAKE_SHORTCUT As String = NameOf(TAKE_SHORTCUT)
     Friend Const PICK_FLOWER As String = NameOf(PICK_FLOWER)
+    Friend Const STOP_AND_SMELL As String = NameOf(STOP_AND_SMELL)
 End Module
