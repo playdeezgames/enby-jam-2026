@@ -35,7 +35,12 @@ Friend Class FeatureInventoryMenu
     End Function
 
     Friend Shared Function Launch(context As IDisplayContext, model As IWorldModel, previous As DialogSource, featureModel As IFeatureModel) As DialogSource
-        Return Function() New FeatureInventoryMenu(context, model, previous, featureModel)
+        Return Function()
+                   If featureModel.Inventory.HasItems Then
+                       Return New FeatureInventoryMenu(context, model, previous, featureModel)
+                   End If
+                   Return InPlay.Launch(context, model, previous).Invoke()
+               End Function
     End Function
 
     Private Function ChooseNeverMind(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice

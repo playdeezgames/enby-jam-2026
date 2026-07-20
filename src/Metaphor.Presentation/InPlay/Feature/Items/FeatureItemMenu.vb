@@ -23,9 +23,20 @@ Friend Class FeatureItemMenu
     Protected Overrides ReadOnly Property Launchers As IEnumerable(Of LaunchDelegate)
         Get
             Return Enumerable.Empty(Of LaunchDelegate).
-                Append(AddressOf ChooseNeverMind)
+                Append(AddressOf ChooseNeverMind).
+                Append(AddressOf ChooseTake)
         End Get
     End Property
+
+    Private Function ChooseTake(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice
+        Return DialogChoice.CreateEnabled(
+            "Take",
+            FeatureTakeItemActivity.Launch(
+                context,
+                model,
+                previous,
+                featureModel, itemModel))
+    End Function
 
     Friend Shared Function Launch(c As IDisplayContext, m As IWorldModel, p As DialogSource, featureModel As IFeatureModel, itemModel As IItemModel) As DialogSource
         Return Function() New FeatureItemMenu(c, m, p, featureModel, itemModel)

@@ -31,7 +31,7 @@ Friend Class GroundItemMenu
     End Property
 
     Private Function ChooseTake(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice
-        Return DialogChoice.CreateEnabled("Take", TakeItemActivity.Launch(context, model, previous, itemModel))
+        Return DialogChoice.CreateEnabled("Take", GroundTakeItemActivity.Launch(context, model, previous, itemModel))
     End Function
 
     Friend Shared Function Launch(c As IDisplayContext, m As IWorldModel, p As DialogSource, itemModel As IItemModel) As DialogSource
