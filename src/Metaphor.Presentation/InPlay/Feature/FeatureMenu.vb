@@ -22,9 +22,14 @@ Friend Class FeatureMenu
         Get
             Return Enumerable.Empty(Of LaunchDelegate).
                 Append(AddressOf ChooseNeverMind).
+                Append(AddressOf ChooseItems).
                 Concat(featureModel.Verbs.Select(AddressOf ChooseFeatureVerb))
         End Get
     End Property
+
+    Private Function ChooseItems(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice
+        Return DialogChoice.Create(featureModel.Inventory.HasItems, "Items...", FeatureInventoryMenu.Launch(context, model, previous, featureModel))
+    End Function
 
     Private Function ChooseFeatureVerb(verbModel As IVerbModel) As LaunchDelegate
         Return Function(c, m, p)

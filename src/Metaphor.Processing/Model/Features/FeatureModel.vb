@@ -27,6 +27,12 @@ Friend Class FeatureModel
         End Get
     End Property
 
+    Public ReadOnly Property Inventory As IInventoryModel Implements IFeatureModel.Inventory
+        Get
+            Return FeatureInventoryModel.Create(feature)
+        End Get
+    End Property
+
     Public Sub Examine() Implements IFeatureModel.Examine
         Dim world = feature.World
         world.ClearMessages()

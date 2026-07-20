@@ -22,7 +22,6 @@ Friend Module LocationEventExtensions
         Dim feature = location.CreateFeature(FeatureTypes.ABANDONED_HOUSE, "Abandoned House", "This house is abandoned. The lawn is overgrown. The doors have been ripped off of the hinges, and the windows are made of sheet goods.", AddressOf InitializeAbandonedHouse)
         world.AddMessage($"{avatar.Name} finds an {feature.Name}.")
     End Sub
-
     Private Sub InitializeAbandonedHouse(feature As IFeature)
         feature.Inventory.CreateItem(ItemTypes.DESTROYED_PRINTER, "Destroyed Printer", "This printer has been smashed to smithereens. It will never work again. It is an ex-printer.")
     End Sub
