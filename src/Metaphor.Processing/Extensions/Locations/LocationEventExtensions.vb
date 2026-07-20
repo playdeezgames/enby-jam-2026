@@ -11,8 +11,21 @@ Friend Module LocationEventExtensions
             {AddressOf NothingEvent, 100},
             {AddressOf ShortcutEvent, 10},
             {AddressOf FlowerPatchEvent, 10},
-            {AddressOf SpawnTraehi, 5}
+            {AddressOf SpawnTraehi, 5},
+            {AddressOf SpawnVendingMachine, 5}
         }
+#Region "Vending machine"
+    Private Sub SpawnVendingMachine(location As ILocation)
+        Dim world = location.World
+        Dim avatar = world.Avatar
+        Dim feature = location.CreateFeature(FeatureTypes.VENDING_MACHINE, "Vending Machine", "This is a vending machine that sells snax in exchange for jools. I don't know what it is doing standing out here in the middle of nowhere, either.", AddressOf InitializeVendingMachine)
+        world.AddMessage($"{avatar.Name} finds a {feature.Name}.")
+    End Sub
+
+    Private Sub InitializeVendingMachine(feature As IFeature)
+        feature.CreateVerb(VerbTypes.BUY_SNAX, "Buy Snax(1 jools)", "You put the jools into the jools receptacle and press the `Snax` button....")
+    End Sub
+#End Region
 #Region "Traehi"
     Private Sub SpawnTraehi(location As ILocation)
         Dim world = location.World
