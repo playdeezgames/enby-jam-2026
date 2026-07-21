@@ -19,11 +19,25 @@ Friend Module LocationEventExtensions
     Private Sub SpawnAbandonedHouse(location As ILocation)
         Dim world = location.World
         Dim avatar = world.Avatar
+        If avatar.Inventory.Items.Any(Function(x) x.HasTag(Tags.SUPPRESS_ABANDONED_HOUSE)) Then
+            NothingEvent(location)
+            Return
+        End If
         Dim feature = location.CreateFeature(FeatureTypes.ABANDONED_HOUSE, "Abandoned House", "This house is abandoned. The lawn is overgrown. The doors have been ripped off of the hinges, and the windows are made of sheet goods.", AddressOf InitializeAbandonedHouse)
         world.AddMessage($"{avatar.Name} finds an {feature.Name}.")
     End Sub
     Private Sub InitializeAbandonedHouse(feature As IFeature)
-        feature.Inventory.CreateItem(ItemTypes.DESTROYED_PRINTER, "Destroyed Printer", "This printer has been smashed to smithereens. It will never work again. It is an ex-printer.")
+        feature.Inventory.CreateItem(ItemTypes.DESTROYED_PRINTER, "Destroyed Printer", "This printer has been smashed to smithereens. It will never work again. It is an ex-printer.", AddressOf InitializeDestroyedPrinter)
+        feature.Inventory.CreateItem(ItemTypes.PKASTIC_BAG, "Pkastic Bag", "This is a bag. It is made of pkastic. No, don't ask me what pkastic is, just look at the 'K' key and notice how it is right next to the 'L' key.", AddressOf InitializePkasticBag)
+    End Sub
+
+    Private Sub InitializePkasticBag(item As IItem)
+        item.SetTag(Tags.SUPPRESS_ABANDONED_HOUSE)
+        'TODO: reach in
+    End Sub
+
+    Private Sub InitializeDestroyedPrinter(item As IItem)
+        item.SetTag(Tags.SUPPRESS_ABANDONED_HOUSE)
     End Sub
 #End Region
 #Region "Vending machine"

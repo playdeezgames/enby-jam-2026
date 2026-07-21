@@ -34,11 +34,7 @@ Friend Class FeatureModel
     End Property
 
     Public Sub Examine() Implements IFeatureModel.Examine
-        Dim world = feature.World
-        world.ClearMessages()
-        Dim character = world.Avatar
-        character.World.AddMessage($"{character.Name} interacts with {feature.Name}.")
-        character.World.AddMessage(feature.Flavor)
+        feature.Examine()
     End Sub
 
     Friend Shared Function Create(feature As IFeature) As IFeatureModel
