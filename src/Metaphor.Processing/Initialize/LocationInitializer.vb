@@ -20,6 +20,7 @@ Friend Module LocationInitializer
 #Else
                    character.InitializeCounter(Counters.JOOLS, 0, 0, Integer.MaxValue)
 #End If
+                   character.InitializeCounter(Counters.FATIGUE, 0, 0, 100)
                    character.InitializeCounter(Counters.SNAX, 10, 0, Integer.MaxValue)
                    character.InitializeCounter(Counters.DISTANCE_REMAINING, 2000, 0, Integer.MaxValue)
                    character.InitializeCounter(Counters.PACE, 3, 1, 5)

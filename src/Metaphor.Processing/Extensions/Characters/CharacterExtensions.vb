@@ -85,6 +85,10 @@ Friend Module CharacterExtensions
         Return character.GetCounter(Counters.SATIETY)
     End Function
     <Extension>
+    Friend Function GetFatigue(character As ICharacter) As Integer
+        Return character.GetCounter(Counters.FATIGUE)
+    End Function
+    <Extension>
     Friend Function IsStomachEmpty(character As ICharacter) As Boolean
         Return character.IsCounterMinimum(Counters.STOMACH)
     End Function
@@ -105,6 +109,10 @@ Friend Module CharacterExtensions
         Return character.GetCounterMaximum(Counters.HEALTH)
     End Function
     <Extension>
+    Friend Function GetMaximumFatigue(character As ICharacter) As Integer
+        Return character.GetCounterMaximum(Counters.FATIGUE)
+    End Function
+    <Extension>
     Friend Function GetMaximumStomach(character As ICharacter) As Integer
         Return character.GetCounterMaximum(Counters.STOMACH)
     End Function
@@ -120,6 +128,7 @@ Friend Module CharacterExtensions
         ShowJourneyStatistics(character)
         world.AddMessage($"- Health: {character.GetHealth()}/{character.GetMaximumHealth()}")
         world.AddMessage($"- Satiety: {character.GetSatiety()}/{character.GetMaximumSatiety()}")
+        world.AddMessage($"- Fatigue: {character.GetFatigue()}/{character.GetMaximumFatigue()}")
         If Not character.IsStomachEmpty() Then
             world.AddMessage($"- Stomach: {character.GetStomach()}/{character.GetMaximumStomach()}")
         End If
