@@ -15,6 +15,7 @@ Friend Module LocationInitializer
                    character.InitializeCounter(Counters.HEALTH, 100, 0, 100)
                    character.InitializeCounter(Counters.SATIETY, 100, 0, 100)
                    character.InitializeCounter(Counters.STOMACH, 0, 0, 50)
+                   character.InitializeCounter(Counters.BEWWY_HERTZ, 0, 0, Integer.MaxValue)
 #If DEBUG Then
                    character.InitializeCounter(Counters.JOOLS, 10, 0, Integer.MaxValue)
 #Else

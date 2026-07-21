@@ -101,6 +101,14 @@ Friend Module CharacterExtensions
         Return character.GetCounter(Counters.DISTANCE_REMAINING)
     End Function
     <Extension>
+    Friend Function GetEffectivePace(character As ICharacter) As Integer
+        Dim pace = character.GetCounter(Counters.PACE)
+        If Not character.IsCounterMinimum(Counters.BEWWY_HERTZ) Then
+            pace = (pace + character.GetCounterMinimum(Counters.PACE)) \ 2
+        End If
+        Return pace
+    End Function
+    <Extension>
     Friend Function GetPace(character As ICharacter) As Integer
         Return character.GetCounter(Counters.PACE)
     End Function
@@ -125,6 +133,9 @@ Friend Module CharacterExtensions
         Dim world = character.World
         world.AddMessage($"{character.Name}'s Status:")
         world.AddMessage(character.Flavor)
+        If Not character.IsCounterMinimum(Counters.BEWWY_HERTZ) Then
+            world.AddMessage($"{character.Name} bewwy hertz.")
+        End If
         ShowJourneyStatistics(character)
         world.AddMessage($"- Health: {character.GetHealth()}/{character.GetMaximumHealth()}")
         world.AddMessage($"- Satiety: {character.GetSatiety()}/{character.GetMaximumSatiety()}")
@@ -191,10 +202,12 @@ Friend Module CharacterExtensions
             character.ChangeCounter(Counters.SATIETY, -satiety)
             world.AddMessage($"{character.Name} now has {character.GetSatiety}/{character.GetMaximumSatiety} satiety.")
         ElseIf character.GetStomach() > 0 Then
-            Const SATIETY_GAIN = 1
-            world.AddMessage($"{character.Name} gains {SATIETY_GAIN} satiety.")
-            character.ChangeCounter(Counters.SATIETY, SATIETY_GAIN)
-            world.AddMessage($"{character.Name} now has {character.GetSatiety}/{character.GetMaximumSatiety} satiety.")
+            If Not character.IsCounterMaximum(Counters.SATIETY) Then
+                Const SATIETY_GAIN = 1
+                world.AddMessage($"{character.Name} gains {SATIETY_GAIN} satiety.")
+                character.ChangeCounter(Counters.SATIETY, SATIETY_GAIN)
+                world.AddMessage($"{character.Name} now has {character.GetSatiety}/{character.GetMaximumSatiety} satiety.")
+            End If
         End If
         If hunger > 0 Then
             ApplyDamage(character, hunger)

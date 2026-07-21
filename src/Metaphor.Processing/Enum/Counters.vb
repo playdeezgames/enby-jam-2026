@@ -11,4 +11,5 @@
     Friend Const FORAGE_EXPERIENCE As String = NameOf(FORAGE_EXPERIENCE)
     Friend Const FLOWERS_REMAINING As String = NameOf(FLOWERS_REMAINING)
     Friend Const FATIGUE As String = NameOf(FATIGUE)
+    Friend Const BEWWY_HERTZ As String = NameOf(BEWWY_HERTZ)
 End Module

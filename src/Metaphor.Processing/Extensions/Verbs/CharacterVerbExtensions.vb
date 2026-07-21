@@ -1,5 +1,6 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Metaphor.Persistence
+Imports TGGD.Processing
 
 Friend Module CharacterVerbExtensions
     Private Delegate Function CanPerformHandler(verb As IVerb, character As ICharacter) As Boolean
@@ -102,6 +103,10 @@ Friend Module CharacterVerbExtensions
         world.AddMessage($"{character.Name} has {character.GetSnax()} snax remaining.")
         character.ChangeCounter(Counters.STOMACH, SNAX_BENEFIT)
         world.AddMessage($"{character.Name}'s stomach goes up by {SNAX_BENEFIT} to {character.GetStomach()}.")
+        If character.IsCounterMaximum(Counters.STOMACH) Then
+            world.AddMessage($"{character.Name}'s bewwy hertz.")
+            character.ChangeCounter(Counters.BEWWY_HERTZ, RNG.RollDice("2d6"))
+        End If
     End Sub
 
     Private Sub HandleCompleteJourney(verb As IVerb, character As ICharacter)
@@ -111,8 +116,13 @@ Friend Module CharacterVerbExtensions
     Private Sub HandleContinueJourney(verb As IVerb, character As ICharacter)
         Dim world = character.World
         Dim pace = character.GetPace()
-        world.AddMessage($"{character.Name} walks {pace} miles.")
-        character.ChangeCounter(Counters.DISTANCE_REMAINING, -pace)
+        Dim effectivePace = character.GetEffectivePace()
+        If Not character.IsCounterMinimum(Counters.BEWWY_HERTZ) Then
+            world.AddMessage($"{character.Name}'s bewwy still hertz, so effective pace will be slower.")
+            character.ChangeCounter(Counters.BEWWY_HERTZ, -1)
+        End If
+        world.AddMessage($"{character.Name} walks {effectivePace} miles.")
+        character.ChangeCounter(Counters.DISTANCE_REMAINING, -effectivePace)
         world.AddMessage($"{character.Name} has {character.GetDistanceRemaining()} miles left to go.")
         character.ApplyHunger(pace)
         character.ApplyFatigue(pace)
