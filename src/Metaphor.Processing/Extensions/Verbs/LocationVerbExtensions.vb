@@ -43,6 +43,7 @@ Friend Module LocationVerbExtensions
         End If
         world.AddMessage($"Distance remaining: {character.GetDistanceRemaining()} miles.")
         character.ApplyHunger(1)
+        character.ApplyFatigue(1)
         location.Update()
         character.Look()
     End Sub

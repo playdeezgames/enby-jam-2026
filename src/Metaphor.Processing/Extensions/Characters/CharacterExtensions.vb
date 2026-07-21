@@ -165,6 +165,20 @@ Friend Module CharacterExtensions
         End If
     End Sub
     <Extension>
+    Friend Sub ApplyFatigue(character As ICharacter, fatigue As Integer)
+        Dim world = character.World
+        Dim capacity = Math.Min(character.GetMaximumFatigue() - character.GetFatigue(), fatigue)
+        Dim overage = fatigue - capacity
+        If capacity > 0 Then
+            character.ChangeCounter(Counters.FATIGUE, fatigue)
+            world.AddMessage($"{character.Name} gains {capacity} fatigue.")
+            world.AddMessage($"{character.Name} now has {character.GetFatigue()}/{character.GetMaximumFatigue()} fatigue.")
+        End If
+        If overage > 0 Then
+            character.ApplyDamage(overage)
+        End If
+    End Sub
+    <Extension>
     Friend Sub ApplyHunger(character As ICharacter, hunger As Integer)
         Dim world = character.World
         Dim stomach = Math.Min(hunger, character.GetStomach())
@@ -183,13 +197,18 @@ Friend Module CharacterExtensions
             world.AddMessage($"{character.Name} now has {character.GetSatiety}/{character.GetMaximumSatiety} satiety.")
         End If
         If hunger > 0 Then
-            world.AddMessage($"{character.Name} loses {hunger} health.")
-            character.ChangeCounter(Counters.HEALTH, -hunger)
-            If character.IsDead Then
-                world.AddMessage($"{character.Name} is dead.")
-            Else
-                world.AddMessage($"{character.Name} now has {character.GetHealth}/{character.GetMaximumHealth} health.")
-            End If
+            ApplyDamage(character, hunger)
+        End If
+    End Sub
+    <Extension>
+    Private Sub ApplyDamage(character As ICharacter, damage As Integer)
+        Dim world = character.World
+        world.AddMessage($"{character.Name} loses {damage} health.")
+        character.ChangeCounter(Counters.HEALTH, -damage)
+        If character.IsDead Then
+            World.AddMessage($"{character.Name} is dead.")
+        Else
+            World.AddMessage($"{character.Name} now has {character.GetHealth}/{character.GetMaximumHealth} health.")
         End If
     End Sub
 End Module

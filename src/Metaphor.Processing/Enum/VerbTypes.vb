@@ -9,4 +9,5 @@
     Friend Const STOP_AND_SMELL As String = NameOf(STOP_AND_SMELL)
     Friend Const GIVE_FLOWER As String = NameOf(GIVE_FLOWER)
     Friend Const BUY_SNAX As String = NameOf(BUY_SNAX)
+    Friend Const TAKE_NAP As String = NameOf(TAKE_NAP)
 End Module

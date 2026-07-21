@@ -31,6 +31,7 @@ Friend Module LocationInitializer
                    character.CreateVerb(VerbTypes.COMPLETE_JOURNEY, "Complete Journey", "It is a privilege to see something end. You then get to either remember it fondly, or be glad that it's over. Sometimes, it's a bit of both. Life is messy that way.")
                    character.CreateVerb(VerbTypes.CHANGE_PACE, "Change Pace...", "New York City? (Get a rope!)")
                    character.CreateVerb(VerbTypes.EAT_SNAX, "Eat Snax", "Snax are delicious!")
+                   character.CreateVerb(VerbTypes.TAKE_NAP, "Take Nap", "ZZZZZZZZZZZZZZZ.")
                    character.CreateVerb(VerbTypes.FORAGE, "Forage", "You scrounge for resources.")
                    character.World.Avatar = character
                End Sub

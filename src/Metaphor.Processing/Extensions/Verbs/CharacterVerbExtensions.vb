@@ -11,8 +11,13 @@ Friend Module CharacterVerbExtensions
             {VerbTypes.CONTINUE_JOURNEY, AddressOf IsNotDead},
             {VerbTypes.COMPLETE_JOURNEY, AddressOf IsJourneyComplete},
             {VerbTypes.EAT_SNAX, AddressOf CanEatSnax},
-            {VerbTypes.GIVE_FLOWER, AddressOf CanGiveFlower}
+            {VerbTypes.GIVE_FLOWER, AddressOf CanGiveFlower},
+            {VerbTypes.TAKE_NAP, AddressOf CanTakeNap}
         }
+
+    Private Function CanTakeNap(verb As IVerb, character As ICharacter) As Boolean
+        Return character.GetFatigue() >= (character.GetMaximumFatigue() \ 2)
+    End Function
 
     Private Function CanGiveFlower(verb As IVerb, character As ICharacter) As Boolean
         Dim avatar = verb.World.Avatar
@@ -47,8 +52,19 @@ Friend Module CharacterVerbExtensions
             {VerbTypes.COMPLETE_JOURNEY, AddressOf HandleCompleteJourney},
             {VerbTypes.EAT_SNAX, AddressOf HandleEatSnax},
             {VerbTypes.FORAGE, AddressOf HandleForage},
-            {VerbTypes.GIVE_FLOWER, AddressOf HandleGiveFlower}
+            {VerbTypes.GIVE_FLOWER, AddressOf HandleGiveFlower},
+            {VerbTypes.TAKE_NAP, AddressOf HandleTakeNap}
         }
+
+    Private Sub HandleTakeNap(verb As IVerb, character As ICharacter)
+        Const FATIGUE_PER_HOUR = 10
+        Dim world = verb.World
+        Dim hours = character.GetFatigue() \ FATIGUE_PER_HOUR
+        world.AddMessage($"{character.Name} naps for {hours} hours.")
+        character.ApplyHunger(hours)
+        world.AddMessage($"{character.Name} awakens from their nap refreshed!")
+        character.SetCounter(Counters.FATIGUE, 0)
+    End Sub
 
     Private Sub HandleGiveFlower(verb As IVerb, character As ICharacter)
         Dim world = verb.World
@@ -74,6 +90,7 @@ Friend Module CharacterVerbExtensions
             location.SetCounter(Counters.FORAGING_DIFFICULTY, forageRoll + 1)
         End If
         character.ApplyHunger(1)
+        character.ApplyFatigue(1)
         character.EarnForagingExperience(1)
     End Sub
 
@@ -98,6 +115,7 @@ Friend Module CharacterVerbExtensions
         character.ChangeCounter(Counters.DISTANCE_REMAINING, -pace)
         world.AddMessage($"{character.Name} has {character.GetDistanceRemaining()} miles left to go.")
         character.ApplyHunger(pace)
+        character.ApplyFatigue(pace)
         character.Location.Update()
         character.Look()
     End Sub
