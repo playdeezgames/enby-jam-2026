@@ -31,6 +31,12 @@ Public Class WorldModel
         End Get
     End Property
 
+    Public ReadOnly Property InAd As Boolean Implements IWorldModel.InAd
+        Get
+            Return Entity.AdFinish.HasValue AndAlso DateTimeOffset.Now < Entity.AdFinish.Value
+        End Get
+    End Property
+
     Public Sub Embark(chosenName As String, chosenPronouns As String) Implements IWorldModel.Embark
         Abandon()
         Entity.Initialize(InitializationContext.Create(chosenName, chosenPronouns))
@@ -38,6 +44,28 @@ Public Class WorldModel
 
     Public Sub Abandon() Implements IWorldModel.Abandon
         Entity.Clear()
+    End Sub
+
+    Public Sub ShowAd() Implements IWorldModel.ShowAd
+        Entity.ClearMessages()
+        If InAd Then
+            Dim timeRemaining = Entity.AdFinish.Value - DateTimeOffset.Now
+            Entity.AddMessage($"Time left in ad break: {timeRemaining.ToString("mm\:ss")}")
+            Entity.AddMessage(
+            "For all yer umlauting needs! umlaut.fyi",
+            New Dictionary(Of String, String) From
+            {
+                {"ELEMENT_TYPE", "LINK"},
+                {"URL", "https://umlaut.fyi/"}
+            })
+        Else
+            Entity.AddMessage("Ad break is complete! You may return to yer metaphor!")
+            Entity.AdFinish = Nothing
+        End If
+    End Sub
+
+    Public Sub StartAd() Implements IWorldModel.StartAd
+        Entity.AdFinish = DateTimeOffset.Now.AddMinutes(2.0)
     End Sub
 
     Public Shared Async Function Create(quittable As Boolean, persister As IPersister) As Task(Of IWorldModel)

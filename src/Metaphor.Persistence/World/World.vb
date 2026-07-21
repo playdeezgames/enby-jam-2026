@@ -22,6 +22,7 @@ Public Class World
         Data.Items.Clear()
         Data.Features.Clear()
         Data.Verbs.Clear()
+        Data.AdFinishes = Nothing
     End Sub
 
     Protected Overrides ReadOnly Property Data As WorldData
@@ -40,6 +41,15 @@ Public Class World
         End Get
         Set(value As ICharacter)
             Data.AvatarId = value?.EntityId
+        End Set
+    End Property
+
+    Public Property AdFinish As DateTimeOffset? Implements IWorld.AdFinish
+        Get
+            Return Data.AdFinishes
+        End Get
+        Set(value As DateTimeOffset?)
+            Data.AdFinishes = value
         End Set
     End Property
 

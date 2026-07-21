@@ -10,4 +10,5 @@ Public Class WorldData
     Public Property Items As New Dictionary(Of Guid, ItemData)
     Public Property Features As New Dictionary(Of Guid, FeatureData)
     Public Property Verbs As New Dictionary(Of Guid, VerbData)
+    Public Property AdFinishes As DateTimeOffset?
 End Class

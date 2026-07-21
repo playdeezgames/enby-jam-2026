@@ -13,6 +13,9 @@ Friend Class InPlay
     End Function
 
     Public Overrides Function Run() As IDialogPrompt
+        If Model.InAd Then
+            Return AdPrompt.Launch(Context, Model, Previous).Invoke().Run()
+        End If
         If Model.Avatar.IsDone Then
             Return DonePrompt.Launch(Context, Model, Previous).Invoke().Run()
         End If

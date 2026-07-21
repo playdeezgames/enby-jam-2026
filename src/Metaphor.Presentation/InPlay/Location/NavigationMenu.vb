@@ -25,9 +25,14 @@ Friend Class NavigationMenu
                 Append(AddressOf ChooseFeatures).
                 Append(AddressOf ChooseLook).
                 Concat(Model.Location.Verbs.Select(AddressOf ChooseLocationVerb)).
+                Append(AddressOf ChooseWatchAd).
                 Append(AddressOf ChooseGameMenu)
         End Get
     End Property
+
+    Private Function ChooseWatchAd(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice
+        Return DialogChoice.CreateEnabled("Watch Ad...", WatchAdActivity.Launch(context, model, previous))
+    End Function
 
     Private Function ChooseStatus(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice
         Return DialogChoice.CreateEnabled("Status...", StatusActivity.LaunchStatusActivity(context, model, previous))
