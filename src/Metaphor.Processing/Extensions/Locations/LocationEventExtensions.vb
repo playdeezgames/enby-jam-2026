@@ -13,8 +13,19 @@ Friend Module LocationEventExtensions
             {AddressOf FlowerPatchEvent, 10},
             {AddressOf SpawnTraehi, 5},
             {AddressOf SpawnVendingMachine, 5},
-            {AddressOf SpawnAbandonedHouse, 25}
+            {AddressOf SpawnAbandonedHouse, 1},
+            {AddressOf SpawnCatShrine, 25}
         }
+#Region "Cat Shrine"
+    Private ReadOnly catNames As IEnumerable(Of String) = {"Captain Jack", "Nina", "Körmy"}
+    Private Sub SpawnCatShrine(location As ILocation)
+        Dim world = location.World
+        Dim avatar = world.Avatar
+        Dim catName = RNG.FromEnumerable(catNames)
+        Dim feature = location.CreateFeature(FeatureTypes.CAT_SHRINE, "Cat Shrine", $"This is the shrine to a cat. Specifically, this is a shrine for a cat named `{catName}`.")
+        world.AddMessage($"{avatar.Name} finds a {feature.Name}.")
+    End Sub
+#End Region
 #Region "Abandoned House"
     Private Sub SpawnAbandonedHouse(location As ILocation)
         Dim world = location.World
