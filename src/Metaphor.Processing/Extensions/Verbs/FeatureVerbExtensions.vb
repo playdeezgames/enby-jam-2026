@@ -32,8 +32,13 @@ Friend Module FeatureVerbExtensions
     Private ReadOnly performTable As New Dictionary(Of String, PerformHandler) From
         {
             {VerbTypes.PICK_FLOWER, AddressOf HandlePickFlower},
-            {VerbTypes.BUY_SNAX, AddressOf HandleBuySnax}
+            {VerbTypes.BUY_SNAX, AddressOf HandleBuySnax},
+            {VerbTypes.PRAY, AddressOf HandlePray}
         }
+
+    Private Sub HandlePray(verb As IVerb, feature As IFeature)
+        'TODO:
+    End Sub
 
     Private Sub HandleBuySnax(verb As IVerb, feature As IFeature)
         Dim world = verb.World

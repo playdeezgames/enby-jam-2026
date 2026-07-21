@@ -10,4 +10,5 @@
     Friend Const GIVE_FLOWER As String = NameOf(GIVE_FLOWER)
     Friend Const BUY_SNAX As String = NameOf(BUY_SNAX)
     Friend Const TAKE_NAP As String = NameOf(TAKE_NAP)
+    Friend Const PRAY As String = NameOf(PRAY)
 End Module

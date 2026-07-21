@@ -33,7 +33,7 @@ Public Class WorldModel
 
     Public ReadOnly Property InAd As Boolean Implements IWorldModel.InAd
         Get
-            Return Entity.AdFinish.HasValue AndAlso DateTimeOffset.Now < Entity.AdFinish.Value
+            Return Entity.AdFinish.HasValue
         End Get
     End Property
 
@@ -48,7 +48,7 @@ Public Class WorldModel
 
     Public Sub ShowAd() Implements IWorldModel.ShowAd
         Entity.ClearMessages()
-        If InAd Then
+        If Entity.AdFinish.Value > DateTimeOffset.Now Then
             Dim timeRemaining = Entity.AdFinish.Value - DateTimeOffset.Now
             Entity.AddMessage($"Time left in ad break: {timeRemaining.ToString("mm\:ss")}")
             Entity.AddMessage(
@@ -60,6 +60,9 @@ Public Class WorldModel
             })
         Else
             Entity.AddMessage("Ad break is complete! You may return to yer metaphor!")
+            Dim avatar = Entity.Avatar
+            Dim coupon = avatar.Inventory.CreateItem(ItemTypes.COUPON, "Coupon", "This is a coupon.")
+            Entity.AddMessage($"{avatar.Name} receives {coupon.Name}.")
             Entity.AdFinish = Nothing
         End If
     End Sub
