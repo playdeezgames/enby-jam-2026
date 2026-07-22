@@ -20,6 +20,8 @@ article{
     border: 1px solid #c0c;
     color: #c0c;
     background-color: #000;
+    margin-right: 15px;
+    margin-bottom: 15px;
 }
 
 input.valid {
