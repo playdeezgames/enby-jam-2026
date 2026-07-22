@@ -33,6 +33,16 @@ Friend Class ItemStackModel
         End Get
     End Property
 
+    Public Sub Drop(dropCount As Integer) Implements IItemStackModel.Drop
+        Dim world = ItemStack.Top.World
+        Dim character = world.Avatar
+        world.ClearMessages()
+        character.World.AddMessage($"{character.Name} drops {dropCount} {ItemStack.Top.Name}.")
+        For Each dummy In Enumerable.Range(0, dropCount)
+            ItemStack.Top.Inventory = character.Location.Inventory
+        Next
+    End Sub
+
     Friend Shared Function Create(itemStack As IItemStack) As IItemStackModel
         Return New ItemStackModel(itemStack)
     End Function

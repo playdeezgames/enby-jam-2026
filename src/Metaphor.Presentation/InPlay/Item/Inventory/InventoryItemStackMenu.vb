@@ -21,9 +21,24 @@ Friend Class InventoryItemStackMenu
         Get
             Return Enumerable.Empty(Of LaunchDelegate).
                 Append(AddressOf ChooseNeverMind).
+                Append(AddressOf ChooseDropOne).
+                Append(AddressOf ChooseDropHalf).
+                Append(AddressOf ChooseDropAll).
                 Concat(itemStackModel.Items.Select(AddressOf ChooseItem))
         End Get
     End Property
+
+    Private Function ChooseDropAll(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice
+        Return DialogChoice.Create(itemStackModel.Count > 1, "Drop All", DropItemStackActivity.Launch(context, model, previous, itemStackModel, itemStackModel.Count))
+    End Function
+
+    Private Function ChooseDropHalf(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice
+        Return DialogChoice.Create(itemStackModel.Count > 3, $"Drop Half({itemStackModel.Count \ 2})", DropItemStackActivity.Launch(context, model, previous, itemStackModel, itemStackModel.Count \ 2))
+    End Function
+
+    Private Function ChooseDropOne(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice
+        Return DialogChoice.Create(itemStackModel.Count > 1, "Drop One", DropItemStackActivity.Launch(context, model, previous, itemStackModel, 1))
+    End Function
 
     Private Function ChooseItem(itemModel As IItemModel) As LaunchDelegate
         Return Function(c, m, p) DialogChoice.CreateEnabled(itemModel.Name, InventoryItemMenu.Launch(c, m, p, itemModel))
