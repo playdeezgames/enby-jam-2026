@@ -8,14 +8,24 @@ Friend Module LocationEventExtensions
 
     Private ReadOnly eventTable As New Dictionary(Of EventInitializer, Integer) From
         {
-            {AddressOf NothingEvent, 100},
             {AddressOf ShortcutEvent, 10},
             {AddressOf FlowerPatchEvent, 10},
             {AddressOf SpawnTraehi, 5},
             {AddressOf SpawnVendingMachine, 5},
             {AddressOf SpawnAbandonedHouse, 1},
-            {AddressOf SpawnCatShrine, 1}
+            {AddressOf SpawnCatShrine, 1},
+            {AddressOf SpawnKwikTrip, 25},
+            {AddressOf NothingEvent, 100}
         }
+#Region "Kwik Trip"
+    Private Sub SpawnKwikTrip(location As ILocation)
+        Dim world = location.World
+        Dim avatar = world.Avatar
+        Dim feature = location.CreateFeature(FeatureTypes.KWIK_TRIP, "Kwik Trip", "This is a Kwik Trip, a convenience store common in the midwestern US that sell gasoline/petrol and more importantly has a fountain drink dispenser that dispenses Dr Pepper, the elixer of the gods.")
+        feature.CreateVerb(VerbTypes.BUY_DR_PEPPER, "Buy Dr Pepper", "You pour yerself a Dr Pepper from the fountain. You can barely contain yer exicitement!")
+        world.AddMessage($"{avatar.Name} finds a {feature.Name}.")
+    End Sub
+#End Region
 #Region "Cat Shrine"
     Private ReadOnly catNames As IEnumerable(Of String) = {"Captain Jack", "Nina", "Körmy"}
     Private Sub SpawnCatShrine(location As ILocation)
@@ -45,7 +55,8 @@ Friend Module LocationEventExtensions
 
     Private Sub InitializePkasticBag(item As IItem)
         item.SetTag(Tags.SUPPRESS_ABANDONED_HOUSE)
-        'TODO: reach in
+        item.InitializeCounter(Counters.SNAX, RNG.RollDice("2d6"), 0, 12)
+        item.CreateVerb(VerbTypes.REACH_IN, "Reach In...", "You steel yer nerves and reach in to the pkastic bag, knowing the developer to be a devious person.")
     End Sub
 
     Private Sub InitializeDestroyedPrinter(item As IItem)

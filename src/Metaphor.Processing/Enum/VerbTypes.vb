@@ -1,4 +1,5 @@
 ﻿Friend Module VerbTypes
+    Friend Const BUY_DR_PEPPER As String = NameOf(BUY_DR_PEPPER)
     Friend Const BUY_SNAX As String = NameOf(BUY_SNAX)
     Friend Const CHANGE_PACE As String = NameOf(CHANGE_PACE)
     Friend Const CONTINUE_JOURNEY As String = NameOf(CONTINUE_JOURNEY)
@@ -8,6 +9,7 @@
     Friend Const FORAGE As String = NameOf(FORAGE)
     Friend Const PRAY As String = NameOf(PRAY)
     Friend Const PICK_FLOWER As String = NameOf(PICK_FLOWER)
+    Friend Const REACH_IN As String = NameOf(REACH_IN)
     Friend Const STOP_AND_SMELL As String = NameOf(STOP_AND_SMELL)
     Friend Const TAKE_NAP As String = NameOf(TAKE_NAP)
     Friend Const TAKE_SHORTCUT As String = NameOf(TAKE_SHORTCUT)

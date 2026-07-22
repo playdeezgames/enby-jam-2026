@@ -20,10 +20,25 @@ Friend Module ItemVerbExtensions
 
     Private ReadOnly performTable As New Dictionary(Of String, PerformHandler) From
         {
-            {VerbTypes.STOP_AND_SMELL, AddressOf StopAndSmell}
+            {VerbTypes.STOP_AND_SMELL, AddressOf HandleStopAndSmell},
+            {VerbTypes.REACH_IN, AddressOf HandleReachIn}
         }
 
-    Private Sub StopAndSmell(verb As IVerb, item As IItem)
+    Private Sub HandleReachIn(verb As IVerb, item As IItem)
+        Dim world = verb.World
+        Dim avatar = world.Avatar
+        Dim snax = item.GetCounter(Counters.SNAX)
+        If snax > 0 Then
+            item.ChangeCounter(Counters.SNAX, -1)
+            avatar.ChangeCounter(Counters.SNAX, 1)
+            world.AddMessage($"{avatar.Name} finds 1 snax!")
+            world.AddMessage($"{avatar.Name} has {avatar.GetSnax()} snax.")
+        Else
+            world.AddMessage($"{avatar.Name} finds nothing!")
+        End If
+    End Sub
+
+    Private Sub HandleStopAndSmell(verb As IVerb, item As IItem)
         Dim world = verb.World
         world.AddMessage("Hey! Speaking of Stopping and Smelling Flowers...")
         world.AddMessage("There's a new game out! You should play it!")

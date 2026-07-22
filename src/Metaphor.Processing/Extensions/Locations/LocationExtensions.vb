@@ -23,12 +23,19 @@ Friend Module LocationExtensions
             feature.Remove()
         Next
     End Sub
+    <Extension>
+    Private Sub RemoveAllGroundItems(location As ILocation)
+        For Each item In location.Inventory.Items
+            item.Remove()
+        Next
+    End Sub
 
     <Extension>
     Friend Sub Update(location As ILocation)
         location.GenerateForagingDifficulty()
         location.RemoveNonAvatarCharacters()
         location.RemoveAllFeatures()
+        location.RemoveAllGroundItems()
         location.ClearTag(Tags.SHORTCUT)
         location.GenerateEvent()
     End Sub
