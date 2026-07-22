@@ -1,7 +1,7 @@
 ﻿Imports Metaphor.Processing
 Imports TGGD.Presentation
 
-Friend Class DropActivity
+Friend Class DropItemActivity
     Inherits MetaphorDialog
 
     Private ReadOnly itemModel As IItemModel
@@ -12,7 +12,7 @@ Friend Class DropActivity
     End Sub
 
     Friend Shared Function Launch(context As IDisplayContext, model As IWorldModel, previous As DialogSource, itemModel As IItemModel) As DialogSource
-        Return Function() New DropActivity(context, model, previous, itemModel)
+        Return Function() New DropItemActivity(context, model, previous, itemModel)
     End Function
 
     Public Overrides Function Run() As IDialogPrompt

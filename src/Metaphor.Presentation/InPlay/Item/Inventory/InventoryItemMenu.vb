@@ -32,7 +32,7 @@ Friend Class InventoryItemMenu
     End Function
 
     Private Function ChooseDrop(context As IDisplayContext, model As IWorldModel, previous As DialogSource) As IDialogChoice
-        Return DialogChoice.CreateEnabled("Drop", DropActivity.Launch(context, model, previous, itemModel))
+        Return DialogChoice.CreateEnabled("Drop", DropItemActivity.Launch(context, model, previous, itemModel))
     End Function
 
     Friend Shared Function Launch(c As IDisplayContext, m As IWorldModel, p As DialogSource, itemModel As IItemModel) As DialogSource
