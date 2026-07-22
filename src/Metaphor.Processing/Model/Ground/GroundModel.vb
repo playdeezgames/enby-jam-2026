@@ -21,6 +21,12 @@ Friend Class GroundModel
         End Get
     End Property
 
+    Public ReadOnly Property Inventory As IInventoryModel Implements IGroundModel.Inventory
+        Get
+            Return InventoryModel.Create(world.Avatar.Location.Inventory)
+        End Get
+    End Property
+
     Friend Shared Function Create(entity As IWorld) As IGroundModel
         Return New GroundModel(entity)
     End Function

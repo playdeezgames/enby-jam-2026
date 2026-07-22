@@ -4,4 +4,5 @@
     ReadOnly Property Items As IEnumerable(Of IItemModel)
     ReadOnly Property Count As Integer
     Sub Drop(dropCount As Integer)
+    Sub Take(takeCount As Integer)
 End Interface

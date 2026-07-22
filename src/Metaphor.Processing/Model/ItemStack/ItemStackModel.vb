@@ -43,6 +43,16 @@ Friend Class ItemStackModel
         Next
     End Sub
 
+    Public Sub Take(takeCount As Integer) Implements IItemStackModel.Take
+        Dim world = ItemStack.Top.World
+        Dim character = world.Avatar
+        world.ClearMessages()
+        character.World.AddMessage($"{character.Name} takes {takeCount} {ItemStack.Top.Name}.")
+        For Each dummy In Enumerable.Range(0, takeCount)
+            ItemStack.Top.Inventory = character.Inventory
+        Next
+    End Sub
+
     Friend Shared Function Create(itemStack As IItemStack) As IItemStackModel
         Return New ItemStackModel(itemStack)
     End Function

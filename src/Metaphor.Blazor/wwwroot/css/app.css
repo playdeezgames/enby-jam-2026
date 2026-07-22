@@ -4,6 +4,12 @@ html, body {
     color: #C000C0;
 }
 
+article{
+    width: 80%;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
 .prompt-title {
     color: #00C000;
 }

@@ -11,7 +11,7 @@ Friend Class AvatarModel
 
     Public ReadOnly Property Inventory As IInventoryModel Implements IAvatarModel.Inventory
         Get
-            Return InventoryModel.Create(avatar.World)
+            Return InventoryModel.Create(avatar.Inventory)
         End Get
     End Property
 

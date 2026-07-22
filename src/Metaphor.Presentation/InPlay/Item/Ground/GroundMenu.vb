@@ -19,11 +19,19 @@ Friend Class GroundMenu
         Get
             Return Enumerable.Empty(Of LaunchDelegate).
                 Append(AddressOf ChooseNeverMind).
-                Concat(Model.Location.Ground.Items.Select(AddressOf ChooseItem))
+                Concat(Model.Location.Ground.Inventory.ItemStacks.Select(AddressOf ChooseItemStack))
         End Get
     End Property
 
-    Private Function ChooseItem(itemModel As IItemModel) As LaunchDelegate
+    Private Function ChooseItemStack(itemStackModel As IItemStackModel) As LaunchDelegate
+        Return Function(c, m, p)
+                   Return DialogChoice.CreateEnabled(
+                        itemStackModel.Name,
+                        GroundItemStackMenu.Launch(c, m, p, itemStackModel))
+               End Function
+    End Function
+
+    Private Shared Function ChooseItem(itemModel As IItemModel) As LaunchDelegate
         Return Function(c, m, p)
                    Return DialogChoice.Create(True, itemModel.Name, GroundItemMenu.Launch(c, m, p, itemModel))
                End Function
