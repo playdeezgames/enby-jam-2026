@@ -6,17 +6,31 @@ Friend Module LocationEventExtensions
 
     Private Delegate Sub EventInitializer(location As ILocation)
 
+#If DEBUG Then
+    Private Const TEST_WEIGHT = 25
+#End If
+
     Private ReadOnly eventTable As New Dictionary(Of EventInitializer, Integer) From
         {
-            {AddressOf ShortcutEvent, 10},
-            {AddressOf FlowerPatchEvent, 10},
+            {AddressOf SpawnShortcut, 10},
+            {AddressOf SpawnFlowerPatch, 10},
             {AddressOf SpawnTraehi, 5},
             {AddressOf SpawnVendingMachine, 5},
             {AddressOf SpawnAbandonedHouse, 1},
             {AddressOf SpawnCatShrine, 1},
-            {AddressOf SpawnKwikTrip, 25},
-            {AddressOf NothingEvent, 100}
+            {AddressOf SpawnKwikTrip, 1},
+            {AddressOf SpawnRecycleBin, 1},
+            {AddressOf SpawnNothing, 100}
         }
+#Region "Recycle Bin"
+    Private Sub SpawnRecycleBin(location As ILocation)
+        Dim world = location.World
+        Dim avatar = world.Avatar
+        Dim feature = location.CreateFeature(FeatureTypes.RECYCLE_BIN, "Recycle Bin", "This is a recycle bin. You place litter in here, so that you are not a bad person.")
+        feature.CreateVerb(VerbTypes.RECYCLE_LITTER, "Recycle Litter", "You put litter into the bin and feel better about yerself.")
+        world.AddMessage($"{avatar.Name} finds a {feature.Name}.")
+    End Sub
+#End Region
 #Region "Kwik Trip"
     Private Sub SpawnKwikTrip(location As ILocation)
         Dim world = location.World
@@ -42,7 +56,7 @@ Friend Module LocationEventExtensions
         Dim world = location.World
         Dim avatar = world.Avatar
         If avatar.Inventory.Items.Any(Function(x) x.HasTag(Tags.SUPPRESS_ABANDONED_HOUSE)) Then
-            NothingEvent(location)
+            SpawnNothing(location)
             Return
         End If
         Dim feature = location.CreateFeature(FeatureTypes.ABANDONED_HOUSE, "Abandoned House", "This house is abandoned. The lawn is overgrown. The doors have been ripped off of the hinges, and the windows are made of sheet goods.", AddressOf InitializeAbandonedHouse)
@@ -89,7 +103,7 @@ Friend Module LocationEventExtensions
 #End Region
 
 #Region "Pick Flower"
-    Private Sub FlowerPatchEvent(location As ILocation)
+    Private Sub SpawnFlowerPatch(location As ILocation)
         Dim world = location.World
         Dim character = world.Avatar
         world.AddMessage($"{character.Name} discovers a patch of wild flower!")
@@ -102,14 +116,14 @@ Friend Module LocationEventExtensions
     End Sub
 #End Region
 
-    Private Sub ShortcutEvent(location As ILocation)
+    Private Sub SpawnShortcut(location As ILocation)
         Dim world = location.World
         Dim character = world.Avatar
         world.AddMessage($"{character.Name} discovers a potential shortcut!")
         location.SetTag(Tags.SHORTCUT)
     End Sub
 
-    Private Sub NothingEvent(location As ILocation)
+    Private Sub SpawnNothing(location As ILocation)
         location.World.AddMessage("Nothing eventful occurs.")
     End Sub
 

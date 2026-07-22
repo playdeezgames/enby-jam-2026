@@ -11,6 +11,7 @@
     Friend Const PRAY As String = NameOf(PRAY)
     Friend Const PICK_FLOWER As String = NameOf(PICK_FLOWER)
     Friend Const REACH_IN As String = NameOf(REACH_IN)
+    Friend Const RECYCLE_LITTER As String = NameOf(RECYCLE_LITTER)
     Friend Const STOP_AND_SMELL As String = NameOf(STOP_AND_SMELL)
     Friend Const TAKE_NAP As String = NameOf(TAKE_NAP)
     Friend Const TAKE_SHORTCUT As String = NameOf(TAKE_SHORTCUT)

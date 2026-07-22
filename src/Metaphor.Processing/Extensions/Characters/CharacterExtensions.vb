@@ -149,6 +149,9 @@ Friend Module CharacterExtensions
         If Not character.IsCounterMinimum(Counters.LITTERING) Then
             world.AddMessage($"- Littering: {character.GetCounter(Counters.LITTERING)}")
         End If
+        If Not character.IsCounterMinimum(Counters.RECYCLING) Then
+            world.AddMessage($"- Recycling: {character.GetCounter(Counters.RECYCLING)}")
+        End If
         world.AddMessage($"- Jools: {character.GetJools()}")
     End Sub
     <Extension>

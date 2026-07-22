@@ -32,7 +32,7 @@ Friend Module LocationVerbExtensions
     Private Sub HandleTakeShortcut(verb As IVerb, location As ILocation)
         Dim world = location.World
         Dim avatar = world.Avatar
-        Dim gain = RNG.RollDice("2d6+-2d6") - avatar.GetCounter(Counters.LITTERING)
+        Dim gain = RNG.RollDice("2d6+-2d6") - avatar.GetCounter(Counters.LITTERING) + avatar.GetCounter(Counters.RECYCLING)
         avatar.ChangeCounter(Counters.DISTANCE_REMAINING, gain)
         If gain < 0 Then
             world.AddMessage($"The shortcut removes {-gain} miles from {avatar.Name}'s journey.")

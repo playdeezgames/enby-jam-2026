@@ -10,8 +10,13 @@ Friend Module FeatureVerbExtensions
         {
             {VerbTypes.PICK_FLOWER, AddressOf CanPickFlower},
             {VerbTypes.BUY_SNAX, AddressOf CanBuySnax},
-            {VerbTypes.BUY_DR_PEPPER, AddressOf CanBuyDrPepper}
+            {VerbTypes.BUY_DR_PEPPER, AddressOf CanBuyDrPepper},
+            {VerbTypes.RECYCLE_LITTER, AddressOf CanRecycleLitter}
         }
+
+    Private Function CanRecycleLitter(verb As IVerb, feature As IFeature) As Boolean
+        Return verb.World.Avatar.Inventory.Items.Any(Function(x) x.EntityType = ItemTypes.LITTER)
+    End Function
 
     Private Function CanBuyDrPepper(verb As IVerb, feature As IFeature) As Boolean
         Return verb.World.Avatar.GetJools() > 0
@@ -39,8 +44,20 @@ Friend Module FeatureVerbExtensions
             {VerbTypes.PICK_FLOWER, AddressOf HandlePickFlower},
             {VerbTypes.BUY_SNAX, AddressOf HandleBuySnax},
             {VerbTypes.PRAY, AddressOf HandlePray},
-            {VerbTypes.BUY_DR_PEPPER, AddressOf HandleBuyDrPepper}
+            {VerbTypes.BUY_DR_PEPPER, AddressOf HandleBuyDrPepper},
+            {VerbTypes.RECYCLE_LITTER, AddressOf HandleRecycleLitter}
         }
+
+    Private Sub HandleRecycleLitter(verb As IVerb, feature As IFeature)
+        Dim world = verb.World
+        Dim avatar = world.Avatar
+        Dim items = avatar.Inventory.Items.Where(Function(x) x.EntityType = ItemTypes.LITTER)
+        world.AddMessage($"{avatar.Name} recycles {items.Count} piece(s) of litter.")
+        avatar.ChangeCounter(Counters.RECYCLING, items.Count)
+        For Each item In items
+            item.Remove()
+        Next
+    End Sub
 #Region "Buy Dr Pepper"
     Private Sub HandleBuyDrPepper(verb As IVerb, feature As IFeature)
         Dim world = verb.World

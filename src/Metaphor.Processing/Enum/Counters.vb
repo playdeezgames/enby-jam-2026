@@ -10,6 +10,7 @@
     Friend Const JOOLS As String = NameOf(JOOLS)
     Friend Const LITTERING As String = NameOf(LITTERING)
     Friend Const PACE As String = NameOf(PACE)
+    Friend Const RECYCLING As String = NameOf(RECYCLING)
     Friend Const SATIETY As String = NameOf(SATIETY)
     Friend Const SNAX As String = NameOf(SNAX)
     Friend Const STOMACH As String = NameOf(STOMACH)
