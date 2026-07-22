@@ -25,7 +25,11 @@ Friend Module LocationExtensions
     End Sub
     <Extension>
     Private Sub RemoveAllGroundItems(location As ILocation)
+        Dim avatar = location.World.Avatar
         For Each item In location.Inventory.Items
+            If item.EntityType = ItemTypes.LITTER Then
+                avatar.ChangeCounter(Counters.LITTERING, 1)
+            End If
             item.Remove()
         Next
     End Sub

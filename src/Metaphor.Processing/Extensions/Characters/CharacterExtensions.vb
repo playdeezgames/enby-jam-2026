@@ -146,6 +146,9 @@ Friend Module CharacterExtensions
         If character.HasSnax() Then
             world.AddMessage($"- Snax: {character.GetSnax()}")
         End If
+        If Not character.IsCounterMinimum(Counters.LITTERING) Then
+            world.AddMessage($"- Littering: {character.GetCounter(Counters.LITTERING)}")
+        End If
         world.AddMessage($"- Jools: {character.GetJools()}")
     End Sub
     <Extension>

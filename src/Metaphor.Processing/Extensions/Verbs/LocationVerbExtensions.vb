@@ -31,21 +31,21 @@ Friend Module LocationVerbExtensions
 
     Private Sub HandleTakeShortcut(verb As IVerb, location As ILocation)
         Dim world = location.World
-        Dim gain = RNG.RollDice("2d6+-2d6")
-        Dim character = world.Avatar
-        character.ChangeCounter(Counters.DISTANCE_REMAINING, gain)
+        Dim avatar = world.Avatar
+        Dim gain = RNG.RollDice("2d6+-2d6") - avatar.GetCounter(Counters.LITTERING)
+        avatar.ChangeCounter(Counters.DISTANCE_REMAINING, gain)
         If gain < 0 Then
-            world.AddMessage($"The shortcut removes {-gain} miles from {character.Name}'s journey.")
+            world.AddMessage($"The shortcut removes {-gain} miles from {avatar.Name}'s journey.")
         ElseIf gain > 0 Then
-            world.AddMessage($"The shortcut adds {gain} miles to {character.Name}'s journey.")
+            world.AddMessage($"The shortcut adds {gain} miles to {avatar.Name}'s journey.")
         Else
-            world.AddMessage($"The shortcut does not help {character.Name}'s journey.")
+            world.AddMessage($"The shortcut does not help {avatar.Name}'s journey.")
         End If
-        world.AddMessage($"Distance remaining: {character.GetDistanceRemaining()} miles.")
-        character.ApplyHunger(1)
-        character.ApplyFatigue(1)
+        world.AddMessage($"Distance remaining: {avatar.GetDistanceRemaining()} miles.")
+        avatar.ApplyHunger(1)
+        avatar.ApplyFatigue(1)
         location.Update()
-        character.Look()
+        avatar.Look()
     End Sub
 
     <Extension>

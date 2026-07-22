@@ -8,6 +8,7 @@
     Friend Const FORAGING_DIFFICULTY As String = NameOf(FORAGING_DIFFICULTY)
     Friend Const HEALTH As String = NameOf(HEALTH)
     Friend Const JOOLS As String = NameOf(JOOLS)
+    Friend Const LITTERING As String = NameOf(LITTERING)
     Friend Const PACE As String = NameOf(PACE)
     Friend Const SATIETY As String = NameOf(SATIETY)
     Friend Const SNAX As String = NameOf(SNAX)
