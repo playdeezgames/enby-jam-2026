@@ -40,9 +40,9 @@ Friend Module ItemVerbExtensions
         Dim avatar = world.Avatar
         Dim snax = item.GetCounter(Counters.SNAX)
         If snax > 0 Then
-            item.ChangeCounter(Counters.SNAX, -1)
-            avatar.ChangeCounter(Counters.SNAX, 1)
-            world.AddMessage($"{avatar.Name} finds 1 snax!")
+            item.ChangeCounter(Counters.SNAX, -snax)
+            avatar.ChangeCounter(Counters.SNAX, snax)
+            world.AddMessage($"{avatar.Name} finds {snax} snax!")
             world.AddMessage($"{avatar.Name} has {avatar.GetSnax()} snax.")
         Else
             world.AddMessage($"{avatar.Name} finds nothing!")
