@@ -9,8 +9,13 @@ Friend Module FeatureVerbExtensions
     Private ReadOnly canPerformTable As New Dictionary(Of String, CanPerformHandler) From
         {
             {VerbTypes.PICK_FLOWER, AddressOf CanPickFlower},
-            {VerbTypes.BUY_SNAX, AddressOf CanBuySnax}
+            {VerbTypes.BUY_SNAX, AddressOf CanBuySnax},
+            {VerbTypes.BUY_DR_PEPPER, AddressOf CanBuyDrPepper}
         }
+
+    Private Function CanBuyDrPepper(verb As IVerb, feature As IFeature) As Boolean
+        Return verb.World.Avatar.GetJools() > 0
+    End Function
 
     Private Function CanBuySnax(verb As IVerb, feature As IFeature) As Boolean
         Return verb.World.Avatar.GetJools() > 0
@@ -33,11 +38,30 @@ Friend Module FeatureVerbExtensions
         {
             {VerbTypes.PICK_FLOWER, AddressOf HandlePickFlower},
             {VerbTypes.BUY_SNAX, AddressOf HandleBuySnax},
-            {VerbTypes.PRAY, AddressOf HandlePray}
+            {VerbTypes.PRAY, AddressOf HandlePray},
+            {VerbTypes.BUY_DR_PEPPER, AddressOf HandleBuyDrPepper}
         }
+#Region "Buy Dr Pepper"
+    Private Sub HandleBuyDrPepper(verb As IVerb, feature As IFeature)
+        Dim world = verb.World
+        Dim avatar = world.Avatar
+        avatar.ChangeCounter(Counters.JOOLS, -1)
+        world.AddMessage($"{avatar.Name} spends 1 jools.")
+        world.AddMessage($"{avatar.Name} now has {avatar.GetJools} jools.")
+        avatar.Inventory.CreateItem(ItemTypes.DR_PEPPER, "Big Buddy with Dr Pepper In It", "This is plastic cup filled with Dr Pepper. It is capped with a plastic cap, and has a plastic straw in it.", AddressOf InitializeDrPepper)
+    End Sub
+
+    Private Sub InitializeDrPepper(item As IItem)
+        item.CreateVerb(VerbTypes.DRINK, "Drink", "You drink the beverage!")
+    End Sub
+#End Region
 
     Private Sub HandlePray(verb As IVerb, feature As IFeature)
-        'TODO:
+        Dim world = verb.World
+        Dim avatar = world.Avatar
+        Dim location = avatar.Location
+        Dim item = location.Inventory.CreateItem(ItemTypes.HAIR_BALL, "Hairball", "This is the hairy vomit of a cat. It is hairy because of how cats clean themselves with their tongue. It is gross. I don't know why you'd want to have this in yer inventory.")
+        world.AddMessage($"After praying, {avatar.Name} sees {item.Name} on the ground, mysteriously.")
     End Sub
 
     Private Sub HandleBuySnax(verb As IVerb, feature As IFeature)

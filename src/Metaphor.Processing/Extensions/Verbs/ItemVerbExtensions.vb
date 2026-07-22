@@ -21,8 +21,19 @@ Friend Module ItemVerbExtensions
     Private ReadOnly performTable As New Dictionary(Of String, PerformHandler) From
         {
             {VerbTypes.STOP_AND_SMELL, AddressOf HandleStopAndSmell},
-            {VerbTypes.REACH_IN, AddressOf HandleReachIn}
+            {VerbTypes.REACH_IN, AddressOf HandleReachIn},
+            {VerbTypes.DRINK, AddressOf HandleDrink}
         }
+
+    Private Sub HandleDrink(verb As IVerb, item As IItem)
+        Dim world = verb.World
+        Dim avatar = world.Avatar
+        world.AddMessage($"{avatar.Name} consumes {item.Name}.")
+        world.AddMessage($"{avatar.Name}'s fatigue is completely gone!")
+        avatar.SetCounter(Counters.FATIGUE, avatar.GetCounterMinimum(Counters.FATIGUE))
+        item.Remove()
+        avatar.Inventory.CreateItem(ItemTypes.LITTER, "Litter", "This is litter. Don't drop it on the ground and leave it there, or yer a bad person!")
+    End Sub
 
     Private Sub HandleReachIn(verb As IVerb, item As IItem)
         Dim world = verb.World
