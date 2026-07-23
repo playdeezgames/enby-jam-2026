@@ -1,5 +1,6 @@
 ﻿Friend Module FeatureTypes
     Friend Const ABANDONED_HOUSE As String = NameOf(ABANDONED_HOUSE)
+    Friend Const CAR As String = NameOf(CAR)
     Friend Const CAT_SHRINE As String = NameOf(CAT_SHRINE)
     Friend Const DISHES As String = NameOf(DISHES)
     Friend Const FLOWER_PATCH As String = NameOf(FLOWER_PATCH)

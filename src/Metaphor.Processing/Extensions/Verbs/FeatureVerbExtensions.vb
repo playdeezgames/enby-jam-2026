@@ -12,8 +12,14 @@ Friend Module FeatureVerbExtensions
             {VerbTypes.BUY_SNAX, AddressOf CanBuySnax},
             {VerbTypes.BUY_DR_PEPPER, AddressOf CanBuyDrPepper},
             {VerbTypes.RECYCLE_LITTER, AddressOf CanRecycleLitter},
-            {VerbTypes.WASH_DISHES, AddressOf CanWashDishes}
+            {VerbTypes.WASH_DISHES, AddressOf CanWashDishes},
+            {VerbTypes.DRIVE, AddressOf CanDrive}
         }
+
+    Private Function CanDrive(verb As IVerb, feature As IFeature) As Boolean
+        Dim avatar = verb.World.Avatar
+        Return avatar.Inventory.Items.Any(Function(x) x.HasTag(Tags.CAR_KEYS)) AndAlso avatar.Inventory.Items.Any(Function(x) x.HasTag(Tags.LEARNERS_PERMIT))
+    End Function
 
     Private Function CanWashDishes(verb As IVerb, feature As IFeature) As Boolean
         Return Not verb.HasTag(Tags.DISHES_CLEAN)
@@ -51,8 +57,23 @@ Friend Module FeatureVerbExtensions
             {VerbTypes.PRAY, AddressOf HandlePray},
             {VerbTypes.BUY_DR_PEPPER, AddressOf HandleBuyDrPepper},
             {VerbTypes.RECYCLE_LITTER, AddressOf HandleRecycleLitter},
-            {VerbTypes.WASH_DISHES, AddressOf HandleWashDishes}
+            {VerbTypes.WASH_DISHES, AddressOf HandleWashDishes},
+            {VerbTypes.DRIVE, AddressOf HandleDrive}
         }
+
+    Private Sub HandleDrive(verb As IVerb, feature As IFeature)
+        Dim world = verb.World
+        Dim avatar = world.Avatar
+        Dim keys = avatar.Inventory.Items.Single(Function(x) x.HasTag(Tags.CAR_KEYS))
+        keys.Remove()
+        Dim miles = RNG.RollDice("5d6")
+        world.AddMessage($"{avatar.Name} drives {feature.Name} for {miles} miles before running out of fuel.")
+        avatar.ChangeCounter(Counters.DISTANCE_REMAINING, -miles)
+        world.AddMessage($"{avatar.Name} has {avatar.GetDistanceRemaining()} left to go.")
+        avatar.ApplyHunger(1)
+        avatar.ApplyFatigue(1)
+        avatar.Location.Update()
+    End Sub
 
     Private Sub HandleWashDishes(verb As IVerb, feature As IFeature)
         verb.SetTag(Tags.DISHES_CLEAN)

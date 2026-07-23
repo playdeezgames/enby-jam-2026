@@ -7,22 +7,44 @@ Friend Module LocationEventExtensions
     Private Delegate Sub EventInitializer(location As ILocation)
 
 #If DEBUG Then
-    Private Const TEST_WEIGHT = 25
+    Private Const TEST_WEIGHT = 250
 #End If
 
     Private ReadOnly eventTable As New Dictionary(Of EventInitializer, Integer) From
         {
-            {AddressOf SpawnShortcut, 10},
-            {AddressOf SpawnFlowerPatch, 10},
-            {AddressOf SpawnTraehi, 5},
-            {AddressOf SpawnVendingMachine, 5},
-            {AddressOf SpawnAbandonedHouse, 1},
-            {AddressOf SpawnCatShrine, 1},
-            {AddressOf SpawnKwikTrip, 1},
-            {AddressOf SpawnRecycleBin, 1},
-            {AddressOf SpawnDishes, 10},
-            {AddressOf SpawnNothing, 100}
+            {AddressOf SpawnShortcut, 100},
+            {AddressOf SpawnFlowerPatch, 100},
+            {AddressOf SpawnTraehi, 50},
+            {AddressOf SpawnVendingMachine, 50},
+            {AddressOf SpawnAbandonedHouse, 10},
+            {AddressOf SpawnCatShrine, 10},
+            {AddressOf SpawnKwikTrip, 10},
+            {AddressOf SpawnRecycleBin, 10},
+            {AddressOf SpawnDishes, 100},
+            {AddressOf SpawnCarKeys, 1},
+            {AddressOf SpawnCar, TEST_WEIGHT},
+            {AddressOf SpawnNothing, 1000}
         }
+
+    Private Sub SpawnCar(location As ILocation)
+        Dim world = location.World
+        Dim avatar = world.Avatar
+        Dim feature = location.CreateFeature(FeatureTypes.CAR, "Car", "This is a car. Assuming you have keys to it and a learners permit, you can drive it. Yes, you can drive this with a learner's permit because it has a built-in AI driving instructor. Ain't the future grand?")
+        feature.CreateVerb(VerbTypes.DRIVE, "Drive", "You stick the key in, fire it up, and drive it.")
+        world.AddMessage($"{avatar.Name} finds {feature.Name}.")
+    End Sub
+
+    Private Sub SpawnCarKeys(location As ILocation)
+        Dim world = location.World
+        Dim avatar = world.Avatar
+        If Not avatar.Inventory.Items.Any(Function(x) x.HasTag(Tags.CAR_KEYS)) Then
+            Dim item = location.Inventory.CreateItem(ItemTypes.CAR_KEYS, "Car Keys", "These are car keys. They weren't where you'd thought they'd be!")
+            item.SetTag(Tags.CAR_KEYS)
+            world.AddMessage($"{avatar.Name} sees {item.Name} on the ground.")
+        Else
+            SpawnNothing(location)
+        End If
+    End Sub
 #Region "Dishes"
     Private Sub SpawnDishes(location As ILocation)
         Dim world = location.World
