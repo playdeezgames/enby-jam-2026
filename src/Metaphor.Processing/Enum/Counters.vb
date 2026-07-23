@@ -1,6 +1,7 @@
 ﻿Friend Module Counters
     Friend Const BEWWY_HERTZ As String = NameOf(BEWWY_HERTZ)
     Friend Const DISTANCE_REMAINING As String = NameOf(DISTANCE_REMAINING)
+    Friend Const DRIVING_INSTRUCTION As String = NameOf(DRIVING_INSTRUCTION)
     Friend Const FATIGUE As String = NameOf(FATIGUE)
     Friend Const FORAGE_EXPERIENCE As String = NameOf(FORAGE_EXPERIENCE)
     Friend Const FLOWERS_REMAINING As String = NameOf(FLOWERS_REMAINING)

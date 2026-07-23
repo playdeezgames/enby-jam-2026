@@ -146,6 +146,9 @@ Friend Module CharacterExtensions
         If character.HasSnax() Then
             world.AddMessage($"- Snax: {character.GetSnax()}")
         End If
+        If Not character.IsCounterMaximum(Counters.DRIVING_INSTRUCTION) Then
+            world.AddMessage($"- Driving Instruction: {character.GetCounterPercentage(Counters.DRIVING_INSTRUCTION)}")
+        End If
         If Not character.IsCounterMinimum(Counters.LITTERING) Then
             world.AddMessage($"- Littering: {character.GetCounter(Counters.LITTERING)}")
         End If

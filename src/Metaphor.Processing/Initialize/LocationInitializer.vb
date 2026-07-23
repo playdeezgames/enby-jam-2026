@@ -18,6 +18,7 @@ Friend Module LocationInitializer
                    character.InitializeCounter(Counters.BEWWY_HERTZ, 0, 0, Integer.MaxValue)
                    character.InitializeCounter(Counters.LITTERING, 0, 0, Integer.MaxValue)
                    character.InitializeCounter(Counters.RECYCLING, 0, 0, Integer.MaxValue)
+                   character.InitializeCounter(Counters.DRIVING_INSTRUCTION, 0, 0, 10)
 #If DEBUG Then
                    character.InitializeCounter(Counters.JOOLS, 10, 0, Integer.MaxValue)
                    character.Inventory.CreateItem(
@@ -25,8 +26,6 @@ Friend Module LocationInitializer
                         "Macguffin",
                         "This is a macguffin: a stick for hunting lions in scotland.",
                         Sub(x)
-                            x.SetTag(Tags.CAR_KEYS)
-                            x.SetTag(Tags.LEARNERS_PERMIT)
                         End Sub)
 #Else
                    character.InitializeCounter(Counters.JOOLS, 0, 0, Integer.MaxValue)
