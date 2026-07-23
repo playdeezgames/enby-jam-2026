@@ -11,8 +11,13 @@ Friend Module FeatureVerbExtensions
             {VerbTypes.PICK_FLOWER, AddressOf CanPickFlower},
             {VerbTypes.BUY_SNAX, AddressOf CanBuySnax},
             {VerbTypes.BUY_DR_PEPPER, AddressOf CanBuyDrPepper},
-            {VerbTypes.RECYCLE_LITTER, AddressOf CanRecycleLitter}
+            {VerbTypes.RECYCLE_LITTER, AddressOf CanRecycleLitter},
+            {VerbTypes.WASH_DISHES, AddressOf CanWashDishes}
         }
+
+    Private Function CanWashDishes(verb As IVerb, feature As IFeature) As Boolean
+        Return Not verb.HasTag(Tags.DISHES_CLEAN)
+    End Function
 
     Private Function CanRecycleLitter(verb As IVerb, feature As IFeature) As Boolean
         Return verb.World.Avatar.Inventory.Items.Any(Function(x) x.EntityType = ItemTypes.LITTER)
@@ -45,8 +50,21 @@ Friend Module FeatureVerbExtensions
             {VerbTypes.BUY_SNAX, AddressOf HandleBuySnax},
             {VerbTypes.PRAY, AddressOf HandlePray},
             {VerbTypes.BUY_DR_PEPPER, AddressOf HandleBuyDrPepper},
-            {VerbTypes.RECYCLE_LITTER, AddressOf HandleRecycleLitter}
+            {VerbTypes.RECYCLE_LITTER, AddressOf HandleRecycleLitter},
+            {VerbTypes.WASH_DISHES, AddressOf HandleWashDishes}
         }
+
+    Private Sub HandleWashDishes(verb As IVerb, feature As IFeature)
+        verb.SetTag(Tags.DISHES_CLEAN)
+        Dim world = verb.World
+        Dim avatar = world.Avatar
+        Dim jools = verb.GetCounter(Counters.JOOLS)
+        world.AddMessage($"{avatar.Name} gets {jools} jools.")
+        avatar.ChangeCounter(Counters.JOOLS, jools)
+        world.AddMessage($"{feature.Name} disappears! PÖÖF!")
+        avatar.ApplyFatigue(5)
+        feature.Remove()
+    End Sub
 
     Private Sub HandleRecycleLitter(verb As IVerb, feature As IFeature)
         Dim world = verb.World

@@ -51,6 +51,7 @@ Public Class WorldModel
         If Entity.AdFinish.Value > DateTimeOffset.Now Then
             Dim timeRemaining = Entity.AdFinish.Value - DateTimeOffset.Now
             Entity.AddMessage($"Time left in ad break: {timeRemaining.ToString("mm\:ss")}")
+            Entity.AddMessage("(This is a turn based game. As such, this counter will not automatically change. You have to click the OK button to refresh.)")
             Entity.AddMessage(
             "For all yer umlauting needs! umlaut.fyi",
             New Dictionary(Of String, String) From

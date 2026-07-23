@@ -1,4 +1,5 @@
 ﻿Friend Module Tags
+    Friend Const DISHES_CLEAN As String = NameOf(DISHES_CLEAN)
     Friend Const IS_CHANGING_PACE As String = NameOf(IS_CHANGING_PACE)
     Friend Const JOURNEY_COMPLETE As String = NameOf(JOURNEY_COMPLETE)
     Friend Const SHORTCUT As String = NameOf(SHORTCUT)

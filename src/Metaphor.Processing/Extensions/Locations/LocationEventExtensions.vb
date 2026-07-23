@@ -20,8 +20,20 @@ Friend Module LocationEventExtensions
             {AddressOf SpawnCatShrine, 1},
             {AddressOf SpawnKwikTrip, 1},
             {AddressOf SpawnRecycleBin, 1},
+            {AddressOf SpawnDishes, 10},
             {AddressOf SpawnNothing, 100}
         }
+#Region "Dishes"
+    Private Sub SpawnDishes(location As ILocation)
+        Dim world = location.World
+        Dim avatar = world.Avatar
+        Dim jools = RNG.RollDice("2d6")
+        Dim feature = location.CreateFeature(FeatureTypes.DISHES, "Sink Full of Dirty Dishes", $"This is a sink full to the brim with dirty dishes. They didn't even rinse them. However, if you wash them, you will get {jools} jools.")
+        Dim verb = feature.CreateVerb(VerbTypes.WASH_DISHES, "Wash Dishes", "You wash the stinking, disgusting dishes, dry them, and put them away.")
+        verb.SetCounter(Counters.JOOLS, jools)
+        world.AddMessage($"{avatar.Name} finds a {feature.Name}.")
+    End Sub
+#End Region
 #Region "Recycle Bin"
     Private Sub SpawnRecycleBin(location As ILocation)
         Dim world = location.World

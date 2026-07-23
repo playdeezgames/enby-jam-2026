@@ -15,4 +15,5 @@
     Friend Const STOP_AND_SMELL As String = NameOf(STOP_AND_SMELL)
     Friend Const TAKE_NAP As String = NameOf(TAKE_NAP)
     Friend Const TAKE_SHORTCUT As String = NameOf(TAKE_SHORTCUT)
+    Friend Const WASH_DISHES As String = NameOf(WASH_DISHES)
 End Module
