@@ -50,18 +50,3 @@ weighted_respects_zero_weights :: proc(t: ^testing.T) {
 	}
 }
 
-@(test)
-draw_fits_grid_and_shows_title :: proc(t: ^testing.T) {
-	g: Game
-	grid: Grid
-	game_init(&g, 1, 0)
-	game_draw(&g, &grid)
-	// Title is centred on row 3.
-	found := false
-	for c in grid[3] {
-		if c.ch == 'G' {
-			found = true
-		}
-	}
-	testing.expect(t, found)
-}

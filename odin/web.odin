@@ -14,7 +14,7 @@ foreign host {
 }
 
 @(private = "file")
-game: Game
+app: App
 @(private = "file")
 grid: Grid
 @(private = "file")
@@ -22,7 +22,7 @@ dirty: bool
 
 main :: proc() {
 	t := now_ms()
-	game_init(&game, u64(t), t)
+	app_init(&app, u64(t), t)
 	dirty = true
 }
 
@@ -31,7 +31,7 @@ main :: proc() {
 step :: proc(dt: f64) -> bool {
 	context = runtime.default_context()
 	if dirty {
-		game_draw(&game, &grid)
+		app_draw(&app, &grid)
 		present(&grid[0][0], COLS, ROWS)
 		dirty = false
 	}
@@ -42,6 +42,6 @@ step :: proc(dt: f64) -> bool {
 @(export)
 on_key :: proc "c" (key: i32) {
 	context = runtime.default_context()
-	game_key(&game, key)
+	app_key(&app, key)
 	dirty = true
 }
