@@ -28,3 +28,12 @@ Decided policy: **fix quirks as we go**; deliberate design and the message voice
 
 - The new texts (handbook, permit, license, DMV, instructor, test messages) are mine and should be read by the author.
 - Lessons cost money only (no hunger or fatigue); say if that should change.
+
+## Screens (phase 3)
+
+- Unavailable choices are hidden, as in the original.
+- Choices are numbered 1-9 then a-z; Up/Down + Enter, a tap or click, or the hotkey all work. Escape picks "Never Mind" or "No" when it is the first choice. PageUp/PageDown and the mouse wheel scroll long message logs.
+- Links inside messages (the ad's sponsor, Stop and Smell) also appear as a "Visit: ..." choice so they work from the keyboard.
+- The Title screen's three links are choices under OK.
+- Item stacks are labelled `Name xN`; the original's exact stack label was not checked.
+- Quit is omitted in the browser, as the original hid it when not quittable.

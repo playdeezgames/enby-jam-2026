@@ -18,6 +18,8 @@
 </head>
 <body>
 <canvas id="screen" tabindex="0"></canvas>
+<input id="keys" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+       style="position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;border:0;padding:0">
 <script src="odin.js"></script>
 <script>
 (function () {
@@ -75,21 +77,50 @@
     env: {
       present: present,
       now_ms: () => Date.now(),
+      open_url: (ptr, len) => {
+        const url = new TextDecoder().decode(new Uint8Array(memory.memory.buffer, ptr, len));
+        window.open(url, "_blank", "noopener");
+      },
     },
   };
 
-  const KEYS = { ArrowUp: 1, ArrowDown: 2, ArrowLeft: 3, ArrowRight: 4, Enter: 5, Escape: 6, Backspace: 7 };
+  const KEYS = { ArrowUp: 1, ArrowDown: 2, ArrowLeft: 3, ArrowRight: 4, Enter: 5, Escape: 6, Backspace: 7, PageUp: 8, PageDown: 9 };
+  const field = document.getElementById("keys");
+  const send = (k) => { if (memory.exports && memory.exports.on_key) memory.exports.on_key(k); };
+
   // Read the logical key first (remote desktops send odd codes), see vault Gotchas.
   window.addEventListener("keydown", (e) => {
-    if (!memory.exports || !memory.exports.on_key) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
     let k = 0;
     if (KEYS[e.key] !== undefined) k = KEYS[e.key];
     else if (e.key.length === 1) k = e.key.charCodeAt(0);
+    else if (e.target === field) return; // soft keyboards: handled by the input event
     if (k) {
+      if (e.target === field && k >= 32) return; // printable text arrives via the input event
       e.preventDefault();
-      memory.exports.on_key(k);
+      send(k);
     }
   });
+  // Soft keyboards report text through input events, not usable keydowns.
+  field.addEventListener("input", () => {
+    for (const ch of field.value) send(ch.charCodeAt(0));
+    field.value = "";
+  });
+
+  function wantsText() {
+    return memory.exports && memory.exports.wants_text && memory.exports.wants_text();
+  }
+  canvas.addEventListener("pointerdown", (e) => {
+    const r = canvas.getBoundingClientRect();
+    const col = Math.floor(((e.clientX - r.left) / r.width) * COLS);
+    const row = Math.floor(((e.clientY - r.top) / r.height) * ROWS);
+    if (memory.exports && memory.exports.on_tap) memory.exports.on_tap(col, row);
+    if (wantsText()) field.focus(); else field.blur();
+  });
+  canvas.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    send(e.deltaY < 0 ? 8 : 9);
+  }, { passive: false });
 
   const img = new Image();
   img.onload = () => {

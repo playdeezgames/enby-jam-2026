@@ -37,18 +37,28 @@ grid_put :: proc(g: ^Grid, col, row: int, ch: u8, attr: u8 = 0) {
 	g[row][col] = Cell{ch, attr}
 }
 
-// ASCII only for now; the umlauts of "Gämë Mënü" need a UTF-8 to CP437 map (phase 3).
+// Draws UTF-8 text, converting to code page 437. Returns the column after the last glyph.
 grid_text :: proc(g: ^Grid, col, row: int, text: string, attr: u8 = 0) -> int {
+	buf: [MESSAGE_CAP]u8
+	n := cp437_encode(buf[:], text)
 	c := col
-	for i in 0 ..< len(text) {
-		grid_put(g, c, row, text[i], attr)
+	for i in 0 ..< n {
+		grid_put(g, c, row, buf[i], attr)
 		c += 1
 	}
 	return c
 }
 
+grid_bytes :: proc(g: ^Grid, col, row: int, text: []u8, attr: u8 = 0) {
+	for b, i in text {
+		grid_put(g, col + i, row, b, attr)
+	}
+}
+
 grid_text_centered :: proc(g: ^Grid, row: int, text: string, attr: u8 = 0) {
-	grid_text(g, (COLS - len(text)) / 2, row, text, attr)
+	buf: [MESSAGE_CAP]u8
+	n := cp437_encode(buf[:], text)
+	grid_bytes(g, (COLS - n) / 2, row, buf[:n], attr)
 }
 
 // Single-line box using CP437 box drawing.

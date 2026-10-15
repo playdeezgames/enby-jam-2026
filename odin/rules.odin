@@ -112,6 +112,16 @@ Link :: enum {
 	None,
 	Umlaut,
 	Steam_Smell,
+	Itch_Profile,
+	Jam,
+}
+
+link_urls := [Link]string {
+	.None         = "",
+	.Umlaut       = "https://umlaut.fyi/",
+	.Steam_Smell  = "https://store.steampowered.com/app/2578290/Stop_and_Smell_the_Flowers/",
+	.Itch_Profile = "https://thegrumpygamedev.itch.io/",
+	.Jam          = "https://itch.io/jam/nonbinary-game-jam-2026",
 }
 
 Message :: struct {
