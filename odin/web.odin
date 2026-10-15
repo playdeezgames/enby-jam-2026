@@ -8,7 +8,7 @@ foreign import host "env"
 @(default_calling_convention = "contextless")
 foreign host {
 	// Hands the grid to the page, which blits glyphs from the font sheet.
-	present :: proc(cells: [^]Cell, cols, rows: i32) ---
+	present :: proc(cells: [^]Cell, cols, rows, stride: i32) ---
 	// Milliseconds since the epoch, used only to seed the RNG.
 	now_ms :: proc() -> f64 ---
 	// Opens a URL in a new tab; called only from inside a key or tap handler.
@@ -44,7 +44,7 @@ step :: proc(dt: f64) -> bool {
 	context = runtime.default_context()
 	if dirty {
 		app_draw(&app, &grid)
-		present(&grid[0][0], COLS, ROWS)
+		present(&grid.cells[0][0], i32(app.cols), i32(app.rows), MAX_COLS)
 		dirty = false
 	}
 	return true
@@ -57,6 +57,14 @@ on_key :: proc "c" (key: i32) {
 	app.now_ms = now_ms()
 	app_key(&app, key)
 	after_event()
+}
+
+// The window shape changed: true for a tall window (phone in portrait).
+@(export)
+set_layout :: proc "c" (portrait: bool) {
+	context = runtime.default_context()
+	app_set_layout(&app, portrait)
+	dirty = true
 }
 
 // A click or tap on a grid cell.

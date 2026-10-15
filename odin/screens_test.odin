@@ -316,7 +316,7 @@ taps_activate_the_row_under_them :: proc(t: ^testing.T) {
 	a := new_app()
 	grid: Grid
 	app_draw(&a, &grid)
-	first_row, rows, _ := choice_layout(&a.ui)
+	first_row, rows, _ := choice_layout(&a.ui, a.rows)
 	testing.expect(t, rows == 4)
 	app_tap(&a, 5, first_row) // OK
 	testing.expect_value(t, a.ui.screen, Screen.Main_Menu)
@@ -336,19 +336,27 @@ every_screen_draws_inside_the_grid :: proc(t: ^testing.T) {
 	}
 	counter_set(&a.game, .Jools, 10)
 	counter_set(&a.game, .Fatigue, 80)
-	for s in Screen {
-		grid: Grid
-		ui_enter(&a, s)
-		app_draw(&a, &grid)
-		inked := 0
-		for row in grid {
-			for c in row {
-				if c.ch != 0 {
-					inked += 1
+	for portrait in ([2]bool{false, true}) {
+		app_set_layout(&a, portrait)
+		for s in Screen {
+			grid: Grid
+			ui_enter(&a, s)
+			app_draw(&a, &grid)
+			inked := 0
+			outside := 0
+			for row, r in grid.cells {
+				for c, col in row {
+					if c.ch != 0 {
+						inked += 1
+						if col >= a.cols || r >= a.rows {
+							outside += 1
+						}
+					}
 				}
 			}
+			testing.expectf(t, inked > 0, "screen %v drew nothing (portrait %v)", s, portrait)
+			testing.expectf(t, outside == 0, "screen %v drew outside the grid (portrait %v)", s, portrait)
 		}
-		testing.expectf(t, inked > 0, "screen %v drew nothing", s)
 	}
 }
 
@@ -379,4 +387,24 @@ wrapping_breaks_at_spaces_and_long_words :: proc(t: ^testing.T) {
 	end, next = wrap_line(long, 0, 4)
 	testing.expect_value(t, end, 4)
 	testing.expect_value(t, next, 4)
+}
+
+@(test)
+portrait_layout_wraps_narrower_and_taps_still_work :: proc(t: ^testing.T) {
+	a := new_app()
+	app_set_layout(&a, true)
+	testing.expect_value(t, a.cols, PORTRAIT_COLS)
+	embark_through_menus(&a, "Gwen", "They/Them")
+	status(&a.game)
+	grid: Grid
+	app_draw(&a, &grid)
+	// Nothing may touch the last column on the right except scroll arrows.
+	for r in 0 ..< a.rows {
+		testing.expect_value(t, grid.cells[r][a.cols - 1].ch, 0)
+	}
+	first_row, rows, _ := choice_layout(&a.ui, a.rows)
+	testing.expect(t, first_row + rows == a.rows - 1)
+	app_tap(&a, 3, first_row) // the first choice, Continue Journey
+	testing.expect(t, a.ui.screen == .Play)
+	testing.expect(t, counter(&a.game, .Distance_Remaining) < 2000)
 }

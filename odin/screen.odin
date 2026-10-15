@@ -1,7 +1,13 @@
 package gwen
 
-COLS :: 53
-ROWS :: 30
+// Two layouts, chosen by the page from the window shape. The grid is allocated at the
+// largest size of each dimension; cols and rows say how much of it is in use.
+LANDSCAPE_COLS :: 53
+LANDSCAPE_ROWS :: 30
+PORTRAIT_COLS :: 36
+PORTRAIT_ROWS :: 54
+MAX_COLS :: 53
+MAX_ROWS :: 54
 
 // One grid cell: a code page 437 glyph and an attribute byte.
 // Attribute: low nibble is the palette index of the ink, bit 7 inverts (ink on a filled cell).
@@ -10,7 +16,10 @@ Cell :: struct {
 	attr: u8,
 }
 
-Grid :: [ROWS][COLS]Cell
+Grid :: struct {
+	cols, rows: int,
+	cells:      [MAX_ROWS][MAX_COLS]Cell,
+}
 
 ATTR_INVERSE :: u8(0x80)
 
@@ -27,14 +36,14 @@ Ink :: enum u8 {
 }
 
 grid_clear :: proc(g: ^Grid) {
-	g^ = {}
+	g.cells = {}
 }
 
 grid_put :: proc(g: ^Grid, col, row: int, ch: u8, attr: u8 = 0) {
-	if col < 0 || col >= COLS || row < 0 || row >= ROWS {
+	if col < 0 || col >= g.cols || row < 0 || row >= g.rows {
 		return
 	}
-	g[row][col] = Cell{ch, attr}
+	g.cells[row][col] = Cell{ch, attr}
 }
 
 // Draws UTF-8 text, converting to code page 437. Returns the column after the last glyph.
@@ -58,7 +67,7 @@ grid_bytes :: proc(g: ^Grid, col, row: int, text: []u8, attr: u8 = 0) {
 grid_text_centered :: proc(g: ^Grid, row: int, text: string, attr: u8 = 0) {
 	buf: [MESSAGE_CAP]u8
 	n := cp437_encode(buf[:], text)
-	grid_bytes(g, (COLS - n) / 2, row, buf[:n], attr)
+	grid_bytes(g, (g.cols - n) / 2, row, buf[:n], attr)
 }
 
 // Single-line box using CP437 box drawing.

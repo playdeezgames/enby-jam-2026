@@ -45,6 +45,7 @@ Decided policy: **fix quirks as we go**; deliberate design and the message voice
 - `./shippit.sh` runs the tests, builds, and packages `pub-html` and `pub-html.zip`; it uploads only with `--push`.
 - A Credits screen (Main Menu) carries the DINOBYTE CC BY 4.0 credit; the font licence ships as `NOTICE-dinobyte.txt`.
 
-## Known limitation
+## Layouts
 
-- **Phones in portrait are small.** The grid is 53 by 30 cells of 6 by 8 px scaled to the width, so on a 375 px wide screen text is about 7 px tall. A portrait layout (for example 36 columns by 48 rows) would fix it; the grid size is a compile-time constant today.
+- Wide windows use a 53 by 30 grid; a window taller than it is wide (a phone held upright) switches to 36 by 54, so the same 6 by 8 glyphs draw about 1.5 times larger. The page picks the layout and switches live on resize; saves are unaffected.
+- Not verified on a real phone: only a 375 by 812 emulated viewport, with real touch and the soft keyboard still untested.

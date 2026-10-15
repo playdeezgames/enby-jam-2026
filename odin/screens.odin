@@ -663,7 +663,6 @@ app_key :: proc(a: ^App, key: i32) {
 // ---------------------------------------------------------------- drawing
 
 MSG_LEFT :: 1
-MSG_WIDTH :: COLS - 2
 
 Wrapped :: struct {
 	msg:        int,
@@ -671,13 +670,13 @@ Wrapped :: struct {
 }
 
 // Where the choice list begins and how many rows it shows (set by app_draw, used by taps).
-choice_layout :: proc(ui: ^Ui) -> (first_row, rows, first_index: int) {
+choice_layout :: proc(ui: ^Ui, grid_rows: int) -> (first_row, rows, first_index: int) {
 	prompt_rows := ui.prompt_len > 0 ? 1 : 0
 	if ui.typing {
-		return ROWS - 2, 1, 0
+		return grid_rows - 2, 1, 0
 	}
-	rows = min(ui.choice_count, ROWS - 8)
-	first_row = ROWS - 1 - rows
+	rows = min(ui.choice_count, grid_rows - 8)
+	first_row = grid_rows - 1 - rows
 	if ui.choice_count > rows {
 		first_index = clamp(ui.cursor - rows / 2, 0, ui.choice_count - rows)
 	}
@@ -690,7 +689,10 @@ app_draw :: proc(a: ^App, grid: ^Grid) {
 	ui := &a.ui
 	grid_clear(grid)
 
-	first_row, rows, first_index := choice_layout(ui)
+	grid.cols = a.cols
+	grid.rows = a.rows
+	msg_width := a.cols - 2
+	first_row, rows, first_index := choice_layout(ui, a.rows)
 	prompt_row := first_row - 1
 	if ui.typing {
 		prompt_row = first_row - 1
@@ -707,7 +709,7 @@ app_draw :: proc(a: ^App, grid: ^Grid) {
 			len_ := cp437_encode(text[:], message_text(m))
 			start := 0
 			for {
-				end, next := wrap_line(text[:len_], start, MSG_WIDTH)
+				end, next := wrap_line(text[:len_], start, msg_width)
 				if n < len(lines) {
 					lines[n] = Wrapped{i, start, end}
 					n += 1
@@ -732,10 +734,10 @@ app_draw :: proc(a: ^App, grid: ^Grid) {
 			row -= 1
 		}
 		if ui.scroll > 0 {
-			grid_text(grid, COLS - 12, 0, "(PgDn: newer)", u8(Ink.Gray))
+			grid_text(grid, a.cols - 14, 0, "(PgDn: newer)", u8(Ink.Gray))
 		}
 		if last - avail + 1 > 0 {
-			grid_text(grid, COLS - 12, 0, "(PgUp: older)", u8(Ink.Gray))
+			grid_text(grid, a.cols - 14, 0, "(PgUp: older)", u8(Ink.Gray))
 		}
 	}
 
@@ -764,7 +766,7 @@ app_draw :: proc(a: ^App, grid: ^Grid) {
 		row := first_row + r
 		// Fill the whole row so the selection reads as a bar.
 		if i == ui.cursor {
-			for c in MSG_LEFT ..< COLS - 1 {
+			for c in MSG_LEFT ..< a.cols - 1 {
 				grid_put(grid, c, row, ' ', attr)
 			}
 		}
@@ -775,10 +777,10 @@ app_draw :: proc(a: ^App, grid: ^Grid) {
 	}
 	if ui.choice_count > rows {
 		if first_index > 0 {
-			grid_put(grid, COLS - 2, first_row, 0x18, u8(Ink.Gray))
+			grid_put(grid, a.cols - 2, first_row, 0x18, u8(Ink.Gray))
 		}
 		if first_index + rows < ui.choice_count {
-			grid_put(grid, COLS - 2, first_row + rows - 1, 0x19, u8(Ink.Gray))
+			grid_put(grid, a.cols - 2, first_row + rows - 1, 0x19, u8(Ink.Gray))
 		}
 	}
 }
@@ -789,7 +791,7 @@ app_tap :: proc(a: ^App, col, row: int) {
 	if ui.typing {
 		return
 	}
-	first_row, rows, first_index := choice_layout(ui)
+	first_row, rows, first_index := choice_layout(ui, a.rows)
 	if row >= first_row && row < first_row + rows {
 		ui_choose(a, first_index + (row - first_row))
 	}

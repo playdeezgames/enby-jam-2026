@@ -19,12 +19,16 @@ Key :: enum i32 {
 App :: struct {
 	game:      Game,
 	ui:        Ui,
+	cols:      int, // grid size in use (a layout from screen.odin)
+	rows:      int,
 	now_ms:    f64, // set by the platform before each event
 	open_link: Link, // set by a screen; the platform opens it and clears it
 }
 
 app_init :: proc(a: ^App, seed: u64, now_ms: f64) {
 	a^ = {}
+	a.cols = LANDSCAPE_COLS
+	a.rows = LANDSCAPE_ROWS
 	rng_seed(&a.game.rng, seed)
 	a.now_ms = now_ms
 	ui_enter(a, .Title)
@@ -40,4 +44,10 @@ app_resume :: proc(a: ^App, text: string) -> bool {
 	a.game = saved
 	ui_enter(a, play_screen(&a.game))
 	return true
+}
+
+// The page tells us the window is tall (phone in portrait) or wide.
+app_set_layout :: proc(a: ^App, portrait: bool) {
+	a.cols = portrait ? PORTRAIT_COLS : LANDSCAPE_COLS
+	a.rows = portrait ? PORTRAIT_ROWS : LANDSCAPE_ROWS
 }
