@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Gwen's Peregrination II</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0b0b12; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+  canvas {
+    width: min(100vw, calc(100vh * 53 / 40));
+    aspect-ratio: 53 / 40;
+    image-rendering: pixelated;
+    touch-action: none;
+    outline: none;
+  }
+</style>
+</head>
+<body>
+<canvas id="screen" tabindex="0"></canvas>
+<script src="odin.js"></script>
+<script>
+(function () {
+  "use strict";
+  const COLS = 53, ROWS = 30, CW = 6, CH = 8;
+  const BACKGROUND = "#0b0b12";
+  // Index = ink in game's Ink enum. 0 matches the sheet's own beige.
+  const PALETTE = ["#acac91", "#ffffff", "#ffd75f", "#5fd75f", "#ff5f5f", "#808080", "#5fd7d7", "#d75fd7"];
+
+  const canvas = document.getElementById("screen");
+  canvas.width = COLS * CW;
+  canvas.height = ROWS * CH;
+  const ctx = canvas.getContext("2d");
+  ctx.imageSmoothingEnabled = false;
+
+  const memory = new odin.WasmMemoryInterface();
+  let sheets = null; // one tinted copy of the font sheet per palette entry, plus the background tint
+
+  function tint(img, color) {
+    const c = document.createElement("canvas");
+    c.width = img.width; c.height = img.height;
+    const x = c.getContext("2d");
+    x.drawImage(img, 0, 0);
+    x.globalCompositeOperation = "source-in";
+    x.fillStyle = color;
+    x.fillRect(0, 0, c.width, c.height);
+    return c;
+  }
+
+  function present(ptr, cols, rows) {
+    if (!sheets) return;
+    const cells = new Uint8Array(memory.memory.buffer, ptr, cols * rows * 2);
+    ctx.fillStyle = BACKGROUND;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const i = (r * cols + c) * 2;
+        const ch = cells[i], attr = cells[i + 1];
+        const ink = attr & 15;
+        const dx = c * CW, dy = r * CH;
+        let sheet = sheets[ink] || sheets[0];
+        if (attr & 0x80) {
+          ctx.fillStyle = PALETTE[ink] || PALETTE[0];
+          ctx.fillRect(dx, dy, CW, CH);
+          sheet = sheets[PALETTE.length];
+        }
+        if (ch !== 0 && ch !== 32) {
+          ctx.drawImage(sheet, (ch % 16) * CW, Math.floor(ch / 16) * CH, CW, CH, dx, dy, CW, CH);
+        }
+      }
+    }
+  }
+
+  const imports = {
+    env: {
+      present: present,
+      now_ms: () => Date.now(),
+    },
+  };
+
+  const KEYS = { ArrowUp: 1, ArrowDown: 2, ArrowLeft: 3, ArrowRight: 4, Enter: 5, Escape: 6, Backspace: 7 };
+  // Read the logical key first (remote desktops send odd codes), see vault Gotchas.
+  window.addEventListener("keydown", (e) => {
+    if (!memory.exports || !memory.exports.on_key) return;
+    let k = 0;
+    if (KEYS[e.key] !== undefined) k = KEYS[e.key];
+    else if (e.key.length === 1) k = e.key.charCodeAt(0);
+    if (k) {
+      e.preventDefault();
+      memory.exports.on_key(k);
+    }
+  });
+
+  const img = new Image();
+  img.onload = () => {
+    sheets = PALETTE.map((p) => tint(img, p));
+    sheets.push(tint(img, BACKGROUND));
+    odin.runWasm("game.wasm", null, imports, memory);
+  };
+  img.src = "dbyte_1x.png";
+  canvas.focus();
+})();
+</script>
+</body>
+</html>

@@ -431,3 +431,8 @@ FodyWeavers.xsd
 /pub-linux
 /pub-mac
 /pub-windows
+
+# Odin port
+/odin/build/
+/odin/odin
+/odin/odin.test
