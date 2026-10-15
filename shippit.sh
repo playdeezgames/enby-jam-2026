@@ -1,16 +1,19 @@
-rm -rf ./pub-linux
-rm -rf ./pub-windows
-rm -rf ./pub-mac
-rm -rf ./pub-html
-dotnet publish ./src/Metaphor.Spectre/Metaphor.Spectre.vbproj -o ./pub-linux -c Release --sc -p:PublishSingleFile=true -r linux-x64
-dotnet publish ./src/Metaphor.Spectre/Metaphor.Spectre.vbproj -o ./pub-windows -c Release --sc -p:PublishSingleFile=true -r win-x64
-dotnet publish ./src/Metaphor.Spectre/Metaphor.Spectre.vbproj -o ./pub-mac -c Release --sc -p:PublishSingleFile=true -r osx-x64
-dotnet publish ./src/Metaphor.Blazor/Metaphor.Blazor.csproj -o ./pub-html -c Release 
-rm -f ./pub-linux/*.pdb
-rm -f ./pub-windows/*.pdb
-rm -f ./pub-mac/*.pdb
-rm -f ./pub-html/*.pdb
-butler push pub-windows thegrumpygamedev/gwens-peregrination-ii:windows
-butler push pub-linux thegrumpygamedev/gwens-peregrination-ii:linux
-butler push pub-mac thegrumpygamedev/gwens-peregrination-ii:mac
-butler push pub-html/wwwroot thegrumpygamedev/gwens-peregrination-ii:html
+#!/usr/bin/env bash
+# Tests, builds the browser game and packages it for itch.io.
+# Does NOT upload unless asked: ./shippit.sh --push
+set -euo pipefail
+cd "$(dirname "$0")"
+
+./odin/test.sh
+./odin/build.sh
+
+rm -rf ./pub-html ./pub-html.zip
+cp -r ./odin/build/web ./pub-html
+(cd pub-html && zip -qr ../pub-html.zip .)
+echo "packaged pub-html and pub-html.zip ($(du -sh pub-html | cut -f1))"
+
+if [[ "${1:-}" == "--push" ]]; then
+	butler push pub-html thegrumpygamedev/gwens-peregrination-ii:html
+else
+	echo "not pushed; run ./shippit.sh --push to upload"
+fi

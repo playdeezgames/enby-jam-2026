@@ -29,3 +29,15 @@ app_init :: proc(a: ^App, seed: u64, now_ms: f64) {
 	a.now_ms = now_ms
 	ui_enter(a, .Title)
 }
+
+// Restores a saved game. On success the player lands straight in play; on failure the
+// app is left at the title screen with a fresh game.
+app_resume :: proc(a: ^App, text: string) -> bool {
+	saved: Game
+	if !save_decode(&saved, text) || !saved.embarked {
+		return false
+	}
+	a.game = saved
+	ui_enter(a, play_screen(&a.game))
+	return true
+}

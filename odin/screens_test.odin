@@ -105,7 +105,9 @@ hotkeys_and_cursor_work :: proc(t: ^testing.T) {
 	a := new_app()
 	app_key(&a, '1') // OK
 	testing.expect_value(t, a.ui.screen, Screen.Main_Menu)
-	app_key(&a, i32(Key.Down)) // only one choice: wraps
+	app_key(&a, i32(Key.Down))
+	testing.expect_value(t, a.ui.cursor, 1)
+	app_key(&a, i32(Key.Down)) // two choices: wraps
 	testing.expect_value(t, a.ui.cursor, 0)
 	app_key(&a, i32(Key.Enter))
 	testing.expect_value(t, a.ui.screen, Screen.Name_Prompt)

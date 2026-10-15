@@ -37,3 +37,14 @@ Decided policy: **fix quirks as we go**; deliberate design and the message voice
 - The Title screen's three links are choices under OK.
 - Item stacks are labelled `Name xN`; the original's exact stack label was not checked.
 - Quit is omitted in the browser, as the original hid it when not quittable.
+
+## Saving and shipping (phase 5)
+
+- The game saves after every action to `localStorage` key `gwen2:save` (JSON, version 1, 24 most recent messages kept) and resumes straight into play on load. Abandon, or finishing and dismissing the end screen, removes the save. A corrupt or out-of-range save is ignored and the game starts at the title.
+- The ad break survives a reload because its end time is an absolute clock time.
+- `./shippit.sh` runs the tests, builds, and packages `pub-html` and `pub-html.zip`; it uploads only with `--push`.
+- A Credits screen (Main Menu) carries the DINOBYTE CC BY 4.0 credit; the font licence ships as `NOTICE-dinobyte.txt`.
+
+## Known limitation
+
+- **Phones in portrait are small.** The grid is 53 by 30 cells of 6 by 8 px scaled to the width, so on a 375 px wide screen text is about 7 px tall. A portrait layout (for example 36 columns by 48 rows) would fix it; the grid size is a compile-time constant today.

@@ -27,6 +27,7 @@ Screen :: enum {
 	Item_Stack,
 	Item_Menu,
 	Verb_Result,
+	Credits,
 }
 
 Item_Source :: enum {
@@ -206,6 +207,17 @@ ui_enter :: proc(a: ^App, screen: Screen) {
 		ui.hide_messages = true
 		set_prompt(ui, "Main Menu:")
 		go(ui, "Embark!", .Name_Prompt)
+		go(ui, "Credits", .Credits)
+
+	case .Credits:
+		clear_messages(g)
+		say(g, "Gwen's Peregrination II")
+		say(g, "Written by TheGrumpyGameDev for Nonbinary Game Jam 2026.")
+		say(g, "Font: DINOBYTE by mby, https://mby.itch.io/dinobyte, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Used unmodified.")
+		say(g, "Sponsored by UMLAUT.FYI!")
+		say(g, "Ported to Odin and WebAssembly with Claude.")
+		go(ui, "Ok", .Main_Menu)
+		add_choice(ui, .Open_Link, int(Link.Umlaut), "UMLAUT.FYI!")
 
 	case .Name_Prompt:
 		ui.hide_messages = true

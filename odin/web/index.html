@@ -26,6 +26,7 @@
   "use strict";
   const COLS = 53, ROWS = 30, CW = 6, CH = 8;
   const BACKGROUND = "#0b0b12";
+  const SAVE_KEY = "gwen2:save";
   // Index = ink in game's Ink enum. 0 matches the sheet's own beige.
   const PALETTE = ["#acac91", "#ffffff", "#ffd75f", "#5fd75f", "#ff5f5f", "#808080", "#5fd7d7", "#d75fd7"];
 
@@ -77,6 +78,24 @@
     env: {
       present: present,
       now_ms: () => Date.now(),
+      storage_get: (ptr, cap) => {
+        try {
+          const v = localStorage.getItem(SAVE_KEY);
+          if (v === null) return -1;
+          const bytes = new TextEncoder().encode(v);
+          if (bytes.length > cap) return -1;
+          new Uint8Array(memory.memory.buffer, ptr, bytes.length).set(bytes);
+          return bytes.length;
+        } catch (e) { return -1; }
+      },
+      storage_set: (ptr, len) => {
+        try {
+          localStorage.setItem(SAVE_KEY, new TextDecoder().decode(new Uint8Array(memory.memory.buffer, ptr, len)));
+        } catch (e) { /* private window or full: play on without saving */ }
+      },
+      storage_remove: () => {
+        try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+      },
       open_url: (ptr, len) => {
         const url = new TextDecoder().decode(new Uint8Array(memory.memory.buffer, ptr, len));
         window.open(url, "_blank", "noopener");
