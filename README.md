@@ -5,7 +5,7 @@ A Production of TheGrumpyGameDev, made for **Nonbinary Game Jam 2026**.
 A turn-based, menu-driven metaphor: you are Gwen, and there are 2,000 miles to walk.
 
 - Play on itch.io: https://thegrumpygamedev.itch.io/gwens-peregrination-ii
-- Play on GitHub Pages: https://playdeezgames.github.io/enby-jam-2026/ (once enabled)
+- Play on GitHub Pages: https://playdeezgames.github.io/enby-jam-2026/
 
 The jam build (July 2026) was VB.NET with Spectre.Console and Blazor; it is in git history. The current game is a rebuild in [Odin](https://odin-lang.org/) compiled to WebAssembly (October 2026), written by an AI agent (Claude Code) with the author as product owner and tester.
 

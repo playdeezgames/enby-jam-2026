@@ -12,7 +12,7 @@ A turn-based metaphor: walk 2,000 miles, eat snax, get a learner's permit. Made 
 
 ## Page text
 
-**Latest version:** https://playdeezgames.github.io/enby-jam-2026/ (also add it as an external link on the page; only once the Pages site is live)
+**Latest version:** https://playdeezgames.github.io/enby-jam-2026/ (also add it as an external link on the page; live since November 8, 2026)
 
 **Gwen's Peregrination II** is a menu-driven journey. You are Gwen. There are 2,000 miles between you and the end. You walk them one choice at a time.
 

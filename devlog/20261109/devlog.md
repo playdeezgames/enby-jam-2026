@@ -9,7 +9,7 @@ A small update to the browser build of Gwen's Peregrination II. The road is the 
 - **Phones held upright now show the game straight away.** Before, a tall window stayed blank until the first tap. The tall 36 by 54 grid now draws on load.
 - **A footer under the game** with the credits, a line about how the rebuild was made, and links to the rest of my games (itch.io and the SPLORR!! portal).
 - **Send feedback** <!-- delete this bullet if the feedback form is not in this build -->: a link under the game opens a short form (Bug, Idea or Other). Reports come straight to me.
-- **Play the latest version on GitHub Pages** <!-- delete this bullet if Pages is not live -->: https://playdeezgames.github.io/enby-jam-2026/
+- **Play the latest version on GitHub Pages**: https://playdeezgames.github.io/enby-jam-2026/
 
 ## What did not change
 
