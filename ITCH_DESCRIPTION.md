@@ -1,12 +1,18 @@
 # itch.io page copy: Gwen's Peregrination II
 
-Paste into the itch.io page by hand. Cover: `assets/cover.png` (630 by 500, made by `tools/make_cover.py`).
+Page: https://thegrumpygamedev.itch.io/gwens-peregrination-ii
+Jam: Nonbinary Game Jam 2026 (https://itch.io/jam/nonbinary-game-jam-2026). Browser rebuild live since October 16, 2026 (channel `html`).
+Pasted in by hand; nothing here is published by the repo. Cover: `assets/cover.png` (630 by 500, made by `tools/make_cover.py`). Screenshots: `assets/screenshots/` in order.
 
 ## Short description (the one-line field)
 
-A turn-based metaphor about walking 2,000 miles, eating snax and getting a learner's permit. Made for Nonbinary Game Jam 2026.
+A turn-based metaphor: walk 2,000 miles, eat snax, get a learner's permit. Made for Nonbinary Game Jam 2026.
+
+(108 characters; itch.io allows 120.)
 
 ## Page text
+
+**Latest version:** https://playdeezgames.github.io/enby-jam-2026/ (also add it as an external link on the page; only once the Pages site is live)
 
 **Gwen's Peregrination II** is a menu-driven journey. You are Gwen. There are 2,000 miles between you and the end. You walk them one choice at a time.
 
@@ -34,6 +40,7 @@ Between turns there are ad breaks, because this is a metaphor and metaphors need
 - Keyboard: Up and Down then Enter, or press the number or letter next to a choice. Escape backs out. PageUp and PageDown (or the mouse wheel) scroll long text.
 - Touch: tap a choice.
 - Yer game saves itself after every choice and picks up where you left off.
+- Found a bug that is not a metaphor? Use "Send feedback" under the game (when it is shown), or leave a comment.
 
 ### About this version
 
@@ -50,6 +57,7 @@ Gwen's Peregrination II was first written for **Nonbinary Game Jam 2026** in VB.
 ## Page settings (by hand)
 
 - Kind of project: HTML. Tick "played in the browser".
+- Uploads: only the `html` channel. Remove the old windows, linux and mac downloads (the ports rule of November 5, 2026; done in the dashboard, butler cannot delete them).
 - Embed size: the game scales to the window; 800 by 600 works well. Enable fullscreen.
 - Tags: text-based, turn-based, short, funny, idle-ish, nonbinary, metaphor, 1-bit (the look is a pixel text grid).
 - Genre: Interactive Fiction or Simulation.

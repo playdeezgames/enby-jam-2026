@@ -42,7 +42,7 @@ Decided policy: **fix quirks as we go**; deliberate design and the message voice
 
 - The game saves after every action to `localStorage` key `gwen2:save` (JSON, version 1, 24 most recent messages kept) and resumes straight into play on load. Abandon, or finishing and dismissing the end screen, removes the save. A corrupt or out-of-range save is ignored and the game starts at the title.
 - The ad break survives a reload because its end time is an absolute clock time.
-- `./shippit.sh` runs the tests, builds, and packages `pub-html` and `pub-html.zip`; it uploads only with `--push`.
+- `./shippit.sh` (a wrapper for `tools/ship.sh`, since November 8, 2026) runs the tests, builds `build/web` and zips it; it uploads only with `--push`.
 - A Credits screen (Main Menu) carries the DINOBYTE CC BY 4.0 credit; the font licence ships as `NOTICE-dinobyte.txt`.
 
 ## Layouts

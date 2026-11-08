@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Gwen's Peregrination II</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0b0b12; color: #777; overflow: hidden; font: 11px/1.4 sans-serif; }
+  body { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  canvas {
+    --cols: 53;
+    --rows: 30;
+    flex: 0 0 auto;
+    width: min(100vw, calc((100vh - var(--footer, 5em)) * var(--cols) * 6 / (var(--rows) * 8)));
+    aspect-ratio: calc(var(--cols) * 6) / calc(var(--rows) * 8);
+    image-rendering: pixelated;
+    touch-action: none;
+    outline: none;
+  }
+  footer { flex: 0 0 auto; margin: 4px 16px 6px; text-align: center; max-width: 90vw; }
+  footer a { color: #aaa; }
+</style>
+</head>
+<body>
+<canvas id="screen" tabindex="0"></canvas>
+<footer id="footer">
+  Gwen's Peregrination II by TheGrumpyGameDev (VB.NET, July 2026, for Nonbinary Game Jam 2026). Rebuilt in Odin and WebAssembly in October 2026 by an AI agent (Claude Code) at the author's direction.
+  Font: DINOBYTE by mby, CC BY 4.0, unmodified.<span class="ll-only" hidden> Feedback by LootLocker.</span>
+  <span class="ll-only" hidden><a href="#" id="feedback-link">Send feedback</a> · </span><a href="https://thegrumpygamedev.itch.io/">itch.io</a> · <a href="https://playdeezgames.github.io/oeuvre-of-splorr/">more games</a>
+</footer>
+<input id="keys" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+       style="position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;border:0;padding:0">
+<script src="odin.js"></script>
+<script src="lootlocker.js"></script>
+<script>
+// Feedback (the shared SPLORR!! LootLocker shim's form, splorr/Tech/LootLocker.md in the vault): reports go
+// to the LootLocker console under Feedback, Game. The link stays hidden until LL_KEY is filled in.
+// Letters choose menu items here, so there is no feedback key: the footer link only.
+// TODO before shipping with feedback: the LootLocker game's API domain and public Game API key (not a
+// secret), with Guest Login on, the CORS Allowlist (https://playdeezgames.github.io,
+// https://html-classic.itch.zone, http://localhost:8000) and Game feedback categories (Bug, Idea, Other).
+const LL_DOMAIN = "";
+const LL_KEY = "";
+const feedback = LL_KEY ? LootLocker({
+  domain: LL_DOMAIN,
+  key: LL_KEY,
+  version: "1.1.0",
+  idKey: "gwen2:ll-player",
+}).feedbackDialog({ game: "Gwen's Peregrination II" }) : null;
+if (feedback) {
+  document.querySelectorAll(".ll-only").forEach((el) => { el.hidden = false; });
+  document.getElementById("feedback-link").addEventListener("click", (e) => { e.preventDefault(); feedback.open(); });
+}
+</script>
+<script>
+(function () {
+  "use strict";
+  const LAYOUTS = { landscape: { cols: 53, rows: 30 }, portrait: { cols: 36, rows: 54 } };
+  const STRIDE = 53; // the grid is stored at its maximum width
+  const CW = 6, CH = 8;
+  let COLS = LAYOUTS.landscape.cols, ROWS = LAYOUTS.landscape.rows;
+  const BACKGROUND = "#0b0b12";
+  const SAVE_KEY = "gwen2:save";
+  // Index = ink in game's Ink enum. 0 matches the sheet's own beige.
+  const PALETTE = ["#acac91", "#ffffff", "#ffd75f", "#5fd75f", "#ff5f5f", "#808080", "#5fd7d7", "#d75fd7"];
+
+  const canvas = document.getElementById("screen");
+  const ctx = canvas.getContext("2d");
+  const memory = new odin.WasmMemoryInterface();
+
+  // Wide windows get the 53 by 30 grid; tall ones (a phone held upright) get 36 by 54, so the
+  // same 6 by 8 glyphs are drawn about 1.5 times larger.
+  const footer = document.getElementById("footer");
+  function applyLayout(force) {
+    document.documentElement.style.setProperty("--footer", (footer.offsetHeight + 12) + "px");
+    const portrait = window.innerHeight - footer.offsetHeight > window.innerWidth * 1.1;
+    const l = portrait ? LAYOUTS.portrait : LAYOUTS.landscape;
+    if (!force && l.cols === COLS && l.rows === ROWS) return;
+    COLS = l.cols; ROWS = l.rows;
+    canvas.width = COLS * CW;
+    canvas.height = ROWS * CH;
+    ctx.imageSmoothingEnabled = false;
+    canvas.style.setProperty("--cols", COLS);
+    canvas.style.setProperty("--rows", ROWS);
+    if (memory.exports && memory.exports.set_layout) memory.exports.set_layout(portrait);
+  }
+  window.addEventListener("resize", () => applyLayout(false));
+  applyLayout(true);
+
+  let sheets = null; // one tinted copy of the font sheet per palette entry, plus the background tint
+
+  function tint(img, color) {
+    const c = document.createElement("canvas");
+    c.width = img.width; c.height = img.height;
+    const x = c.getContext("2d");
+    x.drawImage(img, 0, 0);
+    x.globalCompositeOperation = "source-in";
+    x.fillStyle = color;
+    x.fillRect(0, 0, c.width, c.height);
+    return c;
+  }
+
+  function present(ptr, cols, rows, stride) {
+    if (!sheets) return;
+    if (cols !== COLS || rows !== ROWS) { // the game is on another layout: tell it ours
+      applyLayout(true);
+      return;
+    }
+    const cells = new Uint8Array(memory.memory.buffer, ptr, stride * rows * 2);
+    ctx.fillStyle = BACKGROUND;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const i = (r * stride + c) * 2;
+        const ch = cells[i], attr = cells[i + 1];
+        const ink = attr & 15;
+        const dx = c * CW, dy = r * CH;
+        let sheet = sheets[ink] || sheets[0];
+        if (attr & 0x80) {
+          ctx.fillStyle = PALETTE[ink] || PALETTE[0];
+          ctx.fillRect(dx, dy, CW, CH);
+          sheet = sheets[PALETTE.length];
+        }
+        if (ch !== 0 && ch !== 32) {
+          ctx.drawImage(sheet, (ch % 16) * CW, Math.floor(ch / 16) * CH, CW, CH, dx, dy, CW, CH);
+        }
+      }
+    }
+  }
+
+  const imports = {
+    env: {
+      present: present,
+      now_ms: () => Date.now(),
+      storage_get: (ptr, cap) => {
+        try {
+          const v = localStorage.getItem(SAVE_KEY);
+          if (v === null) return -1;
+          const bytes = new TextEncoder().encode(v);
+          if (bytes.length > cap) return -1;
+          new Uint8Array(memory.memory.buffer, ptr, bytes.length).set(bytes);
+          return bytes.length;
+        } catch (e) { return -1; }
+      },
+      storage_set: (ptr, len) => {
+        try {
+          localStorage.setItem(SAVE_KEY, new TextDecoder().decode(new Uint8Array(memory.memory.buffer, ptr, len)));
+        } catch (e) { /* private window or full: play on without saving */ }
+      },
+      storage_remove: () => {
+        try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+      },
+      open_url: (ptr, len) => {
+        const url = new TextDecoder().decode(new Uint8Array(memory.memory.buffer, ptr, len));
+        window.open(url, "_blank", "noopener");
+      },
+    },
+  };
+
+  const KEYS = { ArrowUp: 1, ArrowDown: 2, ArrowLeft: 3, ArrowRight: 4, Enter: 5, Escape: 6, Backspace: 7, PageUp: 8, PageDown: 9 };
+  const field = document.getElementById("keys");
+  const send = (k) => { if (memory.exports && memory.exports.on_key) memory.exports.on_key(k); };
+
+  // Read the logical key first (remote desktops send odd codes), see vault Gotchas.
+  window.addEventListener("keydown", (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (feedback && feedback.isOpen) return;
+    let k = 0;
+    if (KEYS[e.key] !== undefined) k = KEYS[e.key];
+    else if (e.key.length === 1) k = e.key.charCodeAt(0);
+    else if (e.target === field) return; // soft keyboards: handled by the input event
+    if (k) {
+      if (e.target === field && k >= 32) return; // printable text arrives via the input event
+      e.preventDefault();
+      send(k);
+    }
+  });
+  // Soft keyboards report text through input events, not usable keydowns.
+  field.addEventListener("input", () => {
+    for (const ch of field.value) send(ch.charCodeAt(0));
+    field.value = "";
+  });
+
+  function wantsText() {
+    return memory.exports && memory.exports.wants_text && memory.exports.wants_text();
+  }
+  canvas.addEventListener("pointerdown", (e) => {
+    const r = canvas.getBoundingClientRect();
+    const col = Math.floor(((e.clientX - r.left) / r.width) * COLS);
+    const row = Math.floor(((e.clientY - r.top) / r.height) * ROWS);
+    if (memory.exports && memory.exports.on_tap) memory.exports.on_tap(col, row);
+    if (wantsText()) field.focus(); else field.blur();
+  });
+  canvas.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    send(e.deltaY < 0 ? 8 : 9);
+  }, { passive: false });
+
+  const img = new Image();
+  img.onload = () => {
+    sheets = PALETTE.map((p) => tint(img, p));
+    sheets.push(tint(img, BACKGROUND));
+    odin.runWasm("game.wasm", null, imports, memory);
+  };
+  img.src = "dbyte_1x.png";
+  canvas.focus();
+})();
+</script>
+</body>
+</html>
