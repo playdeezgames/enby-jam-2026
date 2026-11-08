@@ -34,13 +34,13 @@
 <script src="lootlocker.js"></script>
 <script>
 // Feedback (the shared SPLORR!! LootLocker shim's form, splorr/Tech/LootLocker.md in the vault): reports go
-// to the LootLocker console under Feedback, Game. The link stays hidden until LL_KEY is filled in.
+// to the LootLocker console under Feedback, Game. The link stays hidden if LL_KEY is empty.
 // Letters choose menu items here, so there is no feedback key: the footer link only.
-// TODO before shipping with feedback: the LootLocker game's API domain and public Game API key (not a
-// secret), with Guest Login on, the CORS Allowlist (https://playdeezgames.github.io,
-// https://html-classic.itch.zone, http://localhost:8000) and Game feedback categories (Bug, Idea, Other).
-const LL_DOMAIN = "";
-const LL_KEY = "";
+// LootLocker game "Gwen's Peregrination II" (console id 108577, created November 8, 2026): Guest Login on,
+// CORS Allowlist (https://playdeezgames.github.io,
+// https://html-classic.itch.zone, http://localhost:8000), Game feedback categories Bug, Idea, Other.
+const LL_DOMAIN = "https://5jmgo21o.api.lootlocker.com";
+const LL_KEY = "dev_56fc96a93bf6474db173e4084aa82080"; // the public client key (Settings, API Keys, Game API), not a secret
 const feedback = LL_KEY ? LootLocker({
   domain: LL_DOMAIN,
   key: LL_KEY,

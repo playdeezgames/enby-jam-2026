@@ -33,4 +33,4 @@ Odin is at `/home/yermom/ODIN/odin` (override with `ODIN=`). Serve `build/web` w
 - **Never `git push`, never run `./shippit.sh --push` or `butler push`** unless the user says so ("push" means git push; "ship" means itch.io). One itch.io release a day, booked through Coxswain.
 - **Do not "fix" the metaphor**: the name and pronoun prompts that correct you, the ads, `Gämë Mënü` and the sponsor links are deliberate. Original typos (`exicitement`, `elixer`, `They a holding`) are kept; `Pkastic` is a joke. Read `QUIRKS.md` before changing anything odd.
 - Keep the DINOBYTE credit (Credits screen, the page footer, the itch page, `NOTICE-dinobyte.txt`).
-- The page footer carries the back links (itch.io, more games) and the LootLocker "Send feedback" link; the feedback link stays hidden until `LL_KEY` in `odin/web/index.html` is set.
+- The page footer carries the back links (itch.io, more games) and the LootLocker "Send feedback" link; feedback goes to the LootLocker game "Gwen's Peregrination II" (console id 108577; categories Bug, Idea, Other); the link hides itself if `LL_KEY` in `odin/web/index.html` is ever emptied.

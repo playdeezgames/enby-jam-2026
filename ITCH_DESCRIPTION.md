@@ -40,7 +40,7 @@ Between turns there are ad breaks, because this is a metaphor and metaphors need
 - Keyboard: Up and Down then Enter, or press the number or letter next to a choice. Escape backs out. PageUp and PageDown (or the mouse wheel) scroll long text.
 - Touch: tap a choice.
 - Yer game saves itself after every choice and picks up where you left off.
-- Found a bug that is not a metaphor? Use "Send feedback" under the game (when it is shown), or leave a comment.
+- Found a bug that is not a metaphor? Use "Send feedback" under the game, or leave a comment.
 
 ### About this version
 
