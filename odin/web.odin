@@ -43,9 +43,12 @@ main :: proc() {
 step :: proc(dt: f64) -> bool {
 	context = runtime.default_context()
 	if dirty {
+		// Cleared before present: the page may call set_layout from inside present (the window is
+		// another shape than the grid), which sets dirty again and must not be lost. Before November 8,
+		// 2026 a portrait window stayed blank until the first key or tap.
+		dirty = false
 		app_draw(&app, &grid)
 		present(&grid.cells[0][0], i32(app.cols), i32(app.rows), MAX_COLS)
-		dirty = false
 	}
 	return true
 }

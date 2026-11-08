@@ -5,24 +5,53 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>Gwen's Peregrination II</title>
 <style>
-  html, body { margin: 0; height: 100%; background: #0b0b12; overflow: hidden; }
-  body { display: flex; align-items: center; justify-content: center; }
+  html, body { margin: 0; height: 100%; background: #0b0b12; color: #777; overflow: hidden; font: 11px/1.4 sans-serif; }
+  body { display: flex; flex-direction: column; align-items: center; justify-content: center; }
   canvas {
     --cols: 53;
     --rows: 30;
-    width: min(100vw, calc(100vh * var(--cols) * 6 / (var(--rows) * 8)));
+    flex: 0 0 auto;
+    width: min(100vw, calc((100vh - var(--footer, 5em)) * var(--cols) * 6 / (var(--rows) * 8)));
     aspect-ratio: calc(var(--cols) * 6) / calc(var(--rows) * 8);
     image-rendering: pixelated;
     touch-action: none;
     outline: none;
   }
+  footer { flex: 0 0 auto; margin: 4px 16px 6px; text-align: center; max-width: 90vw; }
+  footer a { color: #aaa; }
 </style>
 </head>
 <body>
 <canvas id="screen" tabindex="0"></canvas>
+<footer id="footer">
+  Gwen's Peregrination II by TheGrumpyGameDev (VB.NET, July 2026, for Nonbinary Game Jam 2026). Rebuilt in Odin and WebAssembly in October 2026 by an AI agent (Claude Code) at the author's direction.
+  Font: DINOBYTE by mby, CC BY 4.0, unmodified.<span class="ll-only" hidden> Feedback by LootLocker.</span>
+  <span class="ll-only" hidden><a href="#" id="feedback-link">Send feedback</a> · </span><a href="https://thegrumpygamedev.itch.io/">itch.io</a> · <a href="https://playdeezgames.github.io/oeuvre-of-splorr/">more games</a>
+</footer>
 <input id="keys" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
        style="position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;border:0;padding:0">
 <script src="odin.js"></script>
+<script src="lootlocker.js"></script>
+<script>
+// Feedback (the shared SPLORR!! LootLocker shim's form, splorr/Tech/LootLocker.md in the vault): reports go
+// to the LootLocker console under Feedback, Game. The link stays hidden until LL_KEY is filled in.
+// Letters choose menu items here, so there is no feedback key: the footer link only.
+// TODO before shipping with feedback: the LootLocker game's API domain and public Game API key (not a
+// secret), with Guest Login on, the CORS Allowlist (https://playdeezgames.github.io,
+// https://html-classic.itch.zone, http://localhost:8000) and Game feedback categories (Bug, Idea, Other).
+const LL_DOMAIN = "";
+const LL_KEY = "";
+const feedback = LL_KEY ? LootLocker({
+  domain: LL_DOMAIN,
+  key: LL_KEY,
+  version: "1.1.0",
+  idKey: "gwen2:ll-player",
+}).feedbackDialog({ game: "Gwen's Peregrination II" }) : null;
+if (feedback) {
+  document.querySelectorAll(".ll-only").forEach((el) => { el.hidden = false; });
+  document.getElementById("feedback-link").addEventListener("click", (e) => { e.preventDefault(); feedback.open(); });
+}
+</script>
 <script>
 (function () {
   "use strict";
@@ -41,8 +70,10 @@
 
   // Wide windows get the 53 by 30 grid; tall ones (a phone held upright) get 36 by 54, so the
   // same 6 by 8 glyphs are drawn about 1.5 times larger.
+  const footer = document.getElementById("footer");
   function applyLayout(force) {
-    const portrait = window.innerHeight > window.innerWidth * 1.1;
+    document.documentElement.style.setProperty("--footer", (footer.offsetHeight + 12) + "px");
+    const portrait = window.innerHeight - footer.offsetHeight > window.innerWidth * 1.1;
     const l = portrait ? LAYOUTS.portrait : LAYOUTS.landscape;
     if (!force && l.cols === COLS && l.rows === ROWS) return;
     COLS = l.cols; ROWS = l.rows;
@@ -133,6 +164,7 @@
   // Read the logical key first (remote desktops send odd codes), see vault Gotchas.
   window.addEventListener("keydown", (e) => {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (feedback && feedback.isOpen) return;
     let k = 0;
     if (KEYS[e.key] !== undefined) k = KEYS[e.key];
     else if (e.key.length === 1) k = e.key.charCodeAt(0);
